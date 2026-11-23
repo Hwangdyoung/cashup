@@ -24,6 +24,7 @@ function sfxUnlock(){
  if(ac.state!=='running'&&ac.resume){try{const r=ac.resume();if(r&&r.catch)r.catch(()=>{})}catch(e){}}
  /* Safari·iOS: 사용자 동작 안에서 무음을 한 번 재생해야 오디오가 열림 */
  if(!SFX.primed){try{const b=ac.createBuffer(1,1,ac.sampleRate),s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0);SFX.primed=true}catch(e){}}
+ setTimeout(bgmWake,0);
  if(!SFX.checked){SFX.checked=true;setTimeout(()=>{if(SFX.on&&SFX.ac&&SFX.ac.state!=='running')onBlocked()},1500)}
 }
 let installed=false;
@@ -63,57 +64,47 @@ function sN(o){
 }
 function sB(f,t,d,g,r){sT({f,t,d,g,r});sT({f:f*2.756,t,d:d*.45,g:g*.35,r});sT({f:f*5.404,t,d:d*.22,g:g*.12,r})}
 
-/* 효과음 목록 */
+/* 효과음 목록: 던전 톤 (D단조 · 낮은 음 · 긴 잔향). 카카오뱅크 화면의 버튼 소리는 짧고 조용하게 */
 const SND={
- tap(){sT({f:1300,f2:820,d:.045,g:.05})},
- close(){sT({f:880,f2:520,d:.07,g:.05})},
- deny(){sT({w:'triangle',f:330,f2:300,d:.08,g:.1});sT({w:'triangle',f:262,f2:240,t:.11,d:.13,g:.1})},
- sys(){sB(hz(88),0,.55,.09,.45);sB(hz(95),.085,.8,.1,.5);sN({ft:'highpass',f:7000,a:.02,d:.3,g:.02,r:.6})},
- level(){[72,76,79,84].forEach((m,i)=>sB(hz(m+12),i*.065,.55,.085,.45));sT({f:hz(108),t:.27,d:.7,g:.022,r:.8})},
+ /* 카카오뱅크 기본 조작 */
+ tap(){sN({ft:'lowpass',f:1600,q:.7,d:.035,g:.05});sT({f:420,f2:300,d:.05,g:.035})},
+ close(){sT({f:520,f2:260,d:.08,g:.04})},
+ deny(){sT({w:'triangle',f:196,d:.12,g:.09,lp:900});sT({w:'triangle',f:185,t:.02,d:.12,g:.07,lp:900})},
+ step(){for(let i=0;i<2;i++)sN({ft:'lowpass',f:i?260:340,q:1.6,d:.09,g:.28,t:i*.16,r:.3})},
+ /* 시스템 창: 낮은 종 + 먼 울림 */
+ sys(){sB(hz(74),0,1.1,.07,.75);sB(hz(77),.11,1.3,.06,.8);sT({f:hz(38),a:.05,d:.9,g:.12,r:.4});sN({ft:'bandpass',f:2400,f2:900,q:2,a:.05,d:.5,g:.02,r:.8})},
+ status(){sT({f:300,f2:900,a:.02,d:.35,g:.03,r:.8});sB(hz(74),.08,1,.05,.8)},
+ /* 납입 · 퀘스트 완료: D단조 아르페지오 */
+ level(){[62,65,69,74].forEach((m,i)=>sB(hz(m),i*.09,.9,.07,.65));sT({f:hz(38),f2:hz(26),d:.5,g:.18,r:.3})},
+ coin(){sB(hz(81),0,.7,.05,.7);sB(hz(86),.07,.9,.04,.75);sN({ft:'highpass',f:5000,a:.01,d:.25,g:.015,r:.8})},
+ gold(){[50,57,62,65].forEach(m=>sT({w:'triangle',f:hz(m),a:.03,d:1.2,g:.045,lp:1600,r:.6}));sB(hz(81),.12,1.4,.05,.8);sB(hz(86),.24,1.4,.04,.8)},
+ /* 경고: 낮은 뿔피리 두 번 + 울림 */
+ warn(){for(let i=0;i<2;i++){sT({w:'sawtooth',f:147,t:i*.34,a:.03,d:.24,g:.05,lp:800,r:.4});sT({w:'sawtooth',f:139,t:i*.34,a:.03,d:.24,g:.04,lp:800})}sT({f:70,f2:38,d:.6,g:.3,r:.3})},
+ /* 승급: 북 · 합창 같은 패드 · 상승하는 종 */
  rank(){
-  [60,64,67,72,76,79,84,88].forEach((m,i)=>sB(hz(m+12),i*.055,.6,.07,.45));
-  [48,55,60,64].forEach(m=>sT({w:'sawtooth',f:hz(m),t:.4,a:.08,d:1.1,g:.035,lp:500,lp2:3200,lq:2,r:.4}));
-  for(let i=0;i<6;i++)sT({f:hz(96+(i*5)%12),t:.5+i*.09,d:.3,g:.02,r:.8});
+  sT({f:72,f2:34,d:.7,g:.5,r:.3});sN({ft:'lowpass',f:700,f2:120,d:.5,g:.12});
+  [50,57,62,65].forEach(m=>sT({w:'sawtooth',f:hz(m),t:.15,a:.25,d:1.6,g:.03,lp:400,lp2:2600,lq:2,r:.7}));
+  [62,65,69,72,74,77].forEach((m,i)=>sB(hz(m),.3+i*.11,1,.05,.7));
  },
- warn(){for(let i=0;i<2;i++){sT({w:'square',f:880,t:i*.26,d:.11,g:.045,lp:2600});sT({w:'square',f:622,t:i*.26+.13,d:.11,g:.045,lp:2600})}sT({f:110,f2:50,d:.35,g:.22})},
- gold(){[60,64,67,72].forEach(m=>sT({w:'triangle',f:hz(m+12),a:.01,d:.7,g:.055}));sB(hz(96),.06,.9,.075,.5);sB(hz(100),.14,.9,.06,.5)},
- coin(){sT({w:'triangle',f:hz(84),d:.06,g:.11});sT({w:'triangle',f:hz(91),t:.07,d:.32,g:.11});sB(hz(103),.07,.3,.025,.4)},
- buy(){sN({ft:'bandpass',f:5200,q:2.5,d:.07,g:.08});SND.coin();sB(hz(96),.16,.6,.06,.5)},
- step(){for(let i=0;i<3;i++)sN({ft:'lowpass',f:i%2?520:380,q:1.4,d:.08,g:.3,t:i*.13})},
- hit(){sT({f:170,f2:46,d:.17,g:.4});sN({ft:'bandpass',f:1700,q:.9,d:.08,g:.2});sT({w:'square',f:95,f2:60,d:.07,g:.05,lp:900})},
  boss(){
   sN({ft:'lowpass',f:3600,f2:140,a:.01,d:.9,g:.35});sT({f:120,f2:34,d:.6,g:.5});
-  [60,64,67,72].forEach(m=>sT({w:'triangle',f:hz(m+12),t:.3,a:.01,d:.8,g:.05}));sB(hz(96),.36,.9,.07,.5);sB(hz(100),.44,.9,.06,.5);
+  [50,57,62,65].forEach(m=>sT({w:'triangle',f:hz(m+12),t:.3,a:.01,d:.9,g:.05,r:.5}));sB(hz(81),.36,1,.06,.7);sB(hz(86),.44,1,.05,.7);
  },
- mStart(){sT({w:'triangle',f:hz(72),f2:hz(84),d:.22,g:.08});sB(hz(96),.18,.4,.04,.5)},
- mPop(){sT({f:250,f2:520,d:.07,g:.045})},
- mHit(n){const k=(n||0)%8;sT({w:'triangle',f:hz(76+k),f2:hz(88+k),gl:.04,d:.09,g:.11});sB(hz(95+k),.025,.28,.045,.4);sN({ft:'highpass',f:4500,d:.04,g:.035})},
- tick(hi){sT({f:hi?2300:1700,d:.028,g:.07});sN({ft:'highpass',f:3200,d:.018,g:.03})},
- summon(){sN({ft:'bandpass',f:180,f2:2600,q:1.6,a:.32,d:.45,g:.11,r:.4});[57,64,69,76].forEach((m,i)=>sB(hz(m+12),.42+i*.06,.65,.065,.6))},
- status(){sT({f:1400,f2:2300,d:.22,g:.035,r:.8});sB(hz(91),.05,.6,.05,.7)},
+ /* 만기 결과: Dm → B♭ → C → D 진행, 마지막에 밝아짐 */
  result(){
-  [[60,64,67],[65,69,72],[67,71,74],[72,76,79]].forEach((c,i)=>{c.forEach(m=>sT({w:'triangle',f:hz(m),t:i*.42,a:.01,d:i<3?.38:1.4,g:.05}));sT({f:hz(c[0]-24),f2:hz(c[0]-24)*.7,t:i*.42,d:.3,g:.3})});
-  [79,81,83,84].forEach((m,i)=>sB(hz(m+12),i*.42+.05,i<3?.4:1.2,.06,.5));
-  for(let i=0;i<8;i++)sT({f:hz(96+(i*7)%12),t:1.3+i*.07,d:.35,g:.018,r:.9});
+  [[50,53,57],[46,50,53],[48,52,55],[50,54,57]].forEach((c,i)=>{c.forEach(m=>sT({w:'triangle',f:hz(m+12),t:i*.5,a:.02,d:i<3?.48:1.8,g:.05,lp:2400,r:.6}));sT({f:hz(c[0]-12),f2:hz(c[0]-12)*.6,t:i*.5,d:.4,g:.32})});
+  [74,77,81,86].forEach((m,i)=>sB(hz(m),i*.5+.05,i<3?.6:1.6,.05,.7));
  },
- reset(){sT({w:'sawtooth',f:1500,f2:170,d:.5,g:.05,lp:2400});sN({ft:'bandpass',f:2200,f2:280,d:.5,g:.05})},
- pzEnter(){sT({f:70,f2:38,a:.02,d:1.1,g:.35});sN({ft:'lowpass',f:900,f2:120,a:.05,d:1,g:.12});sB(hz(77),.12,1.2,.06,.6);sB(hz(78),.15,1.2,.05,.6)},
- count(){sT({w:'square',f:660,d:.09,g:.05,lp:3000})},
- go(){sT({w:'square',f:1320,d:.22,g:.055,lp:3600});sT({w:'square',f:990,d:.22,g:.03,lp:3000});sN({ft:'highpass',f:3000,d:.15,g:.03})},
- beat(k){const g=.14+.1*(k||0);sT({f:74,f2:44,d:.11,g});sT({f:66,f2:40,t:.17,d:.1,g:g*.75})},
- dashWarn(p){for(let i=0;i<2;i++)sT({w:'square',f:1046,t:i*.11,d:.05,g:.12,lp:4000,p})},
- dashGo(p0,p1){sN({ft:'bandpass',f:500,f2:2600,q:1.2,a:.05,d:.42,g:.5,p:p0,p2:p1})},
- strikeWarn(d,p){sT({f:300,f2:1150,gl:d,a:d*.85,d:.08,g:.028,p})},
- strike(p){sT({f:150,f2:40,d:.22,g:.32,p});sN({ft:'lowpass',f:2400,f2:280,d:.3,g:.2,p})},
- hurt(){sT({w:'square',f:260,f2:105,d:.18,g:.08,dist:1,lp:2200});sN({ft:'bandpass',f:900,q:.8,d:.14,g:.16});sT({f:90,f2:45,d:.2,g:.3})},
- banner(){sB(hz(84),0,.4,.06,.5);sB(hz(88),.09,.5,.06,.5)},
- clear(){[72,76,79,84,88,91,96].forEach((m,i)=>sB(hz(m),i*.06,.6,.07,.45));[60,64,67,72].forEach(m=>sT({w:'triangle',f:hz(m),t:.42,a:.02,d:1,g:.05}));sT({f:hz(96),t:.42,d:1.2,g:.03,r:.8})},
- fail(){[67,64,60,55].forEach((m,i)=>sT({w:'triangle',f:hz(m),t:i*.2,d:.26,g:.11,lp:1800,vib:6}));sT({f:90,f2:40,t:.8,d:.4,g:.3})},
+ reset(){sT({w:'sawtooth',f:600,f2:90,d:.6,g:.05,lp:1400,r:.5});sN({ft:'bandpass',f:1600,f2:200,d:.6,g:.05})},
+ /* 페널티 구역 입장 · 통과 · 실패 */
+ pzEnter(){sT({f:70,f2:38,a:.02,d:1.1,g:.35});sN({ft:'lowpass',f:900,f2:120,a:.05,d:1,g:.12});sB(hz(65),.12,1.4,.06,.7);sB(hz(66),.15,1.4,.05,.7)},
+ clear(){[62,65,69,74,77,81].forEach((m,i)=>sB(hz(m),i*.08,.9,.06,.6));[50,54,57,62].forEach(m=>sT({w:'triangle',f:hz(m),t:.5,a:.03,d:1.3,g:.045,r:.6}))},
+ fail(){[69,65,62,57].forEach((m,i)=>sT({w:'triangle',f:hz(m),t:i*.22,d:.3,g:.1,lp:1500,vib:5,r:.5}));sT({f:80,f2:38,t:.9,d:.5,g:.3})},
 };
 /* 믹스 레벨 (소리별 음량 배율) */
-const SFX_LV={"tap":3.54,"close":2.89,"mPop":3.21,"mStart":2.72,"tick":3.86,"count":2.65,"deny":2.21,"step":4.25,"mHit":2.39,"reset":3.65,"go":2.21,"dashWarn":3.1,"strikeWarn":3.24,"coin":2.08,"sys":1.7,"level":1.87,"status":2.92,"banner":2.71,"warn":1.02,"dashGo":3.49,"strike":1.15,"beat":1.53,"gold":2.03,"rank":2.57,"summon":2.5,"buy":2.62,"clear":2.18,"hit":0.97,"hurt":0.89,"boss":0.68,"result":1.32,"pzEnter":0.76,"fail":1.13};
+const SFX_LV={tap:2.6,close:2.6,deny:2.2,step:2.8,sys:2,status:2.6,level:2.2,coin:2.4,gold:2.2,warn:1.3,rank:2.2,boss:.7,result:1.5,reset:3,pzEnter:.8,clear:2,fail:1.1};
 /* 같은 소리가 겹쳐 터지지 않도록 최소 간격(초) */
-const SFX_GAP={beat:0,tick:0,count:0,strikeWarn:0,strike:0,dashWarn:0,dashGo:0,mHit:0,mPop:.05};
+const SFX_GAP={};
 export function sfx(n,...a){
  if(!SFX.on||!SND[n])return;
  if(!SFX.ac)sfxUnlock();
@@ -135,3 +126,70 @@ export function sfxSet(on){
  if(SFX.ac){const t=SFX.ac.currentTime;SFX.out.gain.cancelScheduledValues(t);SFX.out.gain.setTargetAtTime(on?SFX.vol:0,t,.03)}
  if(on){sfxUnlock();setTimeout(()=>sfx('tap'),40)}
 }
+
+/* ───── 던전 BGM (콜라보 적금 페이지부터) ─────
+   D단조(Dm–B♭–Gm–A) 느린 패드 + 낮은 드론 + 먼 북소리 + 가끔 울리는 종 + 바람.
+   효과음과 같은 출력(SFX.out)을 지나서 스피커 버튼·M 키로 함께 꺼진다. */
+const BGM={want:false,on:false,g:null,drone:[],wind:null,timer:null,step:0,next:0};
+const BGM_VOL=.5,BGM_BPM=66;
+const BGM_CHORDS=[[38,50,53,57],[34,46,50,53],[31,43,46,50],[33,45,49,52]]; // 근음 + 패드 3음
+const BGM_BELL=[62,65,67,69,72,74];
+function bgmPad(t,notes,dur){
+ const {ac}=SFX,lp=ac.createBiquadFilter(),g=ac.createGain();
+ lp.type='lowpass';lp.frequency.setValueAtTime(380,t);lp.frequency.linearRampToValueAtTime(900,t+dur*.5);lp.frequency.linearRampToValueAtTime(420,t+dur);
+ g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.05,t+dur*.35);g.gain.setValueAtTime(.05,t+dur*.7);g.gain.exponentialRampToValueAtTime(.0001,t+dur+1.2);
+ notes.forEach(m=>[-8,0,8].forEach(c=>{const o=ac.createOscillator();o.type='sawtooth';o.frequency.value=hz(m);o.detune.value=c;o.connect(lp);o.start(t);o.stop(t+dur+1.3)}));
+ lp.connect(g);g.connect(BGM.g);const s=ac.createGain();s.gain.value=.5;g.connect(s);s.connect(SFX.rev);
+}
+function bgmDrum(t,v){
+ const {ac}=SFX,o=ac.createOscillator(),g=ac.createGain();
+ o.frequency.setValueAtTime(90,t);o.frequency.exponentialRampToValueAtTime(36,t+.35);
+ g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.9);
+ o.connect(g);g.connect(BGM.g);const s=ac.createGain();s.gain.value=.4;g.connect(s);s.connect(SFX.rev);o.start(t);o.stop(t+1);
+}
+function bgmBell(t,m){
+ const {ac}=SFX;[[1,.025,2.4],[2.756,.009,1.1]].forEach(([k,v,d])=>{const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=hz(m)*k;
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);const s=ac.createGain();s.gain.value=.9;g.connect(s);s.connect(SFX.rev);g.connect(BGM.g);o.start(t);o.stop(t+d+.1)});
+}
+function bgmTick(){
+ if(!BGM.on||!SFX.ac)return;
+ const ac=SFX.ac,beat=60/BGM_BPM;
+ if(BGM.next<ac.currentTime)BGM.next=ac.currentTime+.1;
+ while(BGM.next<ac.currentTime+.6){
+  const t=BGM.next,i=BGM.step,bar=Math.floor(i/4)%4,b=i%4,ch=BGM_CHORDS[bar];
+  if(b===0)bgmPad(t,ch.slice(1),beat*4);
+  if(b===0&&(bar===0||bar===2))bgmDrum(t,.32);
+  if(b===2&&bar===3)bgmDrum(t,.18);
+  if(b===2&&(bar===1||bar===3)&&Math.random()<.7)bgmBell(t,BGM_BELL[Math.floor(Math.random()*BGM_BELL.length)]);
+  BGM.step++;BGM.next+=beat;
+ }
+}
+function bgmStart(){
+ if(BGM.on||!SFX.ac||SFX.ac.state!=='running')return;
+ const ac=SFX.ac,t=ac.currentTime;BGM.on=true;
+ BGM.g=ac.createGain();BGM.g.gain.setValueAtTime(.0001,t);BGM.g.gain.exponentialRampToValueAtTime(BGM_VOL,t+2.5);BGM.g.connect(SFX.out);
+ /* 낮은 드론: D1 사인 + D2 톱니(저역 통과) */
+ const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=170;lp.connect(BGM.g);
+ [[hz(26),'sine',.09],[hz(38),'sawtooth',.03],[hz(38)*1.003,'sawtooth',.03]].forEach(([f,w,v])=>{const o=ac.createOscillator(),g=ac.createGain();o.type=w;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(lp);o.start(t);BGM.drone.push(o)});
+ /* 바람 */
+ const n=ac.createBufferSource(),bp=ac.createBiquadFilter(),wg=ac.createGain(),lfo=ac.createOscillator(),lg=ac.createGain();
+ n.buffer=SFX.nb;n.loop=true;bp.type='bandpass';bp.frequency.value=500;bp.Q.value=.7;wg.gain.value=.018;
+ lfo.frequency.value=.09;lg.gain.value=260;lfo.connect(lg);lg.connect(bp.frequency);
+ n.connect(bp);bp.connect(wg);wg.connect(BGM.g);n.start(t);lfo.start(t);BGM.drone.push(n,lfo);
+ BGM.step=0;BGM.next=t+.3;BGM.timer=setInterval(bgmTick,120);bgmTick();
+}
+function bgmStop(){
+ if(!BGM.on)return;BGM.on=false;clearInterval(BGM.timer);BGM.timer=null;
+ const ac=SFX.ac,t=ac.currentTime,g=BGM.g,nodes=BGM.drone;BGM.drone=[];BGM.g=null;
+ try{g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(Math.max(.0001,g.gain.value),t);g.gain.exponentialRampToValueAtTime(.0001,t+1.2);nodes.forEach(o=>o.stop(t+1.3));setTimeout(()=>{try{g.disconnect()}catch(e){}},1500)}catch(e){}
+}
+/* App이 화면에 따라 부름: 콜라보 페이지 이후면 true, 카카오뱅크 홈·게임 중이면 false */
+export function bgmSet(want){
+ BGM.want=want;
+ if(!want){bgmStop();return}
+ if(!SFX.ac)return; // 첫 터치에서 오디오가 열리면 bgmWake가 이어서 켠다
+ if(SFX.ac.state!=='running'){try{SFX.ac.resume().then(()=>{if(BGM.want)bgmStart()}).catch(()=>{})}catch(e){}return}
+ bgmStart();
+}
+function bgmWake(){if(BGM.want&&!BGM.on)bgmSet(true)}

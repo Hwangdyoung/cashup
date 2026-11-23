@@ -1,11 +1,16 @@
-import { AWAKEN_EXP, BASE_RATE, EXP_REQ, GUILD_MAX, LAST, RANK, S_BONUS, TICKETS, TIERS, TOTAL, WK_REQ } from './rules.js';
+import { AWAKEN_EXP, BASE_RATE, DEMO_GUILD_MEMBERS, EXP_REQ, GUILD_MAX, LAST, RANK, S_BONUS, TICKETS, TIERS, TOTAL, WK_REQ } from './rules.js';
 
 /* 적금 상태 하나
+   joined: 가입했는지 (가입 전에는 카카오뱅크 홈·콜라보 페이지만)
+   payDay: 자동이체 요일 (rules.js PAY_DAYS 번호) · guildCode / guildOwner: 내 길드 코드, 내가 만든 길드인지
    weeks[w]: null 예정 · 'paid' 납입 · 'rescued' 구제 후 재납입 · 'gate' 페널티 게이트(구제 대기) · 'lost' 미납 확정
    walkExp: 걷기로 받은 보너스 EXP 합계 (히든 각성 판정용) */
-export const fresh = (concept = null, base = 1000) => ({
-  concept,
-  base,
+export const fresh = () => ({
+  joined: false,
+  base: 1000,
+  payDay: 1,
+  guildCode: null,
+  guildOwner: true,
   wk: 1,
   day: 0,
   weeks: Array(TOTAL + 1).fill(null),
@@ -21,6 +26,24 @@ export const fresh = (concept = null, base = 1000) => ({
   matured: false,
   resultShown: false,
 });
+
+/* 가입: 시작 금액 · 자동이체 요일 · 길드(만들기 / 받은 코드로 참여) */
+export function openSavings({ base, payDay = 1, guild = { mode: 'create', code: makeGuildCode() } }) {
+  return {
+    ...fresh(),
+    joined: true,
+    base,
+    payDay,
+    guildCode: guild.code,
+    guildOwner: guild.mode === 'create',
+    members: guild.mode === 'join' ? DEMO_GUILD_MEMBERS + 1 : 1,
+  };
+}
+const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+export const makeGuildCode = () => 'HUNTER-' + Array.from({ length: 4 }, () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]).join('');
+
+/* 만기 원금: 1주차 base, 2주차 2×base … 26주차 26×base */
+export const maturityPrincipal = (base) => (base * TOTAL * (TOTAL + 1)) / 2;
 
 export const amt = (s, w) => s.base * w;
 export const isDone = (st) => st === 'paid' || st === 'rescued';

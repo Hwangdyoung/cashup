@@ -1,4 +1,5 @@
 import Stage from '../components/Stage.jsx';
+import StampBoard from '../components/StampBoard.jsx';
 import GateCard from '../components/GateCard.jsx';
 import GradeTrack from '../components/GradeTrack.jsx';
 import { RateKey, RateStack } from '../components/RateBar.jsx';
@@ -6,7 +7,7 @@ import { GUILD_MAX, S_BONUS, TOTAL } from '../lib/rules.js';
 import { pct, pp, won } from '../lib/format.js';
 import { amt, gates, isDone, principal, rates } from '../lib/savings.js';
 
-/* 홈: 무대 · 페널티 게이트 · 만기 예상 금리 · 이번 주 납입 · 헌터 등급 */
+/* 적금 상세 홈: 도장판(N주차 도전중) · 페널티 게이트 · 던전 무대 · 이번 주 납입 · 만기 예상 금리 · 헌터 등급 */
 export default function Home({ s, pop, onHero, onPay, onGate, onTab }) {
   const R = rates(s);
   const G = gates(s);
@@ -35,24 +36,9 @@ export default function Home({ s, pop, onHero, onPay, onGate, onTab }) {
 
   return (
     <>
-      <Stage s={s} missTint={G.length > 0} pop={pop} onHero={onHero} />
+      <StampBoard s={s} />
       {G.length > 0 && <GateCard s={s} week={G[0]} onChallenge={onGate} />}
-
-      <div className="ratecard">
-        <p className="k">만기까지 이대로 납입하면</p>
-        <div className="big">
-          <b>{pct(R.exp)}</b>
-          <span>지금까지 확보 {pct(R.now)}</span>
-        </div>
-        <RateStack s={R.sExp} guild={R.guild} />
-        <RateKey />
-        <div className="go">
-          <span className="small">{hint}</span>
-          <button type="button" className="link" onClick={() => onTab('rate')}>
-            우대금리 자세히
-          </button>
-        </div>
-      </div>
+      <Stage s={s} missTint={G.length > 0} pop={pop} onHero={onHero} />
 
       <div className="card">
         <h3>
@@ -69,6 +55,22 @@ export default function Home({ s, pop, onHero, onPay, onGate, onTab }) {
         <button type="button" className="btn" disabled={s.matured || isDone(cur) || cur === 'gate' || cur === 'lost'} onClick={onPay}>
           {payLabel}
         </button>
+      </div>
+
+      <div className="ratecard">
+        <p className="k">만기까지 이대로 납입하면</p>
+        <div className="big">
+          <b>{pct(R.exp)}</b>
+          <span>지금까지 확보 {pct(R.now)}</span>
+        </div>
+        <RateStack s={R.sExp} guild={R.guild} />
+        <RateKey />
+        <div className="go">
+          <span className="small">{hint}</span>
+          <button type="button" className="link" onClick={() => onTab('rate')}>
+            우대금리 자세히
+          </button>
+        </div>
       </div>
 
       <GradeTrack s={s} />

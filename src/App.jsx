@@ -1,49 +1,55 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CONCEPTS } from './lib/characters.js';
+import { HUNTER, hunterArt } from './lib/characters.js';
 import { won } from './lib/format.js';
-import { fresh, gates } from './lib/savings.js';
+import { fresh, gates, openSavings } from './lib/savings.js';
 import * as act from './lib/actions.js';
-import { sfx, sfxOn, sfxSet, installSfx } from './lib/sfx.js';
+import { bgmSet, installSfx, sfx, sfxOn, sfxSet } from './lib/sfx.js';
 import { TRIES_PER_TICKET } from './lib/rules.js';
-import Header from './components/Header.jsx';
+import Header, { SoundButton } from './components/Header.jsx';
 import TabBar from './components/TabBar.jsx';
 import SysToast from './components/SysToast.jsx';
 import DemoPanel from './components/DemoPanel.jsx';
 import RankUp from './components/RankUp.jsx';
 import StatusWindow from './components/StatusWindow.jsx';
 import ResultWindow from './components/ResultWindow.jsx';
+import SystemWindow, { SysLine } from './components/SystemWindow.jsx';
 import { GateConfirm, RepayWindow } from './components/PenaltyWindows.jsx';
-import Login from './screens/Login.jsx';
-import Onboarding from './screens/Onboarding.jsx';
+import { KbToast, StatusBar, TopBar } from './components/Shell.jsx';
+import BankHome from './screens/BankHome.jsx';
+import Benefits from './screens/Benefits.jsx';
+import Collab from './screens/Collab.jsx';
+import Join from './screens/Join.jsx';
+import JoinDone from './screens/JoinDone.jsx';
 import Home from './screens/Home.jsx';
 import Rate from './screens/Rate.jsx';
 import Walk from './screens/Walk.jsx';
-import Guild, { INVITE_CODE } from './screens/Guild.jsx';
+import Guild from './screens/Guild.jsx';
 import PenaltyGame from './game/PenaltyGame.jsx';
 
 const SYS_MS = 2800; // 시스템 알림이 떠 있는 시간
+const KB_MS = 1800; // 카카오뱅크식 안내가 떠 있는 시간
 const RANKUP_DELAY = 900; // 납입 알림을 보여 준 뒤 승급 연출
+/* 던전 BGM을 트는 화면 (콜라보 적금 페이지부터) */
+const DUNGEON = new Set(['collab', 'join', 'done', 'savings']);
 
-/* 앱 전체 상태와 화면 전환
-   - s: 적금 상태 (lib/savings.js fresh). 바꿀 때는 run(행동, ...) 으로 lib/actions.js 함수를 부른다
-   - 화면 상태: 탭 · 알림 · 모달 · 승급 연출 · 페널티 게임 */
+/* 앱 전체 상태와 화면 동선
+   route: 'bank' 카카오뱅크 홈 → 'benefit' 혜택(이벤트) → 'collab' 콜라보 적금 페이지 → 'join' 가입 → 'done' 개설 완료 → 'savings' 적금 상세
+   s: 적금 상태 (lib/savings.js). 바꿀 때는 run(행동, ...) 으로 lib/actions.js 함수를 부른다 */
 export default function App() {
   const [s, setS] = useState(() => fresh());
   const sRef = useRef(s);
-  const [tab, setTab] = useState('home');
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [toast, setToast] = useState(null);
-  const [modal, setModal] = useState(null); // { kind: 'onboard'|'status'|'gate'|'repay'|'result', week? }
-  const [rankUp, setRankUp] = useState(null); // { from, to }
+  const [route, setRoute] = useState('bank');
+  const [tab, setTab] = useState('home'); // 적금 상세 안 탭
+  const [toast, setToast] = useState(null); // 원작풍 시스템 알림
+  const [kbToast, setKbToast] = useState(null); // 카카오뱅크식 가벼운 안내
+  const [modal, setModal] = useState(null); // { kind: 'welcome'|'status'|'gate'|'repay'|'result', week? }
+  const [rankUp, setRankUp] = useState(null);
   const [game, setGame] = useState(null); // { week, used }
   const [pop, setPop] = useState(0);
   const [soundOn, setSoundOn] = useState(sfxOn);
   const [autoWalk, setAutoWalk] = useState(true);
   const [proj, setProj] = useState('keep');
-  // 온보딩 선택
-  const [obStep, setObStep] = useState(0);
-  const [pick, setPick] = useState('jinwoo');
-  const [amount, setAmount] = useState(1000);
+  const [joinKey, setJoinKey] = useState(0); // 가입 화면을 처음부터 다시 그릴 때
 
   const timers = useRef(new Set());
   const later = useCallback((fn, ms) => {
@@ -66,6 +72,14 @@ export default function App() {
     toastTimer.current = setTimeout(() => setToast(null), SYS_MS);
     if (snd !== 'none') sfx(snd || (kind === 'warn' ? 'warn' : kind === 'gold' ? 'gold' : 'sys'));
   }, []);
+  const kbTimer = useRef(null);
+  const showKb = useCallback((text) => {
+    setKbToast({ text, id: Date.now() + Math.random() });
+    clearTimeout(kbTimer.current);
+    kbTimer.current = setTimeout(() => setKbToast(null), KB_MS);
+    sfx('deny');
+  }, []);
+  const soon = () => showKb('시연에서는 홈 · 혜택 · 콜라보 적금만 열려요');
 
   const openModal = (m) => {
     setToast(null);
@@ -103,7 +117,7 @@ export default function App() {
     setS(next);
   };
 
-  /* ───── 효과음 ───── */
+  /* ───── 소리 ───── */
   useEffect(() => {
     installSfx(() => showSys('[{효과음}이 브라우저에서 막혀 있습니다]\n화면을 한 번 더 누르거나, 주소창의 사이트 설정에서 소리를 허용해 주세요.', 'warn', 'none'));
   }, [showSys]);
@@ -118,27 +132,54 @@ export default function App() {
     addEventListener('keydown', onKey);
     return () => removeEventListener('keydown', onKey);
   }, [setSound]);
+  /* 던전 BGM: 콜라보 페이지부터 켜고, 카카오뱅크 홈·혜택이나 페널티 게임(자체 BGM) 중에는 끔 */
+  useEffect(() => {
+    bgmSet(DUNGEON.has(route) && !game);
+  }, [route, game]);
+  useEffect(() => () => bgmSet(false), []);
 
-  /* ───── 모달 닫기 (온보딩 중이면 다시 온보딩) ───── */
+  /* ───── 모달 ───── */
   const closeModal = () => {
     sfx('close');
-    setModal(sRef.current.concept ? null : { kind: 'onboard' });
+    setModal(null);
   };
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape' && modal && sRef.current.concept) closeModal();
+      if (e.key === 'Escape' && modal && modal.kind !== 'repay') closeModal();
     };
     addEventListener('keydown', onKey);
     return () => removeEventListener('keydown', onKey);
   });
 
-  /* ───── 시작 · 초기화 ───── */
-  const startProject = () => {
+  /* ───── 화면 이동 ───── */
+  const go = (r) => {
     sfx('tap');
-    replace(fresh(pick, amount));
-    setModal(null);
+    setToast(null);
+    setRoute(r);
+  };
+  const onBankTab = (id) => {
+    if (id === 'home') go('bank');
+    else if (id === 'benefit') go('benefit');
+    else soon();
+  };
+  const startJoin = () => {
+    if (sRef.current.joined) {
+      go('savings');
+      return;
+    }
+    setJoinKey((k) => k + 1);
+    go('join');
+  };
+  const openAccount = (draft) => {
+    replace(openSavings(draft));
+    sfx('coin');
+    setRoute('done');
+  };
+  const confirmDone = () => {
     setTab('home');
-    showSys('[{' + CONCEPTS[pick].n + '} 헌터로 등록되었습니다]\nE급 · 곡괭이를 든 신입 헌터 · 1주차 ' + won(amount));
+    setRoute('savings');
+    openModal({ kind: 'welcome' });
+    sfx('sys');
   };
   const fullReset = () => {
     clearTimers();
@@ -146,17 +187,14 @@ export default function App() {
     setRankUp(null);
     setModal(null);
     setToast(null);
+    setKbToast(null);
     replace(fresh());
-    setObStep(0);
-    setPick('jinwoo');
-    setAmount(1000);
     setProj('keep');
     setTab('home');
-    setLoggedIn(false);
+    setRoute('bank');
     sfx('reset');
   };
-
-  const goto = (id) => {
+  const goTab = (id) => {
     sfx('tap');
     setTab(id);
   };
@@ -187,9 +225,13 @@ export default function App() {
     if (g) run(act.gameFailed, g.week, g.used);
   };
 
-  /* ───── 시연 컨트롤 ───── */
+  /* ───── 시연 컨트롤 (가입 후에만) ───── */
   const onDemo = (id) => {
-    if (!sRef.current.concept) return;
+    if (!sRef.current.joined) {
+      showKb('먼저 혜택 → 나 혼자만 캐시업에서 가입해 주세요');
+      return;
+    }
+    if (route !== 'savings') setRoute('savings');
     const opts = { autoWalk };
     if (id === 'day') run(act.nextDay, opts);
     else if (id === 'week') run(act.demoWeek, opts);
@@ -202,39 +244,34 @@ export default function App() {
 
   const copyCode = () => {
     try {
-      navigator.clipboard?.writeText(INVITE_CODE);
+      navigator.clipboard?.writeText(s.guildCode);
     } catch {
       /* 복사가 막혀도 알림은 띄움 */
     }
     showSys('[{초대 코드}를 복사했습니다]\n친구가 이 코드로 가입하면 길드원이 늘어요', '', 'coin');
   };
 
-  const ready = loggedIn && s.concept;
-  const C = s.concept ? CONCEPTS[s.concept] : null;
-
   const renderModal = () => {
     if (!modal) return null;
     switch (modal.kind) {
-      case 'onboard':
+      case 'welcome':
         return (
-          <Onboarding
-            step={obStep}
-            pick={pick}
-            amount={amount}
-            onStep={(n) => {
-              sfx('tap');
-              setObStep(n);
-            }}
-            onPick={(k) => {
-              sfx('tap');
-              setPick(k);
-            }}
-            onAmount={(a) => {
-              sfx('tap');
-              setAmount(a);
-            }}
-            onStart={startProject}
-          />
+          <SystemWindow title="헌터 협회" alert>
+            <SysLine>
+              <em>특별 성장 프로젝트</em>에 등록되었습니다.
+            </SysLine>
+            <p className="swsub">
+              E급 · 곡괭이를 든 신입 헌터 {HUNTER.n}
+              <br />
+              1주차 {won(s.base)} · 매주 납입하고 걸으며 S급까지
+            </p>
+            <p className="ifnote">이 상품의 스토리는 원작과 별개인 콜라보 한정 IF(만약에) 세계관입니다.</p>
+            <div className="foot2">
+              <button type="button" className="btn" onClick={closeModal}>
+                던전 입장
+              </button>
+            </div>
+          </SystemWindow>
         );
       case 'status':
         return <StatusWindow s={s} onClose={closeModal} />;
@@ -258,64 +295,79 @@ export default function App() {
     }
   };
 
+  const renderRoute = () => {
+    switch (route) {
+      case 'benefit':
+        return <Benefits onCollab={() => go('collab')} onTab={onBankTab} onSoon={soon} />;
+      case 'collab':
+        return <Collab joined={s.joined} onClose={() => go('benefit')} onApply={startJoin} />;
+      case 'join':
+        return <Join key={joinKey} sound={sfx} onExit={() => go('collab')} onOpen={openAccount} />;
+      case 'done':
+        return <JoinDone s={s} onConfirm={confirmDone} />;
+      case 'savings':
+        return (
+          <div className="view sav">
+            <TopBar title="나 혼자만 캐시업" onLeft={() => go('bank')} right={<SoundButton on={soundOn} onClick={() => setSound(!soundOn)} />} />
+            <Header s={s} onRate={() => goTab('rate')} />
+            <div className="scroll" key={tab}>
+              <div className="screen">
+                {tab === 'home' && (
+                  <Home
+                    s={s}
+                    pop={pop}
+                    onHero={() => {
+                      openModal({ kind: 'status' });
+                      sfx('status');
+                    }}
+                    onPay={() => run(act.pay)}
+                    onGate={(week) => {
+                      if (sRef.current.tickets <= 0) return;
+                      openModal({ kind: 'gate', week });
+                      sfx('warn');
+                    }}
+                    onTab={goTab}
+                  />
+                )}
+                {tab === 'rate' && (
+                  <Rate
+                    s={s}
+                    proj={proj}
+                    onProj={(p) => {
+                      sfx('tap');
+                      setProj(p);
+                    }}
+                    onTab={goTab}
+                  />
+                )}
+                {tab === 'walk' && <Walk s={s} onWalk={(n) => run(act.walk, n)} />}
+                {tab === 'guild' && <Guild s={s} onCopy={copyCode} onJoin={() => run(act.addMates, 1)} />}
+              </div>
+            </div>
+            <TabBar tab={tab} onTab={goTab} dot={gates(s).length > 0} />
+          </div>
+        );
+      default:
+        return <BankHome s={s} onPromo={() => go('collab')} onSavings={() => go('savings')} onTab={onBankTab} onSoon={soon} />;
+    }
+  };
+
   return (
     <>
-      <div className="phone" style={C ? { '--c': C.c } : undefined}>
-        {!loggedIn && (
-          <Login
-            onStart={() => {
-              sfx('tap');
-              setLoggedIn(true);
-              setObStep(0);
-              setModal({ kind: 'onboard' });
-            }}
-          />
-        )}
-        <Header s={s} soundOn={soundOn} onSound={() => setSound(!soundOn)} onRate={() => goto('rate')} />
-        <SysToast toast={toast} onClose={() => {
-          setToast(null);
-          sfx('close');
-        }} />
-
-        <div className="screen on" key={tab}>
-          {ready && tab === 'home' && (
-            <Home
-              s={s}
-              pop={pop}
-              onHero={() => {
-                openModal({ kind: 'status' });
-                sfx('status');
-              }}
-              onPay={() => run(act.pay)}
-              onGate={(week) => {
-                if (sRef.current.tickets <= 0) return;
-                openModal({ kind: 'gate', week });
-                sfx('warn');
-              }}
-              onTab={goto}
-            />
-          )}
-          {ready && tab === 'rate' && (
-            <Rate
-              s={s}
-              proj={proj}
-              onProj={(p) => {
-                sfx('tap');
-                setProj(p);
-              }}
-              onTab={goto}
-            />
-          )}
-          {ready && tab === 'walk' && <Walk s={s} onWalk={(n) => run(act.walk, n)} />}
-          {ready && tab === 'guild' && <Guild s={s} onCopy={copyCode} onJoin={() => run(act.addMates, 1)} />}
-        </div>
-
-        <TabBar tab={tab} onTab={goto} dot={gates(s).length > 0} />
-
+      <div className="phone">
+        <StatusBar />
+        {renderRoute()}
+        <SysToast
+          toast={toast}
+          onClose={() => {
+            setToast(null);
+            sfx('close');
+          }}
+        />
+        <KbToast toast={kbToast} />
         <div className={`modal${modal ? ' show' : ''}`}>{renderModal()}</div>
         {rankUp && (
           <RankUp
-            concept={s.concept}
             from={rankUp.from}
             to={rankUp.to}
             onClose={() => {
@@ -325,16 +377,8 @@ export default function App() {
           />
         )}
         {game && (
-          <div className="pq show">
-            <PenaltyGame
-              week={game.week}
-              tries={TRIES_PER_TICKET}
-              muted={!soundOn}
-              onMute={(m) => setSound(!m)}
-              onLaunch={onLaunch}
-              onRescued={onRescued}
-              onQuit={onQuit}
-            />
+          <div className="pq">
+            <PenaltyGame week={game.week} tries={TRIES_PER_TICKET} art={hunterArt(s.grade)} muted={!soundOn} onMute={(m) => setSound(!m)} onLaunch={onLaunch} onRescued={onRescued} onQuit={onQuit} />
           </div>
         )}
       </div>

@@ -1,5 +1,4 @@
 import { memo, useEffect, useRef } from 'react';
-import hunterImg from '../assets/hunter.png';
 import { createSound } from './engine/sound.js';
 import { createRun } from './engine/run.js';
 import { createDodge } from './engine/dodge.js';
@@ -9,7 +8,7 @@ import './game.css';
 /* 페널티 퀘스트 미니게임 (30초 · 던전 러닝 / 독충 회피)
    - 화면 뼈대는 아래 JSX, 움직임은 engine/ 의 캔버스 코드가 맡는다 (React는 뼈대만 한 번 그림)
    - 앱과는 콜백으로 주고받음: onLaunch 게임 시작(유예권 사용) · onRescued 통과 · onQuit 나가기 · onMute 음소거 변경 */
-export default function PenaltyGame({ week, tries, muted, onLaunch, onRescued, onQuit, onMute }) {
+export default function PenaltyGame({ week, tries, art, muted, onLaunch, onRescued, onQuit, onMute }) {
   const root = useRef(null);
   const engine = useRef(null);
   const cb = useRef(null);
@@ -61,7 +60,7 @@ export default function PenaltyGame({ week, tries, muted, onLaunch, onRescued, o
   return (
     <div className="pg">
       <div className="phone" ref={root} tabIndex={-1}>
-        <GameSkeleton />
+        <GameSkeleton art={art} />
       </div>
     </div>
   );
@@ -77,7 +76,7 @@ const SoundBtnIcon = () => (
 );
 
 /* 엔진이 id로 찾아 직접 고치는 요소들. 한 번 그린 뒤 React가 다시 건드리지 않도록 memo */
-const GameSkeleton = memo(function GameSkeleton() {
+const GameSkeleton = memo(function GameSkeleton({ art }) {
   return (
     <>
       <div className="pz" id="pz1">
@@ -152,7 +151,7 @@ const GameSkeleton = memo(function GameSkeleton() {
         </div>
       </div>
       <div className="pz-win show" id="hub" style={{ zIndex: 30 }} />
-      <img id="pgHero" alt="" hidden src={hunterImg} />
+      <img id="pgHero" alt="" hidden src={art} />
     </>
   );
 });

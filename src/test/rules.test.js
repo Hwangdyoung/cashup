@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { AWAKEN_EXP, MAX_RATE, TICKETS, TOTAL } from '../lib/rules.js';
-import { awakened, fresh, gradeOf, principal, rates } from '../lib/savings.js';
+import { AWAKEN_EXP, DEMO_GUILD_CODE, GUILD_CODE_RE, MAX_RATE, TICKETS, TIERS, TOTAL } from '../lib/rules.js';
+import { awakened, gradeOf, makeGuildCode, maturityPrincipal, openSavings, principal, rates, tier } from '../lib/savings.js';
 import { addMates, demoMiss, demoTo25, demoWeek, gameFailed, nextDay, pay, repay, useTicket, walk } from '../lib/actions.js';
 
 /* CLAUDE.md '확정된 상품 규칙'이 코드에 그대로 들어갔는지 본다 */
-const start = (base = 1000) => fresh('jinwoo', base);
+const start = (base = 1000) => openSavings({ base });
 const payAll = (s, opts = { autoWalk: false }) => {
   while (!s.matured) demoWeek(s, opts);
   return s;
@@ -30,7 +30,9 @@ describe('금리', () => {
     const s = payAll(start());
     expect(s.grade).toBe(5);
     expect(rates(s).now).toBe(5);
-    expect(principal(s)).toBe(1000 * (TOTAL * (TOTAL + 1)) / 2);
+    expect(principal(s)).toBe(maturityPrincipal(1000));
+    expect(maturityPrincipal(1000)).toBe(351000);
+    expect(maturityPrincipal(10000)).toBe(3510000);
   });
 });
 
@@ -113,5 +115,24 @@ describe('길드원 합류 알림', () => {
     const s = start();
     const fx = addMates(s, 1);
     expect(fx[0].kind).toBe('gold');
+  });
+});
+
+describe('길드 (포스터: 초대 코드로 만들기 · 참여)', () => {
+  it('구간 이름은 파티 · 공격대 · 길드 · 연합 길드', () => {
+    expect(TIERS.map((t) => t.n)).toEqual(['파티', '공격대', '길드', '연합 길드']);
+  });
+  it('길드를 만들면 나 혼자, 내 코드가 생긴다', () => {
+    const s = openSavings({ base: 1000, guild: { mode: 'create', code: makeGuildCode() } });
+    expect(s.members).toBe(1);
+    expect(s.guildOwner).toBe(true);
+    expect(GUILD_CODE_RE.test(s.guildCode)).toBe(true);
+    expect(rates(s).guild).toBe(0);
+  });
+  it('받은 코드로 참여하면 바로 파티 구간', () => {
+    const s = openSavings({ base: 1000, guild: { mode: 'join', code: DEMO_GUILD_CODE } });
+    expect(s.guildOwner).toBe(false);
+    expect(tier(s)).toBe(0);
+    expect(rates(s).guild).toBe(0.5);
   });
 });

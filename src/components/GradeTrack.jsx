@@ -1,6 +1,5 @@
-import hunterImg from '../assets/hunter.png';
 import { EXP_PAY, EXP_REQ, EXP_WALK, LAST, RANK, WK_REQ } from '../lib/rules.js';
-import { RC } from '../lib/characters.js';
+import { GRADE_REWARD, GRADE_STORY, RC, hunterArt } from '../lib/characters.js';
 import { fmt } from '../lib/format.js';
 import { doneCount } from '../lib/savings.js';
 
@@ -23,7 +22,7 @@ export default function GradeTrack({ s }) {
       </h3>
       <div className="gtrack">
         <div className="runner" style={{ left }}>
-          <img src={hunterImg} alt="" />
+          <img src={hunterArt(g)} alt="" />
         </div>
         <div className="segs">
           {RANK.map((r, i) => (
@@ -33,6 +32,10 @@ export default function GradeTrack({ s }) {
           ))}
         </div>
       </div>
+      <p className="gstory">
+        지금 <b>{RANK[g]}급 · {GRADE_STORY[g]}</b>
+        {g < LAST && <> → 다음 {RANK[n]}급 · {GRADE_STORY[n]}</>}
+      </p>
       <div className="cond">
         {g < LAST ? (
           <>
@@ -60,6 +63,7 @@ export default function GradeTrack({ s }) {
           </span>
         )}
       </div>
+      <div className="reward-line">🎁 등급 달성 리워드 · {GRADE_REWARD}</div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { AWAKEN_EXP, EXP_WALK, TOTAL, WALK_GOAL } from '../lib/rules.js';
-import { CONCEPTS } from '../lib/characters.js';
+import { HUNTER } from '../lib/characters.js';
 import { DAYS, fmt } from '../lib/format.js';
 import { awakened } from '../lib/savings.js';
 
@@ -60,7 +60,7 @@ export default function Walk({ s, onWalk }) {
         </div>
         <p className="small" style={{ marginTop: 6 }}>
           {aw
-            ? '조건 달성! 만기 때 ' + CONCEPTS[s.concept].n + ' 최종 연출이 열려요'
+            ? '조건 달성! 만기 때 ' + HUNTER.n + ' 최종 연출(벨리온)과 추가 리워드(예정)가 열려요'
             : '남은 걷기 목표 ' + Math.ceil((AWAKEN_EXP - s.walkExp) / EXP_WALK) + '일 · 만기까지 채우면 히든 각성'}
         </p>
       </div>

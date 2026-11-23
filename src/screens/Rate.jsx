@@ -2,19 +2,17 @@ import { RateKey, RateStack } from '../components/RateBar.jsx';
 import TierList from '../components/TierList.jsx';
 import { MAX_RATE, S_BONUS, TIERS, TOTAL } from '../lib/rules.js';
 import { pct, pp, won } from '../lib/format.js';
-import { doneCount, interestFor, rates, tier } from '../lib/savings.js';
+import { interestFor, rates, tier } from '../lib/savings.js';
 
 const S_LABEL = { done: '달성', risk: '미납 구제 대기', fail: '미납 확정으로 받을 수 없음' };
-const WEEK_LABEL = { paid: '납입', rescued: '구제 후 재납입', gate: '페널티 게이트', lost: '미납 확정' };
 
-/* 우대금리: 만기 예상 금리 · 수령액 · 우대 1 S급 달성 · 우대 2 길드 · 26주 납입 현황 */
+/* 우대금리: 만기 예상 금리 · 수령액 · 우대 1 S급 달성 · 우대 2 길드 (26주 납입 현황은 홈 도장판) */
 export default function Rate({ s, proj, onProj, onTab }) {
   const R = rates(s);
   const rate = proj === 'keep' ? R.exp : R.max;
   const P = interestFor(s, rate, true);
   const st = R.s;
   const t = tier(s);
-  const missed = s.weeks.filter((x) => x === 'gate' || x === 'lost').length;
   return (
     <>
       <div className="ratecard">
@@ -89,32 +87,6 @@ export default function Rate({ s, proj, onProj, onTab }) {
         <button type="button" className="link" style={{ marginTop: 8 }} onClick={() => onTab('guild')}>
           친구 초대하러 가기
         </button>
-      </div>
-
-      <div className="card">
-        <h3>
-          {TOTAL}주 납입 현황
-          <span>
-            완납 {doneCount(s)} · 미납 {missed}
-          </span>
-        </h3>
-        <div className="weeks">
-          {Array.from({ length: TOTAL }, (_, i) => {
-            const w = i + 1;
-            const x = s.weeks[w];
-            return (
-              <div key={w} className={`wkc ${x ?? ''}${w === s.wk && !s.matured && !x ? ' now' : ''}`} title={w + '주차 ' + (WEEK_LABEL[x] ?? '예정')}>
-                {w}
-              </div>
-            );
-          })}
-        </div>
-        <div className="legend">
-          <span style={{ '--lc': '#2B6E9E' }}>납입</span>
-          <span style={{ '--lc': '#2B6E9E', '--ls': 'inset 0 0 0 2px #FFD23F' }}>구제 후 재납입</span>
-          <span style={{ '--lc': '#7A1E3A' }}>페널티 게이트</span>
-          <span style={{ '--lc': '#2A1420' }}>미납 확정</span>
-        </div>
       </div>
       <p className="note">기본 연 2.0% + 길드 우대 최대 2.0%p + S급 달성 우대 3.0%p = 최고 연 7.0%는 콜라보 이벤트 기획 제안 예시이며 실제 상품과 다를 수 있습니다.</p>
     </>
