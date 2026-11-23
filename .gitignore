@@ -1,0 +1,14 @@
+# 의존성·빌드 결과
+node_modules
+dist
+
+# 로컬 개발 도구 설정
+.claude
+
+# 환경 변수
+.env
+.env.*
+
+# OS·로그
+.DS_Store
+*.log

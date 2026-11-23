@@ -1,0 +1,80 @@
+/* 화면에서 쓰는 선 아이콘 모음 (하단 탭 · 효과음 · 게이트 · 알림) */
+
+export function HomeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 11l8-7 8 7" />
+      <path d="M6 10v10h12V10" />
+      <path d="M10 20v-5h4v5" />
+    </svg>
+  );
+}
+
+export function RateIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M9 15l6-6" />
+      <circle cx="9.3" cy="9.3" r=".9" />
+      <circle cx="14.7" cy="14.7" r=".9" />
+    </svg>
+  );
+}
+
+export function WalkIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4.5a1.8 1.8 0 1 0 0 .1" />
+      <path d="M8 21l2-6 3 2v4M10 15l-1-5 4-1 2 4 3 1" />
+      <path d="M9 10l-3 3" />
+    </svg>
+  );
+}
+
+export function GuildIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3l7 3v5.2c0 4.4-3 8-7 9.8-4-1.8-7-5.4-7-9.8V6z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
+
+export function SoundIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path className="spk" d="M4 9.5h3.2L12 5.6v12.8l-4.8-3.9H4z" />
+      <path className="w" d="M15.3 9.2a4 4 0 0 1 0 5.6M17.9 6.6a7.6 7.6 0 0 1 0 10.8" />
+      <path className="x" d="M16 9.6l4.8 4.8M20.8 9.6L16 14.4" />
+    </svg>
+  );
+}
+
+export function GateIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="#FFB3C1" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <path d="M5 21V9a7 7 0 0 1 14 0v12" />
+      <path d="M3 21h18M12 13v3" />
+    </svg>
+  );
+}
+
+export function ResetIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 12a8 8 0 1 0 2.4-5.7" />
+      <path d="M4 4v4.5h4.5" />
+    </svg>
+  );
+}
+
+/* 시스템 창 제목 앞 느낌표 */
+export function AlertIcon() {
+  return (
+    <svg className="swic" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.08)" stroke="#fff" strokeWidth="2" />
+      <path d="M12 6.5v7" stroke="#FF6F8A" strokeWidth="2.8" strokeLinecap="round" />
+      <circle cx="12" cy="17.4" r="1.6" fill="#FF6F8A" />
+    </svg>
+  );
+}
