@@ -25,7 +25,7 @@ export default function ResultWindow({ s, onClose, onReset }) {
             <em>히든 각성</em> 조건을 달성했습니다.
           </SysLine>
           <p className="swsub">{C.awaken}</p>
-          <span className="reward-sw">🎁 {AWAKEN_REWARD}</span>
+          <span className="reward-sw">{AWAKEN_REWARD}</span>
         </>
       )}
       <div className="swdiv" />

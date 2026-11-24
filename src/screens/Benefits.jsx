@@ -5,8 +5,8 @@ import { hunterArt } from '../lib/characters.js';
 
 /* 시연용 예시 이벤트 (실제 카카오뱅크 이벤트 아님) */
 const OTHER_EVENTS = [
-  { icon: '📅', bg: '#FFF4CC', t: '매일 출석 체크', d: '시연용 예시 이벤트' },
-  { icon: '🐷', bg: '#E5F4FD', t: '잔돈 모으기 챌린지', d: '시연용 예시 이벤트' },
+  { icon: 'cal', bg: '#FFF4CC', fg: '#8A6A00', t: '매일 출석 체크', d: '시연용 예시 이벤트' },
+  { icon: 'coin', bg: '#E5F4FD', fg: '#1A84C2', t: '잔돈 모으기 챌린지', d: '시연용 예시 이벤트' },
 ];
 
 /* 혜택 탭 · 이벤트: 맨 위에 콜라보 배너 */
@@ -36,8 +36,8 @@ export default function Benefits({ onCollab, onTab, onSoon }) {
           </button>
           {OTHER_EVENTS.map((e) => (
             <button key={e.t} type="button" className="ev" onClick={onSoon}>
-              <span className="thumb" style={{ background: e.bg }}>
-                {e.icon}
+              <span className="thumb" style={{ background: e.bg, color: e.fg }}>
+                <EventIcon kind={e.icon} />
               </span>
               <span>
                 <b>{e.t}</b>
@@ -49,5 +49,23 @@ export default function Benefits({ onCollab, onTab, onSoon }) {
       </div>
       <BankTabBar tab="benefit" onTab={onTab} />
     </div>
+  );
+}
+
+function EventIcon({ kind }) {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {kind === 'cal' ? (
+        <>
+          <rect x="4" y="5.5" width="16" height="14" rx="3" />
+          <path d="M4 10h16M9 3.5v4M15 3.5v4M9.5 14.5l2 2 3.5-3.5" />
+        </>
+      ) : (
+        <>
+          <circle cx="12" cy="12" r="8" />
+          <path d="M14.5 9.5c-.5-1-1.4-1.5-2.5-1.5-1.5 0-2.5.8-2.5 2s1 1.7 2.5 2 2.5.8 2.5 2-1 2-2.5 2c-1.2 0-2.1-.5-2.6-1.5M12 6.5V8M12 16v1.5" />
+        </>
+      )}
+    </svg>
   );
 }

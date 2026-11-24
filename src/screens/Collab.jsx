@@ -5,11 +5,11 @@ import { fmt, pct, pp, won } from '../lib/format.js';
 import { maturityPrincipal } from '../lib/savings.js';
 
 const HOWTO = [
-  ['💰', '매주 자동이체', `납입 성공 시 EXP +${fmt(EXP_PAY)}`, `${TOTAL}주`],
-  ['👟', `하루 ${fmt(WALK_GOAL)}보 걷기`, `일일 퀘스트 · 보너스 EXP +${fmt(EXP_WALK)}`, 'EXP'],
-  ['🛡️', '길드원 초대', '초대 코드로 길드를 만들거나 참여', `최대 ${pp(GUILD_MAX)}`],
-  ['👑', `${TOTAL}주 완납 · S급 달성`, 'EXP와 완납 주차를 함께 채우면 승급', pp(S_BONUS)],
-  ['🚪', '미납하면 페널티 게이트', `미납 유예권 ${TICKETS}장 · 미니게임 후 재납입`, '구제'],
+  ['매주 자동이체', `납입 성공 시 EXP +${fmt(EXP_PAY)}`, `${TOTAL}주`],
+  [`하루 ${fmt(WALK_GOAL)}보 걷기`, `일일 퀘스트 · 보너스 EXP +${fmt(EXP_WALK)}`, 'EXP'],
+  ['길드원 초대', '초대 코드로 길드를 만들거나 참여', `최대 ${pp(GUILD_MAX)}`],
+  [`${TOTAL}주 완납 · S급 달성`, 'EXP와 완납 주차를 함께 채우면 승급', pp(S_BONUS)],
+  ['미납하면 페널티 게이트', `미납 유예권 ${TICKETS}장 · 미니게임 후 재납입`, '구제'],
 ];
 
 /* 콜라보 적금 상품 페이지 (카카오뱅크 26주적금 상품 안내 화면 구성)
@@ -46,9 +46,9 @@ export default function Collab({ joined, onClose, onApply }) {
         <section className="prod-sec">
           <h2>이렇게 키워요</h2>
           <div className="howto">
-            {HOWTO.map(([ic, t, d, v]) => (
+            {HOWTO.map(([t, d, v], i) => (
               <div key={t}>
-                <span className="ic">{ic}</span>
+                <span className="ic">{String(i + 1).padStart(2, '0')}</span>
                 <span>
                   <b>{t}</b>
                   <span>{d}</span>
@@ -98,7 +98,6 @@ export default function Collab({ joined, onClose, onApply }) {
               ))}
           </div>
           <div className="reward">
-            🎁
             <span>
               등급 달성 리워드 <b>{GRADE_REWARD}</b>
             </span>

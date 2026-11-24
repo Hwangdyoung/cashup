@@ -53,7 +53,7 @@ export default function Rate({ s, proj, onProj, onTab }) {
         </div>
         <div className="row">
           <span>받는 금액</span>
-          <b style={{ color: 'var(--y)', fontSize: 16 }}>{won(P.p + P.i)}</b>
+          <b className="total">{won(P.p + P.i)}</b>
         </div>
       </div>
 

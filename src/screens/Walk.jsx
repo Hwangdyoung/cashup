@@ -21,8 +21,8 @@ export default function Walk({ s, onWalk }) {
         <div className="ringwrap">
           <div className="ring">
             <svg viewBox="0 0 120 120">
-              <circle cx="60" cy="60" r="50" fill="none" stroke="#1C1640" strokeWidth="12" />
-              <circle cx="60" cy="60" r="50" fill="none" stroke="#B4F55E" strokeWidth="12" strokeLinecap="round" strokeDasharray={RING} strokeDashoffset={(RING * (1 - f)).toFixed(1)} style={{ transition: 'stroke-dashoffset .5s' }} />
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#EEF0F3" strokeWidth="10" />
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#6B4FD6" strokeWidth="10" strokeLinecap="round" strokeDasharray={RING} strokeDashoffset={(RING * (1 - f)).toFixed(1)} style={{ transition: 'stroke-dashoffset .5s' }} />
             </svg>
             <div className="c">
               <b>{fmt(s.steps)}</b>
@@ -79,7 +79,7 @@ export default function Walk({ s, onWalk }) {
         </div>
       </div>
       <p className="note">
-        원작에서 헌터의 일일 퀘스트에 달리기가 있는 것처럼, 매일 걷기 목표를 채우면 추가 EXP를 받아요. 걷기는 금리와 상관없고, 만기까지 걷기 보너스 EXP {fmt(AWAKEN_EXP)}을 모으면 캐릭터별 히든 각성 연출이 열려요.
+        원작에서 헌터의 일일 퀘스트에 달리기가 있는 것처럼, 매일 걷기 목표를 채우면 추가 EXP를 받아요. 걷기는 금리와 상관없고, 만기까지 걷기 보너스 EXP {fmt(AWAKEN_EXP)}을 모으면 성진우의 히든 각성 연출이 열려요.
       </p>
     </>
   );

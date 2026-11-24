@@ -146,3 +146,11 @@ export function MenuIcon() {
     </svg>
   );
 }
+
+export function ChevronRight() {
+  return (
+    <svg className="chev" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  );
+}

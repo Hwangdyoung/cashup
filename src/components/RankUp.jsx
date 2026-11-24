@@ -60,7 +60,7 @@ export default function RankUp({ from, to, onClose }) {
           <br />
           <span style={{ color: '#C9B2FF' }}>그림자 병사 {SHADOWS.slice(from, to).join(' · ')} 합류</span>
           <br />
-          <span className="reward-sw">🎁 {GRADE_REWARD}</span>
+          <span className="reward-sw">리워드 · {GRADE_REWARD}</span>
         </p>
         <div className="foot2">
           <button type="button" className="btn" onClick={onClose}>
