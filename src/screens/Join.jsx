@@ -10,6 +10,7 @@ import { DEMO_ACCOUNT } from './BankHome.jsx';
 
 /* 약관 (카카오뱅크 26주적금 개설 화면 구성. 시연용 제목만, 내용 없음) */
 const TERMS = [
+  { id: 'doc', t: '나 혼자만 캐시업 상품설명서', items: [] },
   { id: 'prod', t: '상품 이용약관', items: ['예금거래기본약관', '적립식예금 약관', '자동이체(출금) 약관', '나 혼자만 캐시업 특약 (콜라보 IF 세계관 안내 포함)'] },
   { id: 'pre', t: '금융상품 가입 전 안내', items: ['중요사항 설명 안내', '불이익사항 안내', '금융소비자 권리사항 안내'] },
   { id: 'law', t: '불법·탈법 차명거래 금지 설명 확인', items: [] },
@@ -46,6 +47,11 @@ export default function Join({ onExit, onOpen, sound }) {
   const toggle = (k) => {
     sound('tap');
     setAgree((a) => ({ ...a, [k]: !a[k] }));
+  };
+  const toggleAll = () => {
+    sound('tap');
+    const v = !allAgreed;
+    setAgree({ doc: v, prod: v, pre: v, law: v });
   };
 
   return (
@@ -89,8 +95,8 @@ export default function Join({ onExit, onOpen, sound }) {
                 확인해주세요
               </h2>
               <div className="terms">
-                <button type="button" className="all" onClick={() => toggle('doc')} aria-pressed={agree.doc}>
-                  <Ck on={agree.doc} /> 나 혼자만 캐시업 상품설명서
+                <button type="button" className="all" onClick={toggleAll} aria-pressed={allAgreed}>
+                  <Ck on={allAgreed} /> 약관 전체 확인
                 </button>
                 {TERMS.map((g) => (
                   <div className="tgroup" key={g.id}>
@@ -297,22 +303,9 @@ export default function Join({ onExit, onOpen, sound }) {
         </div>
       </div>
       <div className="bottom-cta">
-        {id === 'terms' && !allAgreed ? (
-          <button
-            type="button"
-            className="kb-btn"
-            onClick={() => {
-              sound('tap');
-              setAgree({ doc: true, prod: true, pre: true, law: true });
-            }}
-          >
-            전체 확인하기
-          </button>
-        ) : (
-          <button type="button" className="kb-btn" disabled={!canNext} onClick={next}>
-            {id === 'hunter' ? `${HUNTER.n}와 시작하기` : id === 'summary' ? '가입하기' : '다음'}
-          </button>
-        )}
+        <button type="button" className="kb-btn" disabled={!canNext} onClick={next}>
+          {id === 'hunter' ? `${HUNTER.n}와 시작하기` : id === 'summary' ? '가입하기' : '다음'}
+        </button>
       </div>
     </div>
   );
