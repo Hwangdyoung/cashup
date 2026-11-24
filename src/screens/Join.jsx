@@ -209,8 +209,9 @@ export default function Join({ onExit, onOpen, sound }) {
                     setGuildMode('create');
                   }}
                 >
+                  <i className="radio" aria-hidden="true" />
                   <b>새 길드 만들기</b>
-                  <span>내 초대 코드 {myCode} 가 생겨요. 친구에게 보내 함께해요.</span>
+                  <span>내 초대 코드({myCode})가 생겨요. 친구에게 보내 함께해요.</span>
                 </button>
                 <div
                   className={`gopt${guildMode === 'join' ? ' on' : ''}`}
@@ -223,6 +224,7 @@ export default function Join({ onExit, onOpen, sound }) {
                   }}
                   onKeyDown={(e) => e.key === 'Enter' && setGuildMode('join')}
                 >
+                  <i className="radio" aria-hidden="true" />
                   <b>받은 초대 코드로 참여</b>
                   <span>친구가 보낸 코드를 넣어요.</span>
                   {guildMode === 'join' && (

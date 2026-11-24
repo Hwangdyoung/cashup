@@ -192,6 +192,8 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .terms{margin-top:18px}
 .terms .all{width:100%;display:flex;align-items:center;gap:10px;background:var(--y);border-radius:12px;padding:14px;font-size:14px;font-weight:700;text-align:left}
 .terms .all svg{width:20px;height:20px;flex:none}
+.terms .all .ck{border-color:rgba(0,0,0,.35);background:#fff}
+.terms .all .ck.on{background:var(--ink);border-color:var(--ink)}
 .tgroup{border-bottom:1px solid var(--line);padding:14px 0}
 .tgroup>button{width:100%;display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:700;text-align:left}
 .tgroup ul{list-style:none;margin:8px 0 0 30px;display:grid;gap:7px}
@@ -212,11 +214,13 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .field-l{font-size:13px;font-weight:700;color:var(--ink-2);margin-top:22px}
 .acct-pick{margin-top:10px;display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:14px}
 .acct-pick .ic{width:36px;height:36px;border-radius:50%;background:var(--kb-blue);display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
-.acct-pick b{display:block;font-size:14px}
+.acct-pick b{display:block;font-size:15px;color:var(--ink)}
 .acct-pick span{font-size:12px;color:var(--ink-3)}
 .guild-pick{display:grid;gap:10px;margin-top:18px}
-.gopt{border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;width:100%}
-.gopt.on{border:2px solid var(--ink)}
+.gopt{position:relative;border:1px solid var(--line);border-radius:14px;padding:16px 16px 16px 48px;text-align:left;width:100%}
+.gopt .radio{position:absolute;left:16px;top:17px;width:20px;height:20px;border-radius:50%;border:1.5px solid #CFCFCF}
+.gopt.on .radio{border:6px solid var(--ink)}
+.gopt.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .gopt b{display:block;font-size:15px}
 .gopt span{display:block;font-size:12.5px;color:var(--ink-2);margin-top:3px;line-height:1.45}
 .gopt input{width:100%;margin-top:10px;height:46px;border-radius:10px;border:1px solid var(--line);padding:0 12px;font-size:15px;letter-spacing:.06em;text-transform:uppercase;background:#fff}
@@ -246,7 +250,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .done-rows{margin:22px 0 0;border-top:1px solid var(--line);display:grid;gap:12px;padding-top:18px;text-align:left;font-size:14px}
 .done-rows div{display:flex;justify-content:space-between}
 .done-rows span{color:var(--ink-2)}
-.done-note{font-size:11.5px;color:var(--ink-3);text-align:left;margin-top:16px;line-height:1.5}
+.done-note{font-size:12.5px;color:var(--ink-3);text-align:left;margin-top:24px;padding:14px 16px;border-radius:12px;background:var(--bg);line-height:1.6}
 
 /* ═════ 적금 상세 (가입 후) ═════
    카카오뱅크 상세 화면처럼 흰 섹션을 8px 회색 띠로 나눈다 (둥근 카드를 쌓지 않음).
@@ -563,3 +567,4 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .res-awaken b{font-family:var(--font);font-size:15px;color:#D9C9FF}
 .res-awaken p{font-size:13px;color:#fff;margin:4px 0;line-height:1.5}
 .res-awaken small{font-size:12px;color:#FFE680}
+.st-grade{display:inline-block;font-family:var(--font);font-weight:700;border-radius:6px;padding:0 8px}

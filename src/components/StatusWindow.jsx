@@ -1,6 +1,6 @@
 import SystemWindow, { KV } from './SystemWindow.jsx';
 import { AWAKEN_EXP, RANK, TICKETS, TOTAL } from '../lib/rules.js';
-import { HUNTER, RC, SHADOWS, hunterArt } from '../lib/characters.js';
+import { HUNTER, RC, RT, SHADOWS, hunterArt } from '../lib/characters.js';
 import { fmt, pct, won } from '../lib/format.js';
 import { doneCount, principal, rates } from '../lib/savings.js';
 
@@ -39,7 +39,7 @@ export default function StatusWindow({ s, onClose }) {
           style={{ flex: 1 }}
           rows={[
             ['헌터 :', C.n + ' · ' + C.title],
-            ['등급 :', <span style={{ color: RC[g] }}>{RANK[g]}급</span>],
+            ['등급 :', <span className="st-grade" style={{ background: RC[g], color: RT[g] }}>{RANK[g]}급</span>],
             ['EXP :', fmt(s.exp)],
             ['완납 :', doneCount(s) + ' / ' + TOTAL + '주'],
           ]}

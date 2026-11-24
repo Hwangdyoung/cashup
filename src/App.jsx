@@ -243,11 +243,8 @@ export default function App() {
   };
 
   const copyCode = () => {
-    try {
-      navigator.clipboard?.writeText(s.guildCode);
-    } catch {
-      /* 복사가 막혀도 알림은 띄움 */
-    }
+    // 복사가 막혀도(권한·포커스) 알림은 띄움. 거절된 Promise도 조용히 처리
+    navigator.clipboard?.writeText(s.guildCode).catch(() => {});
     showSys('[{초대 코드}를 복사했습니다]\n친구가 이 코드로 가입하면 길드원이 늘어요', '', 'coin');
   };
 
