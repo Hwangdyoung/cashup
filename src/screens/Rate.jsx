@@ -1,6 +1,6 @@
 import { RateKey, RateStack } from '../components/RateBar.jsx';
 import TierList from '../components/TierList.jsx';
-import { MAX_RATE, S_BONUS, TIERS, TOTAL } from '../lib/rules.js';
+import { BASE_RATE, GUILD_MAX, MAX_RATE, S_BONUS, TIERS, TOTAL } from '../lib/rules.js';
 import { pct, pp, won } from '../lib/format.js';
 import { interestFor, rates, tier } from '../lib/savings.js';
 
@@ -13,6 +13,7 @@ export default function Rate({ s, proj, onProj, onTab }) {
   const P = interestFor(s, rate, true);
   const st = R.s;
   const t = tier(s);
+  const next = TIERS[t + 1]; // 다음 길드 구간 (없으면 최고 구간)
   return (
     <>
       <div className="ratecard">
@@ -23,8 +24,8 @@ export default function Rate({ s, proj, onProj, onTab }) {
             지금까지 확보 {pct(R.now)} · 최고 {pct(MAX_RATE)}
           </span>
         </div>
-        <RateStack s={R.sExp} guild={R.guild} />
-        <RateKey full />
+        <RateStack R={R} />
+        <RateKey R={R} />
       </div>
 
       <div className="card">
@@ -84,11 +85,13 @@ export default function Rate({ s, proj, onProj, onTab }) {
           우대 2 · 길드<span>{s.members + '명 · ' + (t < 0 ? '우대 없음' : TIERS[t].n + ' ' + pp(TIERS[t].r))}</span>
         </h3>
         <TierList current={t} />
-        <button type="button" className="link" style={{ marginTop: 8 }} onClick={() => onTab('guild')}>
-          친구 초대하러 가기
+        <button type="button" className="kb-btn ghost invite" onClick={() => onTab('guild')}>
+          {next ? next.n + '까지 ' + (next.min - s.members) + '명 · 친구 초대하기' : '친구 초대하기'}
         </button>
       </div>
-      <p className="note">기본 연 2.0% + 길드 우대 최대 2.0%p + S급 달성 우대 3.0%p = 최고 연 7.0%는 콜라보 이벤트 기획 제안 예시이며 실제 상품과 다를 수 있습니다.</p>
+      <p className="note">
+        기본 {pct(BASE_RATE)} + 길드 우대 최대 {pp(GUILD_MAX)} + S급 달성 우대 {pp(S_BONUS)} = 최고 {pct(MAX_RATE)}는 콜라보 이벤트 기획 제안 예시이며 실제 상품과 다를 수 있습니다.
+      </p>
     </>
   );
 }

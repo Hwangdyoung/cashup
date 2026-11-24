@@ -66,8 +66,8 @@ export default function Home({ s, pop, onHero, onPay, onGate, onTab }) {
           <b>{pct(R.exp)}</b>
           <span>지금까지 확보 {pct(R.now)}</span>
         </div>
-        <RateStack s={R.sExp} guild={R.guild} />
-        <RateKey />
+        <RateStack R={R} />
+        <RateKey R={R} />
         <p className="sec-note">{hint}</p>
       </section>
 
