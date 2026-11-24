@@ -119,7 +119,7 @@ export default function App() {
 
   /* ───── 소리 ───── */
   useEffect(() => {
-    installSfx(() => showSys('[{효과음}이 브라우저에서 막혀 있습니다]\n화면을 한 번 더 누르거나, 주소창의 사이트 설정에서 소리를 허용해 주세요.', 'warn', 'none'));
+    installSfx(() => showSys('[{효과음}이 브라우저에서 막혀 있습니다]\n화면을 한 번 더 누르거나 사이트 설정에서 소리를 허용해 주세요', 'warn', 'none'));
   }, [showSys]);
   const setSound = useCallback((on) => {
     sfxSet(on);
@@ -356,6 +356,7 @@ export default function App() {
         {renderRoute()}
         <SysToast
           toast={toast}
+          life={SYS_MS}
           onClose={() => {
             setToast(null);
             sfx('close');

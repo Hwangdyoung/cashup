@@ -474,7 +474,17 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .sw.red .btn.sub{background:rgba(40,6,16,.45);border-color:rgba(255,170,190,.5);color:#FFD4DC;box-shadow:none}
 
 /* ═════ 알림 · 모달 ═════ */
-#sys{position:absolute;top:84px;left:14px;right:14px;z-index:45;animation:open .32s cubic-bezier(.2,.9,.3,1.15)}
+/* 시스템 알림: 작은 원작풍 창. 헤더(등급·금리)와 대표 영역을 가리지 않게 하단 탭 바로 위에 뜬다 */
+#sys{position:absolute;bottom:76px;left:12px;right:12px;z-index:45;cursor:pointer;transform-origin:50% 100%;animation:open .28s cubic-bezier(.2,.9,.3,1.15)}
+.sw.toast .swband{margin:10px 4px 0;padding:3px 10px;font-size:13px}
+.sw.toast .swbd{padding:6px 16px 14px}
+.sw.toast .swmsg{font-size:15px;line-height:1.4}
+.sw.toast .swsub{font-size:12.5px;margin-top:2px}
+/* 남은 시간 막대 */
+.sw.toast::after{content:"";position:absolute;left:10px;right:10px;bottom:5px;height:2px;border-radius:1px;background:currentColor;opacity:.35;transform-origin:left center;animation:toastLife var(--life,2.8s) linear forwards}
+.sw.toast.gold::after{background:#FFE680;opacity:.6}
+.sw.toast.red::after{background:#FFB8C6;opacity:.6}
+@keyframes toastLife{to{transform:scaleX(0)}}
 @keyframes open{from{transform:scaleY(.05);opacity:.3}to{transform:none;opacity:1}}
 .modal{position:absolute;inset:0;background:radial-gradient(circle,rgba(10,22,56,.72),rgba(3,4,12,.9));z-index:50;display:none;overflow:auto;padding:38px 16px 22px}
 .modal.show{display:flex}

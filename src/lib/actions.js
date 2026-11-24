@@ -67,10 +67,10 @@ function missCurrent(s, fx, quiet) {
   if (s.matured || s.weeks[w]) return;
   if (s.tickets > 0) {
     s.weeks[w] = 'gate';
-    if (!quiet) fx.push(sys('[{페널티 게이트}가 열렸습니다]\n' + w + '주차 납입을 놓쳤어요. 홈의 게이트에서 유예권으로 구제할 수 있어요.', 'warn'));
+    if (!quiet) fx.push(sys('[{페널티 게이트}가 열렸습니다]\n' + w + '주차 납입을 놓쳤어요 · 홈에서 유예권으로 구제', 'warn'));
   } else {
     s.weeks[w] = 'lost';
-    if (!quiet) fx.push(sys('[{' + w + '주차 미납}이 확정되었습니다]\n미납 유예권을 모두 사용해 S급 달성 우대를 받을 수 없어요.', 'warn'));
+    if (!quiet) fx.push(sys('[{' + w + '주차 미납}이 확정되었습니다]\n유예권을 모두 써서 S급 우대가 사라졌어요', 'warn'));
   }
 }
 
@@ -134,12 +134,12 @@ export function gameFailed(s, w, used) {
   const fx = [];
   if (!used) return fx;
   if (s.tickets > 0) {
-    fx.push(sys('[{유예권 1장}을 사용했습니다]\n' + w + '주차 구제에 실패했어요. 남은 유예권 ' + s.tickets + '장으로 다시 도전할 수 있어요.', 'warn'));
+    fx.push(sys('[{유예권 1장}을 사용했습니다]\n' + w + '주차 구제 실패 · 남은 유예권 ' + s.tickets + '장', 'warn'));
     return fx;
   }
   s.weeks[w] = 'lost';
   gates(s).forEach((x) => (s.weeks[x] = 'lost'));
-  fx.push(sys('[{' + w + '주차 미납}이 확정되었습니다]\n유예권을 모두 사용해 S급 달성 우대를 받을 수 없어요.', 'warn'));
+  fx.push(sys('[{' + w + '주차 미납}이 확정되었습니다]\n유예권을 모두 써서 S급 우대가 사라졌어요', 'warn'));
   checkMature(s, fx);
   return fx;
 }
