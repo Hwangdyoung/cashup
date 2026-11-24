@@ -90,7 +90,7 @@ const GameSkeleton = memo(function GameSkeleton({ art }) {
             <SoundBtnIcon />
           </button>
           <button type="button" className="pz-x" id="quit" aria-label="페널티 구역 나가기">
-            — X
+            나가기
           </button>
           <div className="pz-bar">
             <i id="bar" />
@@ -98,20 +98,19 @@ const GameSkeleton = memo(function GameSkeleton({ art }) {
         </div>
         <div className="pz-arena">
           <canvas id="cv" aria-label="사막 던전을 달리며 장애물을 넘는 러닝 게임 화면" />
-          <span className="chip l" id="steps">
-            0m
-          </span>
-          <span className="chip r" id="crys">
-            마나 결정 0
-          </span>
-          <div className="goal" id="goal">
-            <i id="gbar" />
-            <span id="gtxt">0 / 1,500점</span>
-          </div>
           <div className="pz-count" id="cnt" aria-live="assertive" />
         </div>
         <div className="pz-ctl">
-          <div className="pz-hint">화면 어디든 탭(클릭) 점프 · 길게 누르면 높이 점프</div>
+          <div className="pz-score">
+            <span className="chip l" id="steps">0m</span>
+            <div className="goal" id="goal">
+              <i id="gbar" />
+            </div>
+            <span className="chip r" id="crys">마나 결정 0</span>
+          </div>
+          <div className="pz-hint">
+            <span id="gtxt">0 / 1,500점</span> · 탭 점프 · 길게 누르면 높이 점프
+          </div>
         </div>
       </div>
 
@@ -126,7 +125,7 @@ const GameSkeleton = memo(function GameSkeleton({ art }) {
             <SoundBtnIcon />
           </button>
           <button type="button" className="pz-x" id="quit2" aria-label="페널티 구역 나가기">
-            — X
+            나가기
           </button>
           <div className="pz-bar">
             <i id="bar2" />
@@ -134,20 +133,19 @@ const GameSkeleton = memo(function GameSkeleton({ art }) {
         </div>
         <div className="pz-arena" style={{ touchAction: 'none' }}>
           <canvas id="cv2" aria-label="위에서 떨어지는 독충을 좌우로 피하는 게임 화면" />
-          <span className="chip l" id="steps2">
-            생존 0초
-          </span>
-          <span className="chip r" id="crys2">
-            마나 결정 0
-          </span>
-          <div className="goal" id="goal2">
-            <i id="gbar2" />
-            <span id="gtxt2">0 / 240점</span>
-          </div>
           <div className="pz-count" id="cnt2" aria-live="assertive" />
         </div>
         <div className="pz-ctl">
-          <div className="pz-hint">마우스를 움직이거나 화면을 드래그해 좌우로 이동</div>
+          <div className="pz-score">
+            <span className="chip l" id="steps2">생존 0초</span>
+            <div className="goal" id="goal2">
+              <i id="gbar2" />
+            </div>
+            <span className="chip r" id="crys2">마나 결정 0</span>
+          </div>
+          <div className="pz-hint">
+            <span id="gtxt2">0 / 240점</span> · 끌어서 좌우로 이동
+          </div>
         </div>
       </div>
       <div className="pz-win show" id="hub" style={{ zIndex: 30 }} />

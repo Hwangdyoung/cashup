@@ -136,14 +136,14 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .prod{background:#fff}
 .prod .scroll{background:var(--bg)}
 /* 키 비주얼: 던전 위에 콜라보 표기와 나혼렙 서체 제목 */
-.kv{position:relative;height:340px;overflow:hidden;background:#140D2C}
-.kv .bgsvg,.kv .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
-.kv::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,9,25,.55),rgba(12,9,25,0) 45%,rgba(12,9,25,.6))}
-.kv img{position:absolute;right:-6px;bottom:0;height:230px;z-index:1}
-.kv-in{position:absolute;left:22px;top:24px;right:120px;z-index:2;color:#fff}
-.kv-lock{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.02em;color:#FEE500}
-.kv h1{font-size:44px;line-height:1.08;margin:12px 0 14px;font-weight:700;text-shadow:0 0 18px rgba(160,225,255,.45)}
-.kv p{font-size:14px;line-height:1.5;color:#E6E0FA}
+.keyvis{position:relative;height:340px;overflow:hidden;background:#140D2C}
+.keyvis .bgsvg,.keyvis .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
+.keyvis::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,9,25,.55),rgba(12,9,25,0) 45%,rgba(12,9,25,.6))}
+.keyvis img{position:absolute;right:-6px;bottom:0;height:230px;z-index:1}
+.keyvis-in{position:absolute;left:22px;top:24px;right:120px;z-index:2;color:#fff}
+.keyvis-lock{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.02em;color:#FEE500}
+.keyvis h1{font-size:44px;line-height:1.08;margin:12px 0 14px;font-weight:700;text-shadow:0 0 18px rgba(160,225,255,.45)}
+.keyvis p{font-size:14px;line-height:1.5;color:#E6E0FA}
 /* 금리 두 칸 */
 .rate-hero{display:grid;grid-template-columns:1fr 1fr;background:#fff;padding:22px 20px;gap:12px}
 .rate-hero div{display:flex;flex-direction:column;gap:2px}
@@ -532,3 +532,9 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 
 @media (max-width:440px){.statusbar{display:none}body{padding:0;gap:16px}.phone{width:100%;max-width:390px;margin:0;box-shadow:none;border-radius:0;height:100vh;max-height:820px}.side{width:calc(100% - 32px);margin-bottom:24px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+
+/* 시스템 창 안의 설명 · 표는 고딕 (제목·대사는 나혼렙 서체 유지) */
+.sw .swsub,.sw .kv,.sw .ifnote{font-family:var(--sans)}
+.sw .swsub{font-size:13.5px;line-height:1.55}
+.sw .kv{font-size:13.5px;gap:8px 12px}
+.swx svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;display:block}

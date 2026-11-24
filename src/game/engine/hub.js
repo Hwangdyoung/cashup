@@ -1,49 +1,55 @@
-/* 게임 선택 · 규칙 · 결과 화면 (시스템 창은 문자열로 그림) */
+/* 게임 선택 · 결과 화면 (원작풍 붉은 시스템 창, 문자열로 그림)
+   한 화면에서 두 게임을 카드로 보여 주고(기준 점수·조작법 포함) 카드를 누르면 바로 시작한다.
+   결과는 '내 점수 / 기준 점수'를 큰 숫자와 막대로 보여 준다. */
 /* env: PenaltyGame.jsx가 넘겨주는 연결 고리
    $(id) 게임 안 요소 찾기 · on(대상, 이벤트, 함수, 옵션) 전역 이벤트 등록(게임을 닫으면 자동 해제)
    alive() 게임 화면이 아직 떠 있는지 · SND 배경음 엔진 · HUB 게임 선택 화면 */
+var ICON_RUN='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 38h40" stroke-opacity=".5"/><circle cx="17" cy="10" r="3.5"/><path d="M16 15l-3 10 7 4 2 9M13 25l-6 6M16 15l8 4 5-3"/><path d="M33 38v-8l3-3 3 3v8" stroke="#FFD23F"/></svg>';
+var ICON_DODGE='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 40h40" stroke-opacity=".5"/><path d="M12 6v8M24 4v6M36 8v9" stroke="#FFD23F"/><circle cx="12" cy="17" r="2.5" fill="currentColor"/><circle cx="36" cy="20" r="2.5" fill="currentColor"/><circle cx="24" cy="29" r="3"/><path d="M24 32v4M20 40l4-4 4 4M18 34h12"/></svg>';
 export function createHub(env){
 var $=env.$;var G1=env.G1,G2=env.G2,SNDX=env.SND;
 var CHANCES=env.tries; /* 유예권 1장당 도전 횟수 (lib/rules.js TRIES_PER_TICKET) */
 var chances=CHANCES;
 var GM={
- 1:{name:'던전 러닝',desc:'30초 · 점프로 장애물을 넘으며 달려요',formula:'달린 거리(m) × 모은 마나 결정',pass:function(){return G1.pass},
-  rules:['화면을 탭(클릭)하면 점프, 길게 누르면 더 높이 뜁니다','파란 마나 결정을 모을수록 점수가 커져요','체력은 4칸. 중간에 쓰러져도 점수가 넘으면 통과예요']},
- 2:{name:'독충 회피',desc:'30초 · 떨어지는 독충을 좌우로 피해요',formula:'생존 시간(초) × 모은 마나 결정',pass:function(){return G2.pass},
-  rules:['마우스를 움직이거나 화면을 드래그해 좌우로 이동해요','떨어지는 마나 결정을 받을수록 점수가 커져요','체력은 4칸. 중간에 쓰러져도 점수가 넘으면 통과예요']}};
+ 1:{name:'던전 러닝',ctl:'탭하면 점프 · 길게 누르면 높이 점프',formula:'달린 거리 × 마나 결정',pass:function(){return G1.pass},icon:ICON_RUN},
+ 2:{name:'독충 회피',ctl:'좌우로 끌어서 떨어지는 독충을 피하기',formula:'버틴 시간(초) × 마나 결정',pass:function(){return G2.pass},icon:ICON_DODGE}};
 var cur=1;
+var fmt=function(n){return Number(n).toLocaleString('ko-KR')};
 function sw(cls,title,body){return '<div class="sw '+cls+'" role="dialog" aria-label="'+title+'"><i class="swc tl"></i><i class="swc tr"></i><i class="swc bl"></i><i class="swc br"></i><i class="swk"></i><div class="swband">'+title+'</div><div class="swbd">'+body+'</div></div>'}
 function show(h){$('hub').innerHTML=h;$('hub').classList.add('show')}
 function hide(){$('hub').classList.remove('show')}
 function view(n){$('pz1').style.display=n===1?'':'none';$('pz2').style.display=n===2?'':'none';G1.on(n===1);G2.on(n===2)}
-function rules(l){return '<ul class="pz-rules">'+l.map(function(t,i){return '<li><i>'+(i+1)+'</i>'+t+'</li>'}).join('')+'</ul>'}
-function intro(){view(1);G1.idle();G2.idle();SNDX.mode('intro');show(sw('red','페널티 퀘스트',
- '<p class="swmsg">'+env.weekLabel+' <em>납입일</em>을 놓쳤어요</p><p class="swsub">게임에서 기준 점수를 넘기면 재납입 기회를 드려요</p><div class="swdiv"></div>'+
- rules(['게임 2종 중 하나를 골라 도전해요','유예권 1장으로 <b>'+CHANCES+'번</b> 도전할 수 있어요'+(CHANCES>1?' (두 게임이 함께 써요)':''),'벌칙이 아니라 구제 장치예요. 쉽게 만들었으니 편하게 하세요'])+
- '<button class="btn" data-a="enter">게임 고르기</button><button class="btn sub" data-a="later">나중에 하기</button>'))}
-function pick(){if(chances<=0)return out();view(1);G1.idle();G2.idle();SNDX.mode('intro');
- var c=[1,2].map(function(i){return '<button class="btn" data-a="g:'+i+'">'+GM[i].name+'<small>'+GM[i].desc+'</small></button>'}).join('');
- show(sw('red','게임 선택','<p class="swmsg">도전할 게임을 골라 주세요</p><p class="swsub">남은 페널티 기회 <em>'+chances+' / '+CHANCES+'</em>회</p><div class="swdiv"></div>'+c))}
-function rulesScr(i){cur=i;var m=GM[i];show(sw('red',m.name,
- '<p class="swmsg">기준 점수 <em>'+m.pass().toLocaleString()+'점</em>을 넘기면 재납입 기회!</p><p class="swsub">점수 = '+m.formula+'</p><div class="swdiv"></div>'+rules(m.rules)+
- '<button class="btn" data-a="go">확인하고 시작</button><button class="btn sub" data-a="enter">게임 다시 고르기</button>'))}
-function out(){view(1);G1.idle();G2.idle();SNDX.mode('intro');show(sw('red','페널티 기회 소진','<p class="swmsg">이번 페널티 기회를 모두 사용했어요</p><p class="swsub">미납 유예권 1장이 사용되었어요. 남은 유예권이 있으면 다시 도전할 수 있어요</p><button class="btn" data-a="back">적금 화면으로 돌아가기</button>'))}
+function card(i){var m=GM[i];return '<button class="gcard" data-a="g:'+i+'"><span class="gi">'+m.icon+'</span><span class="gt"><b>'+m.name+'</b><span>'+m.ctl+'</span><small>기준 '+fmt(m.pass())+'점 · '+m.formula+'</small></span></button>'}
+/* 게임 고르기 (입장 안내 · 규칙 포함) */
+function choose(){if(chances<=0)return out();view(1);G1.idle();G2.idle();SNDX.mode('intro');
+ var left=chances<CHANCES;
+ show(sw('red','페널티 퀘스트',
+ '<p class="swmsg">'+env.weekLabel+' <em>납입일</em>을 놓쳤어요</p><p class="swsub">30초 안에 기준 점수를 넘기면 재납입할 수 있어요</p>'+
+ '<div class="gcards">'+card(1)+card(2)+'</div>'+
+ '<p class="pz-meta">'+(left?'남은 도전 '+chances+'번':'유예권 1장으로 '+CHANCES+'번 도전')+' · 체력 4칸, 쓰러져도 점수가 넘으면 통과</p>'+
+ '<button class="btn sub" data-a="later">나중에 하기</button>'))}
+function out(){view(1);G1.idle();G2.idle();SNDX.mode('intro');show(sw('red','도전 기회 소진','<p class="swmsg">이번 도전 기회를 모두 썼어요</p><p class="swsub">남은 유예권이 있으면 페널티 게이트에서 다시 도전할 수 있어요</p><button class="btn" data-a="back">적금 화면으로</button>'))}
 function launch(){if(chances<=0)return out();chances--;env.onLaunch();var m=GM[cur];hide();view(cur);SNDX.mode(cur===1?'count':'quiet');
- (cur===1?G1:G2).begin(m.name+' · 남은 기회 '+chances+'/'+CHANCES)}
+ (cur===1?G1:G2).begin(m.name)}
+/* 결과: 내 점수 / 기준 점수 */
 function finish(id,r){var ok=r.score>=r.pass;SNDX.mode(ok?'win':'fail');
- var msg=ok?'<em>기준 점수</em>를 넘었어요!':(r.win?'끝까지 해냈어요. 조금만 더 모으면 통과예요':'체력이 모두 소진되었어요');
- var sub=ok?'재납입 기회를 드립니다':(chances>0?(r.weak?'마나 결정을 더 모아 보세요':'거의 다 왔어요')+' · 남은 기회 '+chances+'회':'페널티 기회를 모두 사용했어요');
- var st='<div class="stats">'+r.rows.map(function(a,i){return '<span>'+a[0]+'</span><b'+(i===3?' class="xp"':'')+'>'+a[1]+'</b>'}).join('')+'</div>';
- var b=ok?'<button class="btn" data-a="pay">재납입하러 가기</button>':(chances>0?'<button class="btn" data-a="enter">다시 도전 ('+chances+'회 남음) · 게임 바꾸기 가능</button>':'<button class="btn" data-a="out">확인</button>');
- show(sw(ok?'gold':'red',ok?'재납입 기회 획득':'도전 실패','<div class="picbox"><img src="'+$('pgHero').src+'" alt=""></div><p class="swmsg">'+msg+'</p><p class="swsub">'+sub+'</p>'+st+b))}
+ var msg=ok?'<em>기준 점수</em>를 넘었어요':(r.win?'끝까지 버텼어요. 조금만 더!':'체력이 모두 떨어졌어요');
+ var pct=Math.max(2,Math.min(100,r.score/r.pass*100));
+ var detail=r.rows[0][0]+' '+r.rows[0][1]+' · '+r.rows[1][0]+' '+r.rows[1][1];
+ var sub=ok?'재납입하면 완납으로 인정돼요':(chances>0?'남은 도전 '+chances+'번 · 게임을 바꿔도 돼요':(r.weak?'마나 결정을 많이 모을수록 점수가 커져요':'도전 기회를 모두 썼어요'));
+ var b=ok?'<button class="btn" data-a="pay">재납입하러 가기</button>':(chances>0?'<button class="btn" data-a="enter">다시 도전</button>':'<button class="btn" data-a="out">확인</button>');
+ show(sw(ok?'gold':'red',ok?'재납입 기회 획득':'도전 실패',
+  '<p class="swmsg">'+msg+'</p>'+
+  '<div class="score'+(ok?' ok':'')+'"><b>'+fmt(r.score)+'</b><span>/ 기준 '+fmt(r.pass)+'점</span></div>'+
+  '<div class="sbar"><i style="width:'+pct+'%"></i></div>'+
+  '<p class="pz-meta">'+detail+'</p><p class="swsub">'+sub+'</p>'+b))}
 env.on($('hub'),'click',function(e){var b=e.target.closest('[data-a]');if(!b||b.disabled)return;SNDX.click();var a=b.dataset.a;
- if(a==='enter')pick();
- else if(a.indexOf('g:')===0)rulesScr(+a.slice(2));
- else if(a==='go')launch();
+ if(a==='enter')choose();
+ else if(a.indexOf('g:')===0){cur=+a.slice(2);launch()}
  else if(a==='out')out();
  else if(a==='pay')env.onRescued();
  else if(a==='later'||a==='back')env.onQuit();});
-var api={finish:finish,quit:function(){intro()}};
-intro();
+var api={finish:finish,quit:function(){choose()}};
+choose();
 return api;
 }

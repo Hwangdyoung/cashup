@@ -19,9 +19,9 @@ export default function Collab({ joined, onClose, onApply }) {
     <div className="view prod">
       <TopBar title="나 혼자만 캐시업" left="close" onLeft={onClose} />
       <div className="scroll">
-        <DungeonArt className="kv" grade={3}>
-          <div className="kv-in">
-            <span className="kv-lock">카카오뱅크 × 나 혼자만 레벨업</span>
+        <DungeonArt className="keyvis" grade={3}>
+          <div className="keyvis-in">
+            <span className="keyvis-lock">카카오뱅크 × 나 혼자만 레벨업</span>
             <h1 className="hol">
               나 혼자만
               <br />

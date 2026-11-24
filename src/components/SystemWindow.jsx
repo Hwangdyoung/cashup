@@ -1,4 +1,4 @@
-import { AlertIcon } from './Icons.jsx';
+import { AlertIcon, CloseIcon } from './Icons.jsx';
 
 /* 원작풍 시스템 창: 파란 창 + 장식 모서리 + 제목 띠
    variant: '' 파랑 · 'gold' 보상 · 'red' 경고 */
@@ -13,7 +13,7 @@ export default function SystemWindow({ variant = '', title, alert = false, onClo
       {onClose && (
         <span className="swctl">
           <button type="button" className="swx" aria-label="닫기" onClick={onClose}>
-            — X
+            <CloseIcon />
           </button>
         </span>
       )}

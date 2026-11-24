@@ -10,15 +10,16 @@ export function GateConfirm({ s, week, onClose, onEnter }) {
       <SysLine>
         <em>미납 유예권</em>을 사용하시겠습니까?
       </SysLine>
-      <p className="swsub">
-        {week}주차 {won(amt(s, week))} · 남은 유예권 {s.tickets} / {TICKETS}장
-      </p>
-      <div className="swdiv" />
-      <p className="swsub" style={{ textAlign: 'left' }}>
-        · 게임을 시작하면 유예권 1장이 사용돼요. 한 장에 도전 기회는 {TRIES_PER_TICKET}번이에요.
-        <br />· 성공하면 {week}주차를 재납입해 완납으로 인정받고 S급 달성 우대를 지킬 수 있어요.
-        <br />· 실패해도 실제 납입은 별도로 할 수 있어요.
-      </p>
+      <KV
+        style={{ marginTop: 14 }}
+        rows={[
+          ['미납 회차', week + '주차 ' + won(amt(s, week))],
+          ['쓰는 유예권', '1장 (남은 ' + s.tickets + ' / ' + TICKETS + '장)'],
+          ['도전 기회', TRIES_PER_TICKET + '번 · 30초 미니게임'],
+          ['성공하면', '재납입 → 완납 인정'],
+        ]}
+      />
+      <p className="ifnote">실제 입금은 게임 결과와 관계없이 따로 해야 해요.</p>
       <div className="foot2">
         <button type="button" className="btn sub" onClick={onClose}>
           나중에
