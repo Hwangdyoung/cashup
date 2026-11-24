@@ -20,8 +20,8 @@ export const DEMO_GUILD_CODE = 'HUNTER-7K2Q';
 export const DEMO_GUILD_MEMBERS = 3;
 export const GUILD_CODE_RE = /^HUNTER-[A-Z0-9]{4}$/;
 
-/* 자동이체 요일 (월=0 … 금=4) */
-export const PAY_DAYS = ['월', '화', '수', '목', '금'];
+/* 자동이체 요일 (월=0 … 일=6) */
+export const PAY_DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 export const GUILD_MAX = TIERS[TIERS.length - 1].r;
 export const MAX_RATE = BASE_RATE + GUILD_MAX + S_BONUS;
 

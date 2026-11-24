@@ -125,6 +125,7 @@ export default function Join({ onExit, onOpen, sound }) {
                 <br />
                 선택해주세요
               </h2>
+              <p className="lead">1주차에 고른 금액을 넣고, 매주 그만큼씩 늘려서 넣어요.</p>
               <div className="amt-art">
                 <img src={hunterArt(0)} alt="" />
               </div>
@@ -141,11 +142,16 @@ export default function Join({ onExit, onOpen, sound }) {
                     }}
                   >
                     <i className="radio" aria-hidden="true" />
-                    <b>{fmt(a)}원씩 매주 증액</b>
+                    <b>{fmt(a)}원</b>
                     <span>만기 원금 {won(maturityPrincipal(a))}</span>
                   </button>
                 ))}
               </div>
+              {amount !== null && (
+                <p className="amt-flow">
+                  매주 납입액 1주차 <b>{won(amount)}</b> → {TOTAL}주차 <b>{won(amount * TOTAL)}</b>
+                </p>
+              )}
             </>
           )}
 
