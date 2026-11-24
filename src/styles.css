@@ -392,9 +392,10 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .qstat{flex:1;display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-3)}
 .qstat b{font-size:17px;color:var(--ink);margin-bottom:2px}
 .qstat.ok b{color:var(--sl-purple)}
-.walk-demo{display:flex;align-items:center;gap:8px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
-.walk-demo .t{flex:1;font-size:12.5px;color:var(--ink-3)}
-.walk-demo button{background:var(--soft);color:var(--ink);border-radius:8px;padding:7px 10px;font-size:13px;font-weight:600}
+/* 시연용 작은 줄 (걷기 · 길드): 시연 표시 + 설명 + 작은 버튼 */
+.demo-row{display:flex;align-items:center;gap:8px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
+.demo-row .t{flex:1;font-size:12.5px;color:var(--ink-3)}
+.demo-row button{background:var(--soft);color:var(--ink);border-radius:8px;padding:7px 10px;font-size:13px;font-weight:600}
 .daydots{display:flex;gap:8px;justify-content:space-between}
 .dd{flex:1;text-align:center;font-size:12px;color:var(--ink-3)}
 .dd i{display:block;aspect-ratio:1;border-radius:50%;margin:0 auto 6px;max-width:34px;background:var(--soft)}
@@ -407,12 +408,13 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .awbar i{display:block;height:100%;width:0;background:#FFD23F;transition:width .5s}
 
 /* 길드 */
-.code{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px;border-radius:12px;background:var(--bg);margin-bottom:12px}
-.code b{font-size:20px;letter-spacing:.08em}
-.code .btn{width:auto;margin:0;padding:8px 14px;font-size:13px;background:#fff}
+.code{display:flex;align-items:center;justify-content:center;padding:18px 16px;border-radius:12px;background:var(--bg);margin-bottom:12px}
+.code b{font-size:22px;letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.kb-btn.copy{height:50px;font-size:15px;margin-top:16px}
 .mems{display:flex;flex-wrap:wrap;gap:6px}
-.mem{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff}
-.mem.more{background:var(--soft);color:var(--ink-2);font-size:12px}
+.mem{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:600;background:var(--soft);color:var(--ink-2)}
+.mem.me{background:var(--ink);color:#fff;font-weight:700}
+.mem.more{font-size:12px;color:var(--ink-3)}
 
 /* 적금 하단 탭 */
 .nav{flex:none;height:64px;background:#fff;display:flex;border-top:1px solid var(--line);padding:4px 4px 6px}

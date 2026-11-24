@@ -3,7 +3,6 @@ import { TIERS } from '../lib/rules.js';
 import { pp } from '../lib/format.js';
 import { tier } from '../lib/savings.js';
 
-const COLORS = ['#47A6FF', '#3DD68C', '#FF8F45', '#A47BFF', '#E0B400', '#FF5D78'];
 const NAMES = '가나다라마바사아자차';
 const SHOWN = 10;
 
@@ -23,13 +22,13 @@ export default function Guild({ s, onCopy, onJoin }) {
         </h3>
         <div className="code">
           <b>{s.guildCode}</b>
-          <button type="button" className="btn sub" onClick={onCopy}>
-            복사
-          </button>
         </div>
         <p className="small">
-          {s.guildOwner ? '내가 만든 길드예요. 코드를 친구에게 보내면 길드원이 늘어요.' : '친구 길드에 참여했어요. 이 코드를 다른 친구에게 보내도 같은 길드로 들어와요.'} 별도 미션 없이 인원에 따라 길드원 모두의 우대금리가 올라가요.
+          {s.guildOwner ? '내가 만든 길드예요.' : '친구 길드에 참여했어요. 이 코드로 다른 친구도 같은 길드에 들어와요.'} 인원이 늘면 길드원 모두의 우대금리가 함께 올라요.
         </p>
+        <button type="button" className="kb-btn copy" onClick={onCopy}>
+          초대 코드 복사하기
+        </button>
       </div>
       <div className="card">
         <h3>
@@ -37,11 +36,9 @@ export default function Guild({ s, onCopy, onJoin }) {
           <span>{s.members + '명' + (t < 0 ? ' · 우대 없음' : ' · ' + TIERS[t].n + ' ' + pp(TIERS[t].r))}</span>
         </h3>
         <div className="mems">
-          <div className="mem" style={{ background: '#191919' }}>
-            나
-          </div>
+          <div className="mem me">나</div>
           {Array.from({ length: shown }, (_, i) => (
-            <div key={i} className="mem" style={{ background: COLORS[i % COLORS.length] }}>
+            <div key={i} className="mem">
               {NAMES[i]}
             </div>
           ))}
@@ -53,9 +50,13 @@ export default function Guild({ s, onCopy, onJoin }) {
           </p>
         )}
         <TierList current={t} style={{ marginTop: 10 }} />
-        <button type="button" className="btn" onClick={onJoin}>
-          친구가 코드로 가입 (시연)
-        </button>
+        <div className="demo-row">
+          <span className="demo-chip">시연</span>
+          <span className="t">친구가 코드로 가입</span>
+          <button type="button" onClick={onJoin}>
+            +1명
+          </button>
+        </div>
       </div>
     </>
   );

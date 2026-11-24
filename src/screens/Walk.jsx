@@ -38,7 +38,7 @@ export default function Walk({ s, onWalk }) {
             <span>히든 각성 게이지 +{fmt(EXP_WALK)}</span>
           </div>
         </div>
-        <div className="walk-demo">
+        <div className="demo-row">
           <span className="demo-chip">시연</span>
           <span className="t" title="실제 앱에서는 걸음 수가 자동으로 집계돼요">걸음 더하기</span>
           {[1000, 3000].map((n) => (
