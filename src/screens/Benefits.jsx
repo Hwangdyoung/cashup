@@ -7,7 +7,7 @@ import { hunterArt } from '../lib/characters.js';
 /* 시연용 예시 이벤트 (실제 카카오뱅크 이벤트 아님) */
 const OTHER_EVENTS = [
   { icon: 'cal', bg: '#FFF4CC', fg: '#8A6A00', t: '매일 출석 체크', d: '시연용 예시 이벤트' },
-  { icon: 'coin', bg: '#E5F4FD', fg: '#1A84C2', t: '잔돈 모으기 챌린지', d: '시연용 예시 이벤트' },
+  { icon: 'coin', bg: 'var(--soft)', fg: 'var(--ink-2)', t: '잔돈 모으기 챌린지', d: '시연용 예시 이벤트' },
 ];
 
 /* 혜택 탭 · 이벤트: 맨 위에 콜라보 배너 */

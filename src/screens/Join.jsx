@@ -83,10 +83,10 @@ export default function Join({ onExit, onOpen, sound }) {
 
           {id === 'terms' && (
             <>
-              <h2 style={{ fontSize: 17, textAlign: 'center' }}>
-                나 혼자만 캐시업 개설을 위해
+              <h2>
+                약관과 상품설명서를
                 <br />
-                약관 및 상품설명서를 꼭 확인해 주세요.
+                확인해주세요
               </h2>
               <div className="terms">
                 <button type="button" className="all" onClick={() => toggle('doc')} aria-pressed={agree.doc}>
@@ -109,17 +109,6 @@ export default function Join({ onExit, onOpen, sound }) {
                   </div>
                 ))}
               </div>
-              <button
-                type="button"
-                className="link"
-                style={{ marginTop: 12 }}
-                onClick={() => {
-                  sound('tap');
-                  setAgree({ doc: true, prod: true, pre: true, law: true });
-                }}
-              >
-                전체 확인하기
-              </button>
             </>
           )}
 
@@ -145,7 +134,9 @@ export default function Join({ onExit, onOpen, sound }) {
                       setAmount(a);
                     }}
                   >
-                    {fmt(a)}원씩 매주 증액
+                    <i className="radio" aria-hidden="true" />
+                    <b>{fmt(a)}원씩 매주 증액</b>
+                    <span>만기 원금 {won(maturityPrincipal(a))}</span>
                   </button>
                 ))}
               </div>
@@ -233,17 +224,24 @@ export default function Join({ onExit, onOpen, sound }) {
                       <input value={code} onChange={(e) => setCode(e.target.value)} placeholder="HUNTER-0000" maxLength={11} aria-label="초대 코드" autoComplete="off" />
                       {code && !codeOk && <p className="err">HUNTER-로 시작하는 8자리 코드를 넣어 주세요</p>}
                       <button type="button" className="fill" onClick={() => setCode(DEMO_GUILD_CODE)}>
-                        시연용 코드 넣기 ({DEMO_GUILD_CODE})
+                        <span className="demo-chip">시연</span> 예시 코드 넣기 ({DEMO_GUILD_CODE})
                       </button>
                     </>
                   )}
                 </div>
               </div>
-              <TierList current={-1} style={{ marginTop: 16 }} />
+              <p className="field-l">인원별 길드 우대금리</p>
+              <TierList current={-1} />
             </>
           )}
 
           {id === 'summary' && amount !== null && (
+            <>
+            <h2>
+              가입 내용을
+              <br />
+              확인해주세요
+            </h2>
             <div className="sum-card">
               <div className="top">
                 <span>만기 예상원금</span>
@@ -294,13 +292,27 @@ export default function Join({ onExit, onOpen, sound }) {
                 최고 {pct(MAX_RATE)} = 기본 {BASE_RATE.toFixed(1)}% + 길드 우대 최대 {pp(GUILD_MAX)} + S급 달성({TOTAL}주 완납) {pp(S_BONUS)}
               </p>
             </div>
+            </>
           )}
         </div>
       </div>
       <div className="bottom-cta">
-        <button type="button" className="kb-btn" disabled={!canNext} onClick={next}>
-          {id === 'hunter' ? `${HUNTER.n}와 시작하기` : id === 'summary' ? '가입하기' : '다음'}
-        </button>
+        {id === 'terms' && !allAgreed ? (
+          <button
+            type="button"
+            className="kb-btn"
+            onClick={() => {
+              sound('tap');
+              setAgree({ doc: true, prod: true, pre: true, law: true });
+            }}
+          >
+            전체 확인하기
+          </button>
+        ) : (
+          <button type="button" className="kb-btn" disabled={!canNext} onClick={next}>
+            {id === 'hunter' ? `${HUNTER.n}와 시작하기` : id === 'summary' ? '가입하기' : '다음'}
+          </button>
+        )}
       </div>
     </div>
   );
