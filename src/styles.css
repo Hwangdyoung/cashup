@@ -567,4 +567,29 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .res-awaken b{font-family:var(--font);font-size:15px;color:#D9C9FF}
 .res-awaken p{font-size:13px;color:#fff;margin:4px 0;line-height:1.5}
 .res-awaken small{font-size:12px;color:#FFE680}
-.st-grade{display:inline-block;font-family:var(--font);font-weight:700;border-radius:6px;padding:0 8px}
+
+/* ═════ 상태창 ═════ (원작 상태창 구조: 이름·칭호 → 막대 → 능력치 두 칸 격자 → 장비) */
+.st-top{display:flex;gap:14px;align-items:center;text-align:left}
+.st-pic{flex:none;width:76px;height:96px;border-radius:4px;display:grid;place-items:end center;overflow:hidden;border:1px solid rgba(155,228,255,.35);background:radial-gradient(circle at 50% 65%,color-mix(in srgb,var(--pc) 35%,transparent),rgba(8,26,64,.45) 72%)}
+.st-pic img{height:90px}
+.st-id{flex:1;display:grid;gap:6px;font-size:15px;color:#fff}
+.st-id span{display:inline-block;width:40px;font-family:var(--sans);font-size:12.5px;color:#9FB6D6}
+.st-grade{display:inline-block;font-family:var(--font);font-weight:700;font-size:15px;border-radius:6px;padding:1px 9px}
+.st-bars{display:grid;gap:12px;margin-top:18px;text-align:left;font-family:var(--sans)}
+.st-bar{display:grid;grid-template-columns:40px 1fr 112px;grid-template-rows:auto auto;column-gap:10px;align-items:center}
+.st-bar .k{font-family:var(--font);font-size:14px;color:#fff;grid-row:1/3}
+.st-bar i{display:block;height:8px;border-radius:2px;background:rgba(8,26,64,.6);box-shadow:inset 0 0 0 1px rgba(155,228,255,.25);overflow:hidden}
+.st-bar i b{display:block;height:100%;transition:width .5s}
+.st-bar.exp i b{background:linear-gradient(90deg,#63D2FF,#A9E8FF)}
+.st-bar.wk i b{background:#E6EEF8}
+.st-bar.walk i b{background:#FFD23F}
+.st-bar .v{font-size:12.5px;color:#fff;font-weight:600;white-space:nowrap;text-align:right}
+.st-bar small{grid-column:2/4;font-size:11.5px;color:#9FB6D6;margin-top:3px}
+.st-bar.met small{color:#A9E8FF}
+.st-bar.met small::before{content:"✓ "}
+.st-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;text-align:left;font-family:var(--sans)}
+.st-grid div{display:flex;justify-content:space-between;gap:6px;font-size:13.5px}
+.st-grid dt{color:#9FB6D6}
+.st-grid dd{color:#fff;font-weight:600}
+.st-gear{margin-top:14px;padding-top:12px;border-top:1px solid rgba(175,232,255,.2);display:grid;gap:6px;text-align:left;font-family:var(--sans);font-size:13px;color:#fff;line-height:1.5}
+.st-gear span{display:block;font-size:12px;color:#9FB6D6}

@@ -53,18 +53,6 @@
 .pg .fin{display:grid;grid-template-columns:1fr;gap:0;margin:10px 2px 0;text-align:left;font-size:13.5px;color:var(--cream)}
 .pg .fin div{display:flex;justify-content:space-between;gap:6px;border-bottom:1px solid rgba(155,228,255,.2);padding:6px 0}
 .pg .fin b{font-weight:400;color:#fff}
-.pg .st{color:var(--cream);text-align:left;text-shadow:0 0 6px rgba(255,230,160,.28)}
-.pg .st-top{display:flex;gap:12px;align-items:center}
-.pg .st-pic{flex:none;width:76px;height:96px;border-radius:4px;background:radial-gradient(circle at 50% 62%,rgba(120,190,255,.3),rgba(8,26,64,.45) 72%);display:grid;place-items:center;overflow:hidden;border:1px solid rgba(155,228,255,.35)}
-.pg .st-pic img{height:90px}
-.pg .st-kv{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:14px}
-.pg .st-kv dd{color:#fff}
-.pg .st-bar{font-size:13.5px;margin-top:9px}
-.pg .st-bar i{display:block;height:3px;background:rgba(255,255,255,.16);margin-top:4px;width:72%}
-.pg .st-bar i b{display:block;height:100%;background:linear-gradient(90deg,#FFE3A0,#FFF6D8);box-shadow:0 0 6px rgba(255,230,160,.85)}
-.pg .st-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:14.5px;padding:0 4px}
-.pg .st-grid em{font-style:normal;color:#fff;margin-left:2px}
-.pg .st-pt{text-align:right;font-size:14.5px;margin:0 2px}
 .pg .zone .runner{left:58%;transition:none;animation:pg-dodge 2.6s ease-in-out infinite}
 @keyframes pg-dodge{0%,100%{left:58%}28%{left:68%}52%{left:47%}78%{left:63%}}
 .pg .zone .scorp{left:22%;transition:none;animation:pg-chase 2.6s ease-in-out infinite}
