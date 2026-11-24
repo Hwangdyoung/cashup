@@ -1,15 +1,17 @@
 import { DungeonArt, TopBar } from '../components/Shell.jsx';
-import { AWAKEN_EXP, BASE_RATE, EXP_PAY, EXP_REQ, EXP_WALK, GUILD_MAX, MAX_RATE, RANK, S_BONUS, TICKETS, TOTAL, WALK_GOAL, WK_REQ } from '../lib/rules.js';
+import { SparkIcon } from '../components/Icons.jsx';
+import { AMTS, AWAKEN_EXP, BASE_RATE, EXP_PAY, EXP_REQ, EXP_WALK, GUILD_MAX, MAX_RATE, RANK, S_BONUS, TICKETS, TOTAL, WALK_GOAL, WK_REQ } from '../lib/rules.js';
 import { AWAKEN_REWARD, GRADE_REWARD, GRADE_STORY, HUNTER, RC, RT } from '../lib/characters.js';
 import { fmt, pct, pp, won } from '../lib/format.js';
 import { maturityPrincipal } from '../lib/savings.js';
 
+/* 키우는 방법: [할 일, 설명, 오른쪽 = 받는 것] */
 const HOWTO = [
-  ['매주 자동이체', `납입 성공 시 EXP +${fmt(EXP_PAY)}`, `${TOTAL}주`],
-  [`하루 ${fmt(WALK_GOAL)}보 걷기`, `일일 퀘스트 · 보너스 EXP +${fmt(EXP_WALK)}`, 'EXP'],
+  ['매주 자동이체', `${TOTAL}주 동안 금액을 매주 늘려 납입`, `EXP +${fmt(EXP_PAY)}`],
+  [`하루 ${fmt(WALK_GOAL)}보 걷기`, '일일 퀘스트 · 히든 각성 게이지도 함께', `EXP +${fmt(EXP_WALK)}`],
   ['길드원 초대', '초대 코드로 길드를 만들거나 참여', `최대 ${pp(GUILD_MAX)}`],
   [`${TOTAL}주 완납 · S급 달성`, 'EXP와 완납 주차를 함께 채우면 승급', pp(S_BONUS)],
-  ['미납하면 페널티 게이트', `미납 유예권 ${TICKETS}장 · 미니게임 후 재납입`, '구제'],
+  ['미납하면 페널티 게이트', '30초 미니게임 후 재납입하면 완납 인정', `유예권 ${TICKETS}장`],
 ];
 
 /* 콜라보 적금 상품 페이지 (카카오뱅크 26주적금 상품 안내 화면 구성)
@@ -72,8 +74,8 @@ export default function Collab({ joined, onClose, onApply }) {
           </h2>
           <div className="ladder">
             <div className="lad aw">
-              <span className="g" style={{ background: 'transparent', color: '#FFD23F' }}>
-                ★
+              <span className="g aw-ic">
+                <SparkIcon />
               </span>
               <span>
                 <b>히든 각성 · 최종 연출</b>
@@ -120,7 +122,9 @@ export default function Collab({ joined, onClose, onApply }) {
             </div>
             <div>
               <span>시작 금액</span>
-              <b>1천~1만 원 · 매주 같은 금액씩 증액</b>
+              <b>
+                {fmt(AMTS[0])}~{fmt(AMTS[AMTS.length - 1])}원 · 매주 같은 금액씩 증액
+              </b>
             </div>
             <div>
               <span>만기 원금</span>
