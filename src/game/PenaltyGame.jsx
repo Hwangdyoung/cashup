@@ -102,15 +102,14 @@ const GameSkeleton = memo(function GameSkeleton({ art }) {
         </div>
         <div className="pz-ctl">
           <div className="pz-score">
-            <span className="chip l" id="steps">0m</span>
-            <div className="goal" id="goal">
-              <i id="gbar" />
-            </div>
+            <b id="gtxt">0 / 1,500점</b>
+            <span className="chip" id="steps">0m</span>
             <span className="chip r" id="crys">마나 결정 0</span>
           </div>
-          <div className="pz-hint">
-            <span id="gtxt">0 / 1,500점</span> · 탭 점프 · 길게 누르면 높이 점프
+          <div className="goal" id="goal">
+            <i id="gbar" />
           </div>
+          <p className="pz-hint">탭 점프 · 길게 누르면 높이 점프</p>
         </div>
       </div>
 
@@ -137,15 +136,14 @@ const GameSkeleton = memo(function GameSkeleton({ art }) {
         </div>
         <div className="pz-ctl">
           <div className="pz-score">
-            <span className="chip l" id="steps2">생존 0초</span>
-            <div className="goal" id="goal2">
-              <i id="gbar2" />
-            </div>
+            <b id="gtxt2">0 / 240점</b>
+            <span className="chip" id="steps2">생존 0초</span>
             <span className="chip r" id="crys2">마나 결정 0</span>
           </div>
-          <div className="pz-hint">
-            <span id="gtxt2">0 / 240점</span> · 끌어서 좌우로 이동
+          <div className="goal" id="goal2">
+            <i id="gbar2" />
           </div>
+          <p className="pz-hint">끌어서 좌우로 이동</p>
         </div>
       </div>
       <div className="pz-win show" id="hub" style={{ zIndex: 30 }} />

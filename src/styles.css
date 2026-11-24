@@ -417,6 +417,17 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .nav button{flex:1;color:#A0A0A0;font-size:11.5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:10px;position:relative}
 .nav button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav button.on{color:var(--ink);font-weight:700}
+.nav .nav-demo{display:none;color:var(--sl-purple)}
+.nav .nav-demo svg{fill:currentColor;stroke:none;width:20px;height:20px}
+.dsheet{position:absolute;inset:0;z-index:40;background:rgba(0,0,0,.38);display:flex;align-items:flex-end;animation:dsFade .2s ease}
+.dsheet-in{width:100%;background:#fff;border-radius:18px 18px 0 0;padding:14px 16px calc(16px + env(safe-area-inset-bottom,0px));animation:dsUp .24s cubic-bezier(.2,.8,.3,1)}
+.dsheet-hd{display:flex;align-items:center;gap:8px}
+.dsheet-hd b{font-size:16px}
+.dsheet-x{margin-left:auto;width:32px;height:32px;display:grid;place-items:center;color:var(--ink-3)}
+.dsheet-x svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.dsheet .ctl{margin:10px 0 10px}
+@keyframes dsFade{from{opacity:0}}
+@keyframes dsUp{from{transform:translateY(100%)}}
 .nav .dot{position:absolute;top:5px;left:calc(50% + 7px);width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px #fff}
 
 /* ═════ 던전 무대 (나혼렙 포인트) ═════ */
@@ -556,7 +567,8 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .side small{display:block;font-size:11.5px;color:var(--ink-3);line-height:1.55;margin-top:8px}
 .pq-open .ctl button,.locked .ctl button{opacity:.4;pointer-events:none}
 
-@media (max-width:440px){.statusbar{display:none}body{padding:0;gap:16px}.phone{width:100%;max-width:390px;margin:0;box-shadow:none;border-radius:0;height:100vh;max-height:820px}.side{width:calc(100% - 32px);margin-bottom:24px}}
+/* 휴대폰 폭: 폰 틀 없이 화면 가득. 시연 컨트롤은 옆 패널 대신 적금 하단 탭 '시연' → 아래 시트 */
+@media (max-width:440px){.statusbar{display:none}body{padding:0;gap:0}.phone{width:100%;max-width:none;margin:0;box-shadow:none;border-radius:0;height:100vh;height:100dvh;max-height:none}.side{display:none}.nav .nav-demo{display:flex}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
 
 /* 시스템 창 안의 설명 · 표는 고딕 (제목·대사는 나혼렙 서체 유지) */

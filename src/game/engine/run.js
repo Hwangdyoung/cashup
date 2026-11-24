@@ -28,7 +28,7 @@ function doJump(){vy=620;hold=0;jumped=true;buf=0;SND.jump()}
 function jump(){if(st!=='play')return;if(canJump())doJump();else buf=.1}
 function setK(k,v){if(k==='u'&&v&&!keys.u)jump();keys[k]=v;}
 var KM={ArrowUp:'u',Space:'u'};function kk(e){return KM[e.code]||KM[e.key]||(e.key===' '?'u':null)}
-env.on(window,'keydown',function(e){var k=kk(e);var g=$('hub').classList.contains('show')&&$('hub').querySelector('[data-a="go"]');if(g&&(k||e.code==='Enter')){e.preventDefault();g.click();return}if(k){e.preventDefault();setK(k,1)}},true);
+env.on(window,'keydown',function(e){var k=kk(e);var g=$('hub').classList.contains('show')&&$('hub').querySelector('.btn:not(.sub)');if(g&&(k||e.code==='Enter')){e.preventDefault();g.click();return}if(k){e.preventDefault();setK(k,1)}},true);
 function foc(){try{env.root.focus({preventScroll:true})}catch(err){}}
 foc();
 env.on(window,'keyup',function(e){var k=kk(e);if(k){e.preventDefault();setK(k,0)}},true);

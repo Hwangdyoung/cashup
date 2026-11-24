@@ -154,3 +154,12 @@ export function ChevronRight() {
     </svg>
   );
 }
+
+/* 시연(빨리 감기) */
+export function DemoIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 6.5l7 5.5-7 5.5zM12.5 6.5l7 5.5-7 5.5z" />
+    </svg>
+  );
+}

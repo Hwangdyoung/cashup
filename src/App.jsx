@@ -8,7 +8,7 @@ import { TRIES_PER_TICKET } from './lib/rules.js';
 import Header, { SoundButton } from './components/Header.jsx';
 import TabBar from './components/TabBar.jsx';
 import SysToast from './components/SysToast.jsx';
-import DemoPanel from './components/DemoPanel.jsx';
+import DemoPanel, { DemoSheet } from './components/DemoPanel.jsx';
 import RankUp from './components/RankUp.jsx';
 import StatusWindow from './components/StatusWindow.jsx';
 import ResultWindow from './components/ResultWindow.jsx';
@@ -48,6 +48,7 @@ export default function App() {
   const [pop, setPop] = useState(0);
   const [soundOn, setSoundOn] = useState(sfxOn);
   const [autoWalk, setAutoWalk] = useState(true);
+  const [sheet, setSheet] = useState(false); // 휴대폰 폭 시연 시트
   const [proj, setProj] = useState('keep');
   const [joinKey, setJoinKey] = useState(0); // 가입 화면을 처음부터 다시 그릴 때
 
@@ -341,7 +342,15 @@ export default function App() {
                 {tab === 'guild' && <Guild s={s} onCopy={copyCode} onJoin={() => run(act.addMates, 1)} />}
               </div>
             </div>
-            <TabBar tab={tab} onTab={goTab} dot={gates(s).length > 0} />
+            <TabBar
+              tab={tab}
+              onTab={goTab}
+              dot={gates(s).length > 0}
+              onDemo={() => {
+                sfx('tap');
+                setSheet(true);
+              }}
+            />
           </div>
         );
       default:
@@ -363,6 +372,7 @@ export default function App() {
           }}
         />
         <KbToast toast={kbToast} />
+        <DemoSheet open={sheet && route === 'savings' && !game} onClose={() => setSheet(false)} onDemo={onDemo} onReset={fullReset} autoWalk={autoWalk} onAutoWalk={setAutoWalk} />
         <div className={`modal${modal ? ' show' : ''}`}>{renderModal()}</div>
         {rankUp && (
           <RankUp

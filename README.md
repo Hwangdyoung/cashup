@@ -90,7 +90,7 @@ src/
     StatusWindow.jsx         상태창
     PenaltyWindows.jsx       유예권 확인 · 재납입 창
     RankUp.jsx · ResultWindow.jsx   등급 상승 연출 · 프로젝트 수료(만기 결과)
-    TabBar.jsx · DemoPanel.jsx(폰 밖 시연 컨트롤) · Icons.jsx
+    TabBar.jsx · DemoPanel.jsx(시연 컨트롤: 데스크톱 옆 패널 · 휴대폰 아래 시트) · Icons.jsx
   game/
     PenaltyGame.jsx          미니게임 화면 뼈대 + 엔진 연결(콜백으로 앱과 주고받음)
     game.css                 게임 스타일 (.pg 안으로 가둠)
@@ -133,7 +133,9 @@ vercel --prod
 
 예전 주소 `cashup-livid.vercel.app`이 아직 프로젝트에 붙어 있습니다. 지우려면 Vercel 대시보드 → cashup → Settings → Domains에서 Remove.
 
-## 시연 컨트롤 (폰 화면 밖, 발표용)
+## 시연 컨트롤 (발표용)
+
+데스크톱에서는 폰 화면 옆 패널, 휴대폰 폭(440px 이하)에서는 적금 하단 탭의 다섯 번째 **시연** 버튼으로 여는 아래 시트입니다. 시트는 버튼을 누르면 닫혀서 무대·알림·승급 연출이 바로 보입니다.
 
 가입한 뒤에 씁니다. 다음 날 · 다음 주 · 5주 빠르게 · 이번 주 미납 · 길드원 +1/+5 · 25주로 이동 · 전체 초기화(카카오뱅크 홈부터 다시), "건너뛴 날은 8,000보를 걸은 것으로" 체크.
 

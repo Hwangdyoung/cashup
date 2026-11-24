@@ -1,4 +1,4 @@
-import { ResetIcon } from './Icons.jsx';
+import { CloseIcon, ResetIcon } from './Icons.jsx';
 import { fmt } from '../lib/format.js';
 import { WALK_GOAL } from '../lib/rules.js';
 
@@ -12,7 +12,31 @@ const BUTTONS = [
   ['to25', '25주로 이동', null, true],
 ];
 
-/* 폰 화면 밖 시연 컨트롤 (발표용). 게임 중에는 버튼을 잠근다 */
+/* 시연 버튼 묶음 (데스크톱 옆 패널과 휴대폰 아래 시트가 같이 씀) */
+function DemoControls({ onDemo, onReset, autoWalk, onAutoWalk }) {
+  return (
+    <>
+      <div className="ctl">
+        {BUTTONS.map(([id, label, sub, wide]) => (
+          <button key={id} type="button" className={wide ? 'wide' : undefined} onClick={() => onDemo(id)}>
+            {label}
+            {sub && <small>{sub}</small>}
+          </button>
+        ))}
+        <button type="button" className="wide danger" onClick={onReset}>
+          <ResetIcon />
+          전체 초기화 (카카오뱅크 홈부터 다시)
+        </button>
+      </div>
+      <label className="chk">
+        <input type="checkbox" checked={autoWalk} onChange={(e) => onAutoWalk(e.target.checked)} />
+        건너뛴 날은 {fmt(WALK_GOAL)}보를 걸은 것으로
+      </label>
+    </>
+  );
+}
+
+/* 폰 화면 밖 시연 컨트롤 (발표용, 데스크톱 폭). 게임 중에는 버튼을 잠근다 */
 export default function DemoPanel({ onDemo, onReset, autoWalk, onAutoWalk, locked }) {
   return (
     <aside className={`side${locked ? ' pq-open' : ''}`}>
@@ -20,22 +44,7 @@ export default function DemoPanel({ onDemo, onReset, autoWalk, onAutoWalk, locke
         <h2>시연 컨트롤</h2>
         <div>
           <p>가입한 뒤 26주를 빠르게 체험할 수 있어요.</p>
-          <div className="ctl">
-            {BUTTONS.map(([id, label, sub, wide]) => (
-              <button key={id} type="button" className={wide ? 'wide' : undefined} onClick={() => onDemo(id)}>
-                {label}
-                {sub && <small>{sub}</small>}
-              </button>
-            ))}
-            <button type="button" className="wide danger" onClick={onReset}>
-              <ResetIcon />
-              전체 초기화 (카카오뱅크 홈부터 다시)
-            </button>
-          </div>
-          <label className="chk">
-            <input type="checkbox" checked={autoWalk} onChange={(e) => onAutoWalk(e.target.checked)} />
-            건너뛴 날은 {fmt(WALK_GOAL)}보를 걸은 것으로
-          </label>
+          <DemoControls onDemo={onDemo} onReset={onReset} autoWalk={autoWalk} onAutoWalk={onAutoWalk} />
           <p className="small" style={{ marginTop: 8 }}>
             소리(효과음·BGM)는 적금 화면 위쪽 스피커 버튼이나 M 키로 켜고 꺼요.
           </p>
@@ -46,5 +55,29 @@ export default function DemoPanel({ onDemo, onReset, autoWalk, onAutoWalk, locke
         </div>
       </div>
     </aside>
+  );
+}
+
+/* 휴대폰 폭에서는 옆 패널 대신 적금 하단 탭 '시연'으로 여는 아래 시트.
+   버튼을 누르면 시트를 닫아 무대·알림·승급 연출이 바로 보이게 한다 (체크박스는 닫지 않음) */
+export function DemoSheet({ open, onClose, onDemo, onReset, autoWalk, onAutoWalk }) {
+  if (!open) return null;
+  const done = (fn) => (...a) => {
+    onClose();
+    fn(...a);
+  };
+  return (
+    <div className="dsheet" onClick={onClose}>
+      <div className="dsheet-in" role="dialog" aria-label="시연 컨트롤" onClick={(e) => e.stopPropagation()}>
+        <div className="dsheet-hd">
+          <b>시연 컨트롤</b>
+          <span className="demo-chip">발표용</span>
+          <button type="button" className="dsheet-x" aria-label="닫기" onClick={onClose}>
+            <CloseIcon />
+          </button>
+        </div>
+        <DemoControls onDemo={done(onDemo)} onReset={done(onReset)} autoWalk={autoWalk} onAutoWalk={onAutoWalk} />
+      </div>
+    </div>
   );
 }
