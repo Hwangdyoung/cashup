@@ -389,18 +389,18 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .ring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
 .ring .c b{font-size:24px}
 .ring .c span{font-size:12px;color:var(--ink-3)}
-.qlist{flex:1;display:grid;gap:8px}
-.q{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:14px;padding:12px 0;border-bottom:1px solid var(--line)}
-.q.ok{color:var(--sl-purple)}
-.q em{font-style:normal;font-size:13px;font-weight:700;white-space:nowrap}
+.qstat{flex:1;display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-3)}
+.qstat b{font-size:17px;color:var(--ink);margin-bottom:2px}
+.qstat.ok b{color:var(--sl-purple)}
+.walk-demo{display:flex;align-items:center;gap:8px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
+.walk-demo .t{flex:1;font-size:12.5px;color:var(--ink-3)}
+.walk-demo button{background:var(--soft);color:var(--ink);border-radius:8px;padding:7px 10px;font-size:13px;font-weight:600}
 .daydots{display:flex;gap:8px;justify-content:space-between}
 .dd{flex:1;text-align:center;font-size:12px;color:var(--ink-3)}
 .dd i{display:block;aspect-ratio:1;border-radius:50%;margin:0 auto 6px;max-width:34px;background:var(--soft)}
 .dd.ok i{background:var(--sl-purple)}
 .dd.today{color:var(--ink);font-weight:700}
 .dd.today i{box-shadow:inset 0 0 0 2px var(--ink)}
-.btnrow{display:flex;gap:8px}
-.btnrow .btn{margin-top:18px}
 .sav .card.aw{background:#1A1440;color:#fff}
 .aw h3 span,.aw .small{color:#B9AEEA}
 .awbar{height:6px;border-radius:3px;background:rgba(255,255,255,.14);overflow:hidden}

@@ -9,6 +9,9 @@ const RING = 314.16; // 반지름 50 원 둘레
 export default function Walk({ s, onWalk }) {
   const f = Math.min(1, s.steps / WALK_GOAL);
   const aw = awakened(s);
+  const left = Math.max(0, WALK_GOAL - s.steps);
+  const needDays = Math.ceil((AWAKEN_EXP - s.walkExp) / EXP_WALK); // 히든 각성까지 더 채워야 할 날
+  const daysLeft = s.matured ? 0 : (TOTAL - Math.min(s.wk, TOTAL)) * 7 + (7 - s.day); // 오늘 포함 만기까지 남은 날
   return (
     <>
       <div className="card">
@@ -29,23 +32,21 @@ export default function Walk({ s, onWalk }) {
               <span>/ {fmt(WALK_GOAL)}보</span>
             </div>
           </div>
-          <div className="qlist">
-            <div className={`q${s.goalDone ? ' ok' : ''}`}>
-              <span>{fmt(WALK_GOAL)}보 걷기</span>
-              <em>EXP +{fmt(EXP_WALK)}</em>
-            </div>
+          <div className={`qstat${s.goalDone ? ' ok' : ''}`}>
+            <b>{s.goalDone ? '오늘 목표 달성' : fmt(left) + '보 남았어요'}</b>
+            <span>보상 EXP +{fmt(EXP_WALK)}{s.goalDone ? ' 받음' : ''}</span>
+            <span>히든 각성 게이지 +{fmt(EXP_WALK)}</span>
           </div>
         </div>
-        <div className="btnrow">
+        <div className="walk-demo">
+          <span className="demo-chip">시연</span>
+          <span className="t" title="실제 앱에서는 걸음 수가 자동으로 집계돼요">걸음 더하기</span>
           {[1000, 3000].map((n) => (
-            <button key={n} type="button" className="btn sub" onClick={() => onWalk(n)}>
-              +{fmt(n)}보
+            <button key={n} type="button" onClick={() => onWalk(n)}>
+              +{fmt(n)}
             </button>
           ))}
         </div>
-        <p className="small" style={{ marginTop: 8 }}>
-          실제 앱에서는 걸음 수가 자동으로 집계돼요. 버튼은 시연용이에요.
-        </p>
       </div>
 
       <div className={`card aw${aw ? ' ok' : ''}`}>
@@ -61,7 +62,7 @@ export default function Walk({ s, onWalk }) {
         <p className="small" style={{ marginTop: 6 }}>
           {aw
             ? '조건 달성! 만기 때 ' + HUNTER.n + ' 최종 연출(벨리온)과 추가 리워드(예정)가 열려요'
-            : '남은 걷기 목표 ' + Math.ceil((AWAKEN_EXP - s.walkExp) / EXP_WALK) + '일 · 만기까지 채우면 히든 각성'}
+            : '목표를 ' + needDays + '일 더 채우면 각성 · 만기까지 ' + daysLeft + '일 남음'}
         </p>
       </div>
 
@@ -78,9 +79,7 @@ export default function Walk({ s, onWalk }) {
           ))}
         </div>
       </div>
-      <p className="note">
-        원작에서 헌터의 일일 퀘스트에 달리기가 있는 것처럼, 매일 걷기 목표를 채우면 추가 EXP를 받아요. 걷기는 금리와 상관없고, 만기까지 걷기 보너스 EXP {fmt(AWAKEN_EXP)}을 모으면 성진우의 히든 각성 연출이 열려요.
-      </p>
+      <p className="note">걷기는 금리와 상관없어요. 등급 EXP와 히든 각성에만 쓰여요.</p>
     </>
   );
 }
