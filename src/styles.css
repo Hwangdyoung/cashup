@@ -66,37 +66,38 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .kb-toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:40;background:rgba(30,30,30,.92);color:#fff;font-size:13.5px;line-height:1.45;border-radius:12px;padding:12px 14px;text-align:center;animation:kbt .25s ease}
 @keyframes kbt{from{opacity:0;transform:translateY(8px)}}
 
-/* ═════ 카카오뱅크 홈 ═════ */
+/* ═════ 카카오뱅크 홈 ═════
+   실제 카뱅 홈 구성: 맨 위 알림 칩 · 대표 통장 카드(파랑) · 계좌 목록 카드(줄로 나열) */
 .bank{background:var(--bg)}
-.bank-top{display:flex;align-items:center;justify-content:space-between;padding:8px 18px 10px;background:var(--bg)}
-.bank-top b{font-size:20px;letter-spacing:-.02em}
-.bank-top .bell{width:26px;height:26px;color:var(--ink)}
-.bank-top .bell svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8}
-.bank-body{padding:0 14px 16px;display:grid;gap:10px}
-.promo{display:flex;align-items:center;gap:12px;border-radius:16px;padding:14px 14px 14px 16px;text-align:left;color:#fff;position:relative;overflow:hidden;
-  background:radial-gradient(160px 120px at 92% 30%,rgba(164,123,255,.55),transparent 70%),linear-gradient(135deg,#1A1440,#2B1F66 60%,#3B2A8A)}
-.promo .t{flex:1;line-height:1.35}
-.promo small{display:block;font-size:11px;color:#C9BDFF}
-.promo b{display:block;font-size:15.5px}
-.promo span{display:block;font-size:12px;color:#E6E0FA;margin-top:2px}
-.promo img{height:64px;margin:-8px -4px -14px 0;filter:drop-shadow(0 0 8px rgba(164,123,255,.8))}
-.promo .new{position:absolute;top:10px;right:74px;font-size:10px;font-weight:700;color:#1E1A00;background:var(--y);border-radius:999px;padding:2px 7px}
-.acct{border-radius:16px;padding:16px;background:#fff;text-align:left;width:100%;display:block}
+.bank-top{display:flex;align-items:center;gap:10px;padding:10px 16px 12px;background:var(--bg)}
+.notice{flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:7px 12px 7px 7px;font-size:13px;color:var(--ink);text-align:left}
+.notice>span:nth-child(2){flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notice em{font-style:normal;font-weight:700;color:var(--sl-purple);margin-left:4px}
+.notice-ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:14px;font-weight:700;background:#FFD23F;color:#2B1F00}
+.notice .chev{color:var(--ink-3);flex:none}
+.bank-top .bell{width:36px;height:36px;display:grid;place-items:center;color:var(--ink);flex:none}
+.bank-top .bell svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8}
+.bank-body{padding:0 12px 16px;display:grid;gap:10px}
+.acct{border-radius:18px;padding:18px;background:#fff;text-align:left;width:100%;display:block}
 .acct.main{background:var(--kb-blue);color:#fff}
-.acct .name{font-size:13px;opacity:.85;display:flex;align-items:center;gap:6px}
-.acct .bal{font-size:22px;font-weight:700;margin-top:4px}
-.acct .row2{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-.acct .mini{font-size:13px;font-weight:700;border-radius:8px;padding:7px 14px;background:rgba(255,255,255,.25);color:#fff}
-.acct .sub{font-size:12.5px;color:var(--ink-2);margin-top:2px}
-.acct .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:16px;flex:none}
-.acct .line{display:flex;gap:12px;align-items:center}
-.acct-links{display:flex;background:#fff;border-radius:16px;overflow:hidden}
-.acct-links button{flex:1;padding:14px 0;font-size:13.5px;color:var(--ink-2)}
-.acct-links button+button{border-left:1px solid var(--line)}
-.bank-sec{background:#fff;border-radius:16px;padding:16px}
-.bank-sec h3{font-size:15px;margin-bottom:8px}
-.bank-sec p{font-size:13px;color:var(--ink-2)}
-.bank-note{font-size:11.5px;color:var(--ink-3);line-height:1.55;text-align:center;padding:4px 10px 8px}
+.acct .name{font-size:14px;opacity:.9}
+.acct .bal{font-size:24px;font-weight:700;letter-spacing:-.01em}
+.acct .row2{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.acct .mini{font-size:14px;font-weight:700;border-radius:10px;padding:8px 16px;background:rgba(255,255,255,.22);color:#fff}
+.acct-list{background:#fff;border-radius:18px;overflow:hidden}
+.acct-row{width:100%;display:flex;align-items:center;gap:12px;padding:16px 16px 16px 18px;text-align:left}
+.acct-row .ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:18px;font-weight:700}
+.acct-row .ic.add{background:var(--soft);color:var(--ink-2);font-family:var(--sans);font-weight:400;font-size:22px}
+.acct-row .ic.card{background:var(--soft);position:relative}
+.acct-row .ic.card::after{content:"";width:22px;height:15px;border-radius:3px;background:var(--y);box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}
+.acct-row .t{flex:1;min-width:0;line-height:1.35}
+.acct-row b{display:block;font-size:16px}
+.acct-row .t span{display:block;font-size:13px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acct-row .chev{color:#C2C4CB;flex:none}
+.acct-foot{display:flex;border-top:1px solid var(--line)}
+.acct-foot button{flex:1;padding:14px 0;font-size:14px;color:var(--ink-2)}
+.acct-foot button+button{border-left:1px solid var(--line)}
+.bank-note{font-size:12px;color:var(--ink-3);line-height:1.55;text-align:center;padding:8px 24px}
 
 /* 카카오뱅크 하단 탭 */
 .kbnav{flex:none;height:64px;display:flex;background:#fff;border-top:1px solid var(--line);padding:4px 6px 8px}
@@ -105,43 +106,54 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .kbnav button.on{color:var(--ink);font-weight:700}
 
 /* ═════ 혜택(이벤트) ═════ */
-.ben-head{padding:6px 18px 4px;background:#fff}
-.ben-head h1{font-size:22px}
-.chips{display:flex;gap:6px;padding:10px 18px 12px;background:#fff;border-bottom:1px solid var(--line)}
-.chips span{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--ink-2)}
+.ben-head{padding:10px 20px 4px;background:#fff}
+.ben-head h1{font-size:24px}
+.chips{display:flex;gap:6px;padding:10px 20px 14px;background:#fff}
+.chips span{font-size:14px;padding:7px 14px;border-radius:999px;background:var(--soft);color:var(--ink-2)}
 .chips span.on{background:var(--ink);color:#fff;font-weight:700}
-.ev-list{display:grid;gap:10px;padding:14px}
-.ev{display:flex;gap:12px;align-items:center;background:#fff;border-radius:16px;padding:14px;text-align:left;width:100%}
-.ev .thumb{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;flex:none;font-size:22px}
-.ev b{display:block;font-size:14.5px}
-.ev span{display:block;font-size:12.5px;color:var(--ink-2);margin-top:2px}
-.ev-hero{position:relative;width:100%;border-radius:18px;overflow:hidden;text-align:left;color:#fff;min-height:200px;display:block}
+.ev-list{padding:4px 16px 16px;background:#fff}
+.ev-hero{position:relative;width:100%;border-radius:18px;overflow:hidden;text-align:left;color:#fff;min-height:210px;display:block;background:#140D2C}
 .ev-hero .bgsvg{position:absolute;inset:0}
 .ev-hero .bgsvg svg{width:100%;height:100%}
-.ev-hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,9,25,.88),rgba(12,9,25,.35) 70%)}
-.ev-hero .in{position:relative;padding:18px 16px;max-width:66%}
-.ev-hero small{font-size:11px;color:#C9BDFF}
-.ev-hero h2{font-family:var(--font);font-size:24px;line-height:1.2;margin:6px 0}
-.ev-hero p{font-size:12.5px;color:#E6E0FA;line-height:1.5}
-.ev-hero .rate{display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:#1E1A00;background:var(--y);border-radius:999px;padding:4px 10px}
-.ev-hero img{position:absolute;right:6px;bottom:0;height:170px;filter:drop-shadow(0 0 12px rgba(164,123,255,.8))}
+.ev-hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,9,25,.85) 30%,rgba(12,9,25,0) 75%)}
+.ev-hero .in{position:relative;padding:22px 18px;max-width:64%}
+.ev-hero small{font-size:12px;color:#C9BDFF}
+.ev-hero h2{font-family:var(--font);font-size:26px;line-height:1.15;margin:8px 0}
+.ev-hero p{font-size:13px;color:#E6E0FA;line-height:1.5}
+.ev-hero .rate{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:#FEE500}
+.ev-hero img{position:absolute;right:4px;bottom:0;height:178px}
+.ev-more{background:#fff;margin-top:8px;padding:20px 20px 8px}
+.ev-more h3{font-size:17px;margin-bottom:6px}
+.ev{display:flex;gap:14px;align-items:center;padding:14px 0;text-align:left;width:100%;border-top:1px solid var(--line)}
+.ev-more h3+.ev{border-top:0}
+.ev .thumb{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none}
+.ev>span:nth-child(2){flex:1}
+.ev b{display:block;font-size:15px;color:var(--ink)}
+.ev span span{display:block;font-size:13px;color:var(--ink-3);margin-top:2px}
+.ev .chev{color:#C2C4CB}
 
 /* ═════ 콜라보 적금 상품 페이지 ═════ */
 .prod{background:#fff}
-.prod-hero{text-align:center;padding:10px 18px 0}
-.ai-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2);border:1px solid #D9EFC9;background:#F6FBF1;border-radius:999px;padding:6px 12px}
-.prod-hero h1{font-size:28px;line-height:1.3;margin-top:18px;letter-spacing:-.02em}
-.prod-hero h1 em{font-style:normal;color:var(--sl-purple);font-family:var(--font);font-size:32px;display:block}
-.prod-rates{display:inline-grid;gap:6px;margin-top:14px;text-align:left}
-.prod-rates div{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700}
-.prod-rates small{font-size:11.5px;font-weight:400;color:var(--ink-3)}
-.prod-rates i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px}
-.prod-stage{position:relative;height:230px;margin:18px 0 0;overflow:hidden}
-.prod-stage .bgsvg,.prod-stage .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
-.prod-stage img{position:absolute;left:50%;bottom:16px;height:170px;transform:translateX(-50%);filter:drop-shadow(0 0 10px #A47BFF)}
-.prod-stage .cap{position:absolute;left:0;right:0;top:12px;text-align:center;font-family:var(--font);color:#fff;font-size:15px;text-shadow:0 0 10px rgba(160,225,255,.8)}
-.prod-sec{padding:22px 18px 4px}
-.prod-sec h2{font-size:18px;margin-bottom:12px}
+.prod .scroll{background:var(--bg)}
+/* 키 비주얼: 던전 위에 콜라보 표기와 나혼렙 서체 제목 */
+.kv{position:relative;height:340px;overflow:hidden;background:#140D2C}
+.kv .bgsvg,.kv .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
+.kv::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,9,25,.55),rgba(12,9,25,0) 45%,rgba(12,9,25,.6))}
+.kv img{position:absolute;right:-6px;bottom:0;height:230px;z-index:1}
+.kv-in{position:absolute;left:22px;top:24px;right:120px;z-index:2;color:#fff}
+.kv-lock{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.02em;color:#FEE500}
+.kv h1{font-size:44px;line-height:1.08;margin:12px 0 14px;font-weight:700;text-shadow:0 0 18px rgba(160,225,255,.45)}
+.kv p{font-size:14px;line-height:1.5;color:#E6E0FA}
+/* 금리 두 칸 */
+.rate-hero{display:grid;grid-template-columns:1fr 1fr;background:#fff;padding:22px 20px;gap:12px}
+.rate-hero div{display:flex;flex-direction:column;gap:2px}
+.rate-hero div+div{border-left:1px solid var(--line);padding-left:16px}
+.rate-hero span{font-size:13px;color:var(--ink-3)}
+.rate-hero b{font-size:28px;letter-spacing:-.02em;line-height:1.2}
+.rate-hero div:first-child b{color:var(--sl-purple)}
+.rate-hero small{font-size:12px;color:var(--ink-3)}
+.prod-sec{padding:24px 20px 12px;background:#fff;margin-top:8px}
+.prod-sec h2{font-size:17px;margin-bottom:10px}
 .howto{display:grid}
 .howto div{display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
 .howto div:first-child{border-top:0;padding-top:4px}
@@ -160,16 +172,13 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .lad.aw span,.lad.aw small{color:#C9BDFF}
 .reward{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:12.5px;color:var(--ink-2);background:#FFFBE0;border-radius:10px;padding:10px 12px}
 .reward b{color:var(--ink)}
-.if-note{font-size:11.5px;color:var(--ink-3);line-height:1.55;padding:16px 18px 8px}
+.if-note{font-size:12px;color:var(--ink-3);line-height:1.55;padding:16px 20px 8px}
 
 /* ═════ 가입 단계 ═════ */
 .join{background:#fff}
 .join-body{padding:16px 22px 10px}
 .join-body h2{font-size:22px;line-height:1.4;letter-spacing:-.02em}
 .join-body .lead{font-size:14px;color:var(--ink-2);margin-top:8px;line-height:1.5}
-.step-dots{display:flex;gap:4px;margin-bottom:14px}
-.step-dots i{height:4px;flex:1;border-radius:2px;background:var(--line)}
-.step-dots i.on{background:var(--ink)}
 .hunter-card{margin-top:18px;border-radius:18px;overflow:hidden;background:#1A1440;color:#fff}
 .hunter-card .art{position:relative;height:190px}
 .hunter-card .art .bgsvg,.hunter-card .art .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
@@ -178,8 +187,8 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .hunter-card .info b{font-family:var(--font);font-size:19px}
 .hunter-card .info small{font-size:12px;color:#C9BDFF;margin-left:6px}
 .hunter-card .info p{font-size:12.5px;color:#E6E0FA;line-height:1.5;margin-top:4px}
-.shadow-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.shadow-row span{font-size:11.5px;border-radius:999px;padding:3px 9px;background:rgba(164,123,255,.2);border:1px solid rgba(164,123,255,.5);color:#E6DBFF}
+.shadow-line{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:#E6DBFF}
+.shadow-line b{color:#FFD23F;margin-right:2px}
 .terms{margin-top:18px}
 .terms .all{width:100%;display:flex;align-items:center;gap:10px;background:var(--y);border-radius:12px;padding:14px;font-size:14px;font-weight:700;text-align:left}
 .terms .all svg{width:20px;height:20px;flex:none}
@@ -410,8 +419,8 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .stage.miss-tint::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 100%,rgba(255,70,90,.32),transparent 60%);mix-blend-mode:screen}
 .tw{animation:tw 3.2s ease-in-out infinite}@keyframes tw{50%{opacity:.25}}
 .portal{animation:pulse 3.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.72}}
-.swirl{transform-origin:200px 150px;animation:breathe 4s ease-in-out infinite}@keyframes breathe{50%{transform:scale(1.08);opacity:.35}}
-.mcs{animation:dash 7s linear infinite}@keyframes dash{to{stroke-dashoffset:-110}}
+.swirl{opacity:.35}
+
 .mote{animation:rise 4.2s ease-in infinite;opacity:0}@keyframes rise{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-90px);opacity:0}}
 .hero{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);z-index:2;background:none;border:0;padding:0;height:150px;width:110px;border-radius:12px}
 .hero img{position:absolute;left:50%;bottom:0;height:150px;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 0 var(--glow,4px) var(--c))}

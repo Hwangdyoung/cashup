@@ -19,29 +19,36 @@ export default function Collab({ joined, onClose, onApply }) {
     <div className="view prod">
       <TopBar title="나 혼자만 캐시업" left="close" onLeft={onClose} />
       <div className="scroll">
-        <div className="prod-hero">
-          <span className="ai-chip">✦ 카카오뱅크 × 나 혼자만 레벨업 콜라보</span>
-          <h1>
-            카카오뱅크
-            <em>나 혼자만 캐시업</em>
-          </h1>
-          <div className="prod-rates">
-            <div>
-              <i style={{ background: '#EDE6FF', color: '#6B4FD6' }}>↑</i>최고 {pct(MAX_RATE)}
-              <small>
-                {TOTAL}주 완납 + 길드 {GUILD_MAX.toFixed(1)}%p 시
-              </small>
-            </div>
-            <div>
-              <i style={{ background: '#FFF4B8', color: '#8A6A00' }}>✓</i>기본 {pct(BASE_RATE)}
-              <small>시작부터 적용</small>
-            </div>
+        <DungeonArt className="kv" grade={3}>
+          <div className="kv-in">
+            <span className="kv-lock">카카오뱅크 × 나 혼자만 레벨업</span>
+            <h1 className="hol">
+              나 혼자만
+              <br />
+              캐시업
+            </h1>
+            <p>
+              저축하고, 걷고, 함께 성장하는
+              <br />
+              {TOTAL}주 헌터 양성 적금
+            </p>
+          </div>
+        </DungeonArt>
+
+        <div className="rate-hero">
+          <div>
+            <span>최고</span>
+            <b>{pct(MAX_RATE)}</b>
+            <small>
+              {TOTAL}주 완납 + 길드 {pp(GUILD_MAX)}
+            </small>
+          </div>
+          <div>
+            <span>기본</span>
+            <b>{pct(BASE_RATE)}</b>
+            <small>가입하면 바로</small>
           </div>
         </div>
-
-        <DungeonArt className="prod-stage" grade={0}>
-          <div className="cap">[ 헌터 협회 특별 성장 프로젝트 ]</div>
-        </DungeonArt>
 
         <section className="prod-sec">
           <h2>이렇게 키워요</h2>

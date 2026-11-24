@@ -1,4 +1,5 @@
 import { BankTabBar, DungeonArt } from '../components/Shell.jsx';
+import { ChevronRight } from '../components/Icons.jsx';
 import { MAX_RATE, TOTAL } from '../lib/rules.js';
 import { pct } from '../lib/format.js';
 import { hunterArt } from '../lib/characters.js';
@@ -34,6 +35,9 @@ export default function Benefits({ onCollab, onTab, onSoon }) {
             </div>
             <img src={hunterArt(3)} alt="" />
           </button>
+        </div>
+        <section className="ev-more">
+          <h3>진행 중인 이벤트</h3>
           {OTHER_EVENTS.map((e) => (
             <button key={e.t} type="button" className="ev" onClick={onSoon}>
               <span className="thumb" style={{ background: e.bg, color: e.fg }}>
@@ -43,9 +47,10 @@ export default function Benefits({ onCollab, onTab, onSoon }) {
                 <b>{e.t}</b>
                 <span>{e.d}</span>
               </span>
+              <ChevronRight />
             </button>
           ))}
-        </div>
+        </section>
       </div>
       <BankTabBar tab="benefit" onTab={onTab} />
     </div>

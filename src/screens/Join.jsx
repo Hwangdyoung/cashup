@@ -53,11 +53,6 @@ export default function Join({ onExit, onOpen, sound }) {
       <TopBar title={id === 'hunter' ? '' : '나 혼자만 캐시업 개설'} onLeft={back} right="취소" onRight={onExit} />
       <div className="scroll">
         <div className="join-body">
-          <div className="step-dots" aria-label={`${step + 1} / ${STEPS.length} 단계`}>
-            {STEPS.map((x, i) => (
-              <i key={x} className={i <= step ? 'on' : undefined} />
-            ))}
-          </div>
 
           {id === 'hunter' && (
             <>
@@ -73,13 +68,13 @@ export default function Join({ onExit, onOpen, sound }) {
                   <b>{HUNTER.n}</b>
                   <small>{HUNTER.title}</small>
                   <p>곡괭이를 든 E급 신입 헌터로 시작해요. 등급이 오를 때마다 그림자 병사가 한 명씩 합류해요.</p>
-                  <div className="shadow-row">
+                  <p className="shadow-line">
                     {SHADOWS.map((n, i) => (
                       <span key={n}>
-                        {'DCBAS'[i]}급 {n}
+                        <b className="hol">{'DCBAS'[i]}</b> {n}
                       </span>
                     ))}
-                  </div>
+                  </p>
                 </div>
               </div>
             </>
