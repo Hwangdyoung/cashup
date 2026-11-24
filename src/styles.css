@@ -487,22 +487,29 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .ru.show{display:flex;animation:ruDark .45s ease both}
 @keyframes ruDark{from{background:rgba(0,0,0,0)}to{background:rgba(2,2,8,.96)}}
 .ru .sw{opacity:0;animation:open .4s .45s cubic-bezier(.2,.9,.3,1.15) both}
-.ru .grades{display:flex;align-items:center;justify-content:center;gap:12px;font-size:30px;font-weight:700;margin:8px 0 4px}
-.ru .grades i{font-style:normal;width:46px;height:46px;border-radius:12px;display:grid;place-items:center}
-.ru .grades .arr{font-size:18px;color:#C4DAF0}
-.swap{position:relative;height:118px;margin:6px 0}
-.swap img{position:absolute;left:50%;bottom:0;height:112px;transform:translateX(-50%);filter:drop-shadow(0 0 12px var(--c))}
-.swap .tool{position:absolute;right:16%;bottom:24px;width:54px;height:54px}
+/* 등급 변화: 지난 등급은 작게, 새 등급은 크게 (새 등급 색) */
+.grade-up{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 6px;font-family:var(--font);font-weight:700}
+.grade-up .old{font-size:24px;color:#9FB6D6;width:40px;height:40px;display:grid;place-items:center;border-radius:10px;border:1px solid rgba(159,182,214,.4)}
+.grade-up .arr{width:22px;height:22px;fill:none;stroke:#C4DAF0;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.grade-up .new{font-size:44px;width:72px;height:72px;display:grid;place-items:center;border-radius:16px;box-shadow:0 0 28px var(--gc);animation:newGrade .6s .7s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes newGrade{from{transform:scale(.4);opacity:0}}
+.grade-story{font-size:15px;color:#fff;margin-bottom:4px}
+.ru-list{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;text-align:left;font-family:var(--sans);font-size:13.5px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(175,232,255,.25)}
+.ru-list dt{color:#9FB6D6}
+.ru-list dd{color:#fff;text-align:right}
+.ru-reward{font-family:var(--sans);font-size:12px;color:#FFE680;margin-top:12px}
+.swap{position:relative;height:132px;margin:4px 0 0}
+.swap img{position:absolute;left:50%;bottom:0;height:128px;transform:translateX(-50%);filter:drop-shadow(0 0 12px var(--gc))}
+.swap .tool{position:absolute;right:14%;bottom:28px;width:52px;height:52px}
 .swap .tool svg{width:100%;height:100%}
 .swap .old{animation:shatter .5s 1.15s ease-in forwards}
 .swap .new{opacity:0;transform:scale(.3) rotate(-30deg);animation:arrive .55s 1.55s cubic-bezier(.3,1.6,.5,1) forwards}
 .swap.big .new{width:70px;height:70px}
 @keyframes shatter{60%{transform:rotate(18deg) scale(1.1);opacity:1;filter:brightness(2)}100%{transform:rotate(40deg) scale(.2) translateY(30px);opacity:0}}
 @keyframes arrive{to{opacity:1;transform:none}}
-.swap .burst{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border-radius:50%;border:3px solid var(--c);opacity:0;animation:burst .9s 1.9s ease-out forwards}
-.swap .burst.b2{animation-delay:2.05s}
+.swap .burst{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border-radius:50%;border:3px solid var(--gc);opacity:0;animation:burst .9s 1.9s ease-out forwards}
 @keyframes burst{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(14)}}
-.ru .gearline{opacity:0;animation:arrive .4s 2s forwards;transform:none}
+.ru .ru-list,.ru .ru-reward{opacity:0;animation:arrive .4s 1.9s forwards}
 
 /* D급 이후 승급: 무기가 깨지지 않고 새 등급 색으로 강화 */
 .swap .up{animation:powerUp 1.1s 1.15s ease-out both}
@@ -538,3 +545,21 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .sw .swsub{font-size:13.5px;line-height:1.55}
 .sw .kv{font-size:13.5px;gap:8px 12px}
 .swx svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;display:block}
+
+/* ═════ 만기 결과 ═════ ① 헌터·등급 ② 받는 금액 ③ 완납·미납·걷기 ④ 히든 각성 */
+.res-hero{position:relative;height:128px;display:grid;place-items:center;margin-top:4px}
+.res-hero img{height:124px;filter:drop-shadow(0 0 12px rgba(255,210,90,.6))}
+.res-hero img.aw{filter:drop-shadow(0 0 22px #A47BFF) brightness(1.15)}
+.res-grade{position:absolute;left:calc(50% + 34px);bottom:8px;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-family:var(--font);font-size:22px;font-weight:700;box-shadow:0 0 16px rgba(255,210,63,.6)}
+.res-money{margin:16px 0 0;padding:16px 0;border-top:1px solid rgba(255,230,128,.3);border-bottom:1px solid rgba(255,230,128,.3)}
+.res-money span{display:block;font-family:var(--sans);font-size:13px;color:#C4DAF0}
+.res-money b{display:block;font-size:34px;line-height:1.15;color:#FFE680;margin:4px 0;font-family:var(--sans);letter-spacing:-.02em}
+.res-money small{display:block;font-family:var(--sans);font-size:12.5px;color:#C4DAF0}
+.res-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:14px;font-family:var(--sans)}
+.res-stats div+div{border-left:1px solid rgba(175,232,255,.2)}
+.res-stats b{display:block;font-size:17px;color:#fff}
+.res-stats span{font-size:12px;color:#9FB6D6}
+.res-awaken{margin-top:14px;padding:12px 14px;border-radius:6px;background:rgba(20,12,50,.55);border:1px solid rgba(164,123,255,.6);text-align:left;font-family:var(--sans)}
+.res-awaken b{font-family:var(--font);font-size:15px;color:#D9C9FF}
+.res-awaken p{font-size:13px;color:#fff;margin:4px 0;line-height:1.5}
+.res-awaken small{font-size:12px;color:#FFE680}
