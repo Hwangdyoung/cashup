@@ -57,7 +57,9 @@ export default function BankHome({ s, onPromo, onSavings, onTab, onSoon }) {
                 <span className="ic add">+</span>
                 <span className="t">
                   <b>나 혼자만 캐시업</b>
-                  <span>26주 헌터 성장 적금 · 카카오뱅크 × 나 혼자만 레벨업</span>
+                  <span>
+                    {TOTAL}주 헌터 성장 적금 · 최고 {pct(MAX_RATE)}
+                  </span>
                 </span>
                 <ChevronRight />
               </button>

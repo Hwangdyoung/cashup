@@ -6,8 +6,8 @@ import { hunterArt } from '../lib/characters.js';
 
 /* 시연용 예시 이벤트 (실제 카카오뱅크 이벤트 아님) */
 const OTHER_EVENTS = [
-  { icon: 'cal', bg: '#FFF4CC', fg: '#8A6A00', t: '매일 출석 체크', d: '시연용 예시 이벤트' },
-  { icon: 'coin', bg: 'var(--soft)', fg: 'var(--ink-2)', t: '잔돈 모으기 챌린지', d: '시연용 예시 이벤트' },
+  { icon: 'cal', bg: '#FFF4CC', fg: '#8A6A00', t: '매일 출석 체크', d: '하루 한 번 들어오면 도장 1개' },
+  { icon: 'coin', bg: 'var(--soft)', fg: 'var(--ink-2)', t: '잔돈 모으기 챌린지', d: '카드 결제 후 남은 잔돈을 저축' },
 ];
 
 /* 혜택 탭 · 이벤트: 맨 위에 콜라보 배너 */
@@ -19,9 +19,15 @@ export default function Benefits({ onCollab, onTab, onSoon }) {
           <h1>혜택</h1>
         </div>
         <div className="chips">
-          <span className="on">이벤트</span>
-          <span>미션</span>
-          <span>쿠폰</span>
+          <button type="button" className="on" aria-pressed="true">
+            이벤트
+          </button>
+          <button type="button" onClick={onSoon}>
+            미션
+          </button>
+          <button type="button" onClick={onSoon}>
+            쿠폰
+          </button>
         </div>
         <div className="ev-list">
           <button type="button" className="ev-hero" onClick={onCollab} aria-label="나 혼자만 캐시업 이벤트 보기">
@@ -37,7 +43,9 @@ export default function Benefits({ onCollab, onTab, onSoon }) {
           </button>
         </div>
         <section className="ev-more">
-          <h3>진행 중인 이벤트</h3>
+          <h3>
+            진행 중인 이벤트<small>시연용 예시</small>
+          </h3>
           {OTHER_EVENTS.map((e) => (
             <button key={e.t} type="button" className="ev" onClick={onSoon}>
               <span className="thumb" style={{ background: e.bg, color: e.fg }}>

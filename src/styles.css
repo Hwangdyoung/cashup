@@ -109,8 +109,8 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .ben-head{padding:10px 20px 4px;background:#fff}
 .ben-head h1{font-size:24px}
 .chips{display:flex;gap:6px;padding:10px 20px 14px;background:#fff}
-.chips span{font-size:14px;padding:7px 14px;border-radius:999px;background:var(--soft);color:var(--ink-2)}
-.chips span.on{background:var(--ink);color:#fff;font-weight:700}
+.chips button{font-size:14px;padding:7px 14px;border-radius:999px;background:var(--soft);color:var(--ink-2)}
+.chips button.on{background:var(--ink);color:#fff;font-weight:700}
 .ev-list{padding:4px 16px 16px;background:#fff}
 .ev-hero{position:relative;width:100%;border-radius:18px;overflow:hidden;text-align:left;color:#fff;min-height:210px;display:block;background:#140D2C}
 .ev-hero .bgsvg{position:absolute;inset:0}
@@ -123,7 +123,8 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .ev-hero .rate{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:#FEE500}
 .ev-hero img{position:absolute;right:4px;bottom:0;height:178px}
 .ev-more{background:#fff;margin-top:8px;padding:20px 20px 8px}
-.ev-more h3{font-size:17px;margin-bottom:6px}
+.ev-more h3{display:flex;justify-content:space-between;align-items:baseline;font-size:17px;margin-bottom:6px}
+.ev-more h3 small{font-size:12px;font-weight:400;color:var(--ink-3)}
 .ev{display:flex;gap:14px;align-items:center;padding:14px 0;text-align:left;width:100%;border-top:1px solid var(--line)}
 .ev-more h3+.ev{border-top:0}
 .ev .thumb{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none}
