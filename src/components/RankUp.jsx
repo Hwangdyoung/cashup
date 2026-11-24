@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import SystemWindow, { SysLine } from './SystemWindow.jsx';
 import { RANK } from '../lib/rules.js';
-import { GRADE_REWARD, GRADE_STORY, HUNTER, RC, RT, SHADOWS, hunterArt } from '../lib/characters.js';
+import { GRADE_REWARD, GRADE_STORY, HUNTER, RC, RT, SHADOWS, SHADOW_ART, hunterArt } from '../lib/characters.js';
 import { TOOLS } from '../lib/scene.js';
 import { sfx } from '../lib/sfx.js';
 
@@ -58,7 +58,14 @@ export default function RankUp({ from, to, onClose }) {
           {joined.length > 0 && (
             <>
               <dt>병사 합류</dt>
-              <dd>{joined.join(' · ')}</dd>
+              <dd className="ru-sold">
+                {joined.map((n, i) => (
+                  <span key={n}>
+                    <img src={SHADOW_ART[from + i]} alt="" />
+                    {n}
+                  </span>
+                ))}
+              </dd>
             </>
           )}
         </dl>

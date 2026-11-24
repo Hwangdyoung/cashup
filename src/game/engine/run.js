@@ -4,7 +4,7 @@ import { scorp } from './shared.js';
    $(id) 게임 안 요소 찾기 · on(대상, 이벤트, 함수, 옵션) 전역 이벤트 등록(게임을 닫으면 자동 해제)
    alive() 게임 화면이 아직 떠 있는지 · SND 배경음 엔진 · HUB 게임 선택 화면 */
 export function createRun(env){
-var W=370,H=620,G=490,HH=72,HW=29;
+var W=370,H=620,G=490,HH=72,HW=29; /* HW: 충돌 폭. 그림은 원본 비율대로 그림 */
 var $=env.$;
 var cv=$('cv'),x=cv.getContext('2d'),dpr=Math.min(window.devicePixelRatio||1,2);
 cv.width=W*dpr;cv.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
@@ -100,7 +100,7 @@ function draw(){
  obs.forEach(function(p){if(p.k==='wasp'&&p.x>W-2){var a2=.55+.45*Math.sin(performance.now()/90);x.save();x.globalAlpha=a2;x.fillStyle='#FFD23F';x.beginPath();x.moveTo(W-24,p.y-6);x.lineTo(W-6,p.y+24);x.lineTo(W-42,p.y+24);x.closePath();x.fill();x.fillStyle='#2A0A12';x.font='700 18px '+FONT;x.textAlign='center';x.fillText('!',W-24,p.y+21);x.restore()}});
  var bl=inv>0&&Math.floor(inv*20)%2===0;
  x.fillStyle='rgba(0,0,0,'+(.28-py*.0012)+')';x.beginPath();x.ellipse(hx,G+2,15-py*.05,4,0,0,7);x.fill();
- if(!bl&&HERO.complete){var run=st==='play'&&py<=0?Math.abs(Math.sin(performance.now()/70))*3:0;x.save();x.shadowColor='rgba(255,255,255,.5)';x.shadowBlur=6;x.drawImage(HERO,hx-HW/2,G-py-HH-run,HW,HH);x.restore()}
+ if(!bl&&HERO.complete){var run=st==='play'&&py<=0?Math.abs(Math.sin(performance.now()/70))*3:0;x.save();x.shadowColor='rgba(255,255,255,.5)';x.shadowBlur=6;var DW=HERO.naturalWidth?HH*HERO.naturalWidth/HERO.naturalHeight:HW;x.drawImage(HERO,hx-DW/2,G-py-HH-run,DW,HH);x.restore()}
  x.restore();
  var vg=x.createRadialGradient(W/2,H/2,H*.22,W/2,H/2,H*.78);var a=.5;if(t>=20&&st==='play')a=.62+.18*Math.sin(t*8);vg.addColorStop(0,'rgba(90,0,30,0)');vg.addColorStop(1,'rgba(90,0,30,'+a+')');x.fillStyle=vg;x.fillRect(0,0,W,H);
  if(flash>0){x.fillStyle='rgba(255,60,90,'+flash+')';x.fillRect(0,0,W,H)}

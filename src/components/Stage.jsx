@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { RANK } from '../lib/rules.js';
-import { HUNTER, SHADOWS, hunterArt } from '../lib/characters.js';
+import { HUNTER, SHADOWS, SHADOW_ART, hunterArt } from '../lib/characters.js';
 import { scene } from '../lib/scene.js';
 
-const SHADOW_POS = [24, 76, 12, 88, 4];
+/* 병사 자리 (SHADOWS 순서: 이그리트·탱크·아이언·어금니·베르). 헌터 양옆에 겹치지 않게 */
+const SHADOW_POS = [33, 70, 9, 89, 22];
 
 /* 적금 상세 홈 맨 위 대표 영역 (나혼렙 포인트: 던전 무대)
    왼쪽 위에 이번 주 도전 금액, 가운데 성진우(누르면 상태창)와 그림자 병사, 아래에 지금 등급·장비
@@ -24,7 +25,7 @@ export default function Stage({ s, label, amount, missTint, pop, onHero }) {
       </button>
       <div className="shadows" aria-hidden="true">
         {SHADOWS.slice(0, g).map((name, i) => (
-          <img key={name} src={art} alt="" title={'그림자 병사 ' + name} style={{ left: SHADOW_POS[i] + '%' }} />
+          <img key={name} src={SHADOW_ART[i]} alt="" title={'그림자 병사 ' + name} style={{ left: SHADOW_POS[i] + '%' }} />
         ))}
       </div>
       <button

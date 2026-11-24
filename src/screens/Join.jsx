@@ -3,7 +3,7 @@ import { DungeonArt, TopBar } from '../components/Shell.jsx';
 import { CheckIcon } from '../components/Icons.jsx';
 import TierList from '../components/TierList.jsx';
 import { AMTS, BASE_RATE, DEMO_GUILD_CODE, GUILD_CODE_RE, GUILD_MAX, MAX_RATE, PAY_DAYS, S_BONUS, TOTAL } from '../lib/rules.js';
-import { HUNTER, SHADOWS, hunterArt } from '../lib/characters.js';
+import { HUNTER, SHADOWS, SHADOW_ART, hunterArt } from '../lib/characters.js';
 import { fmt, pct, pp, won } from '../lib/format.js';
 import { makeGuildCode, maturityPrincipal } from '../lib/savings.js';
 import { DEMO_ACCOUNT } from './BankHome.jsx';
@@ -71,6 +71,7 @@ export default function Join({ onExit, onOpen, sound }) {
                   <p className="shadow-line">
                     {SHADOWS.map((n, i) => (
                       <span key={n}>
+                        <img src={SHADOW_ART[i]} alt="" />
                         <b className="hol">{'DCBAS'[i]}</b> {n}
                       </span>
                     ))}

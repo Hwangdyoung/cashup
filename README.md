@@ -52,8 +52,10 @@
 
 ## 캐릭터 그림 바꾸기
 
-지금은 자리표시 그림 하나를 모든 등급에 씁니다. 상품 전용 캐릭터 그림이 생기면 `src/assets/character/` 에 넣고
-[`src/lib/characters.js`](src/lib/characters.js) 의 `HUNTER_ART` 배열(E~S 순서)만 바꾸면 홈 무대·배너·가입 화면·승급 연출·미니게임에 모두 반영됩니다.
+그림은 `src/assets/character/` 에 있습니다. 성진우는 E급 그림(`hunter-e.png`)과 D급부터 쓰는 성장 그림(`hunter-up.png`) 두 장이고,
+그림자 병사 5명(이그리트·탱크·아이언·어금니·베르)은 한 장씩입니다.
+[`src/lib/characters.js`](src/lib/characters.js) 의 `HUNTER_ART`(E~S 순서)와 `SHADOW_ART`만 바꾸면 홈 무대·배너·가입 화면·승급 연출·상태창·미니게임에 모두 반영됩니다.
+원본은 SVG지만 한 장에 1~3MB라, 배경을 비우고 캐릭터 크기로 잘라 PNG(헌터 높이 600px, 병사 400px)로 바꿔 넣었습니다.
 
 ## 사운드
 
@@ -104,7 +106,7 @@ src/
     sfx.js                   효과음 · 던전 BGM (Web Audio 합성)
     scene.js                 던전 무대 배경 · 무기 아이콘 SVG
     format.js                원 · 금리 표기
-  assets/                    자리표시 헌터 그림 · 나혼렙 폰트 (kakaobank-logo.png는 지금 쓰지 않음)
+  assets/                    character/ 헌터·그림자 병사 그림 · 나혼렙 폰트 (kakaobank-logo.png는 지금 쓰지 않음)
   test/rules.test.js         상품 규칙 테스트 (vitest)
 ```
 

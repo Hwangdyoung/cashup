@@ -42,7 +42,7 @@ export default function DemoPanel({ onDemo, onReset, autoWalk, onAutoWalk, locke
           <hr />
           <h4>동선</h4>
           <p>카카오뱅크 홈 → 혜택 → 콜라보 적금 페이지 → 가입(헌터 소개·약관·금액·자동이체·길드·요약) → 개설 완료 → 적금 상세(홈·우대금리·걷기·길드) · 페널티 퀘스트 · 승급 연출 · 만기 결과</p>
-          <small>헌터 그림은 자리표시용이에요. 상품 전용 캐릭터 그림이 정해지면 교체해요. 이 세계관은 콜라보 한정 IF 설정이에요.</small>
+          <small>이 세계관은 콜라보 한정 IF 설정이에요.</small>
         </div>
       </div>
     </aside>
