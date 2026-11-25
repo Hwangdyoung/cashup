@@ -3,7 +3,8 @@ import { DungeonArt, TopBar } from '../components/Shell.jsx';
 import { CheckIcon } from '../components/Icons.jsx';
 import TierList from '../components/TierList.jsx';
 import { AMTS, BASE_RATE, DEMO_GUILD_CODE, GUILD_CODE_RE, GUILD_MAX, MAX_RATE, PAY_DAYS, S_BONUS, TOTAL } from '../lib/rules.js';
-import { HUNTER, SHADOWS, SHADOW_ART, hunterArt } from '../lib/characters.js';
+import { HUNTER, SEASON2_HUNTERS, SHADOWS, SHADOW_ART, hunterArt } from '../lib/characters.js';
+import { HaeinSilhouette, YunhoSilhouette } from '../components/Silhouettes.jsx';
 import { fmt, pct, pp, won } from '../lib/format.js';
 import { makeGuildCode, maturityPrincipal } from '../lib/savings.js';
 import { DEMO_ACCOUNT } from './BankHome.jsx';
@@ -15,6 +16,7 @@ const TERMS = [
   { id: 'pre', t: '금융상품 가입 전 안내', items: ['중요사항 설명 안내', '불이익사항 안내', '금융소비자 권리사항 안내'] },
   { id: 'law', t: '불법·탈법 차명거래 금지 설명 확인', items: [] },
 ];
+const SILHOUETTE = { haein: HaeinSilhouette, yunho: YunhoSilhouette };
 const STEPS = ['hunter', 'terms', 'amount', 'debit', 'guild', 'summary'];
 
 /* 가입 단계. 마치면 onOpen({ base, payDay, guild }) */
@@ -65,11 +67,32 @@ export default function Join({ onExit, onOpen, sound }) {
               <h2>
                 {TOTAL}주 동안 함께 성장할
                 <br />
-                헌터를 소개할게요
+                헌터를 골라주세요
               </h2>
-              <p className="lead">가입자는 헌터 협회의 특별 성장 프로젝트에 참여해 {HUNTER.n}을 E급에서 S급까지 키워요.</p>
+              <p className="lead">헌터 협회의 특별 성장 프로젝트에 참여해 고른 헌터를 E급에서 S급까지 키워요.</p>
+              <div className="hpick" role="radiogroup" aria-label="헌터 선택">
+                <div className="hpick-c on" role="radio" aria-checked="true">
+                  <DungeonArt className="hpick-art" grade={0} />
+                  <Ck on />
+                  <b>{HUNTER.n}</b>
+                </div>
+                {SEASON2_HUNTERS.map((h) => {
+                  const Sil = SILHOUETTE[h.id];
+                  return (
+                    <div className="hpick-c lock" role="radio" aria-checked="false" aria-disabled="true" key={h.id}>
+                      <DungeonArt className="hpick-art" grade={0} hunter={false}>
+                        <Sil className="hpick-sil" />
+                        <span className="hpick-soon">
+                          <b>시즌 2</b>
+                          <small>COMING SOON</small>
+                        </span>
+                      </DungeonArt>
+                      <b>{h.n}</b>
+                    </div>
+                  );
+                })}
+              </div>
               <div className="hunter-card">
-                <DungeonArt className="art" grade={0} />
                 <div className="info">
                   <b>{HUNTER.n}</b>
                   <small>{HUNTER.title}</small>

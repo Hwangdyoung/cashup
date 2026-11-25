@@ -182,10 +182,22 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .join-body{padding:16px 22px 10px}
 .join-body h2{font-size:22px;line-height:1.4;letter-spacing:-.02em}
 .join-body .lead{font-size:14px;color:var(--ink-2);margin-top:8px;line-height:1.5}
-.hunter-card{margin-top:18px;border-radius:18px;overflow:hidden;background:#1A1440;color:#fff}
-.hunter-card .art{position:relative;height:190px}
-.hunter-card .art .bgsvg,.hunter-card .art .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
-.hunter-card .art img{position:absolute;left:50%;bottom:12px;height:150px;transform:translateX(-50%);filter:drop-shadow(0 0 10px #A47BFF)}
+.hunter-card{margin-top:12px;border-radius:18px;overflow:hidden;background:#1A1440;color:#fff}
+.hpick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}
+.hpick-c{position:relative;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:#1A1440;border:2px solid #1A1440}
+.hpick-c.on{border-color:var(--y)}
+.hpick-art{position:relative;height:138px}
+.hpick-art .bgsvg,.hpick-art .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
+.hpick-art img,.hpick-art .hpick-sil{position:absolute;left:50%;bottom:8px;height:110px;width:auto;aspect-ratio:434/600;transform:translateX(-50%)}
+.hpick-art img{filter:drop-shadow(0 0 8px #A47BFF)}
+.hpick-art .hpick-sil{filter:drop-shadow(0 0 1.2px #C9B4FF) drop-shadow(0 0 1.2px #C9B4FF) drop-shadow(0 0 9px rgba(164,123,255,.7))}
+.hpick-c>b{font-family:var(--font);font-size:15px;color:#fff;text-align:center;padding:7px 0 9px}
+.hpick-c.lock>b{color:#8E86B5}
+.hpick-c .ck{position:absolute;top:8px;right:8px;z-index:2;background:rgba(0,0,0,.35);border-color:rgba(255,255,255,.5)}
+.hpick-c .ck.on{background:var(--y);border-color:var(--y);color:var(--ink)}
+.hpick-soon{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding-bottom:34px;text-align:center}
+.hpick-soon b{font-family:var(--font);font-size:22px;color:#FFD23F;text-shadow:0 0 10px rgba(0,0,0,.9)}
+.hpick-soon small{font-size:9px;font-weight:800;letter-spacing:.16em;color:#fff;text-shadow:0 0 6px rgba(0,0,0,.9)}
 .hunter-card .info{padding:14px 16px 16px}
 .hunter-card .info b{font-family:var(--font);font-size:19px}
 .hunter-card .info small{font-size:12px;color:#C9BDFF;margin-left:6px}

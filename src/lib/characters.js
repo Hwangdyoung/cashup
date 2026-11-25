@@ -40,3 +40,9 @@ export const HUNTER = {
   tool: 'dagger',
   awaken: '그림자 군단이 완성되고, 총사령관 벨리온이 무릎을 꿇습니다',
 };
+
+/* 헌터 선택 화면에 실루엣으로만 보이는 시즌 2 헌터 (지금은 고를 수 없음) */
+export const SEASON2_HUNTERS = [
+  { id: 'haein', n: '차해인' },
+  { id: 'yunho', n: '백윤호' },
+];
