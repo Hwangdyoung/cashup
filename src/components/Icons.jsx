@@ -40,16 +40,6 @@ export function GuildIcon() {
   );
 }
 
-export function SoundIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path className="spk" d="M4 9.5h3.2L12 5.6v12.8l-4.8-3.9H4z" />
-      <path className="w" d="M15.3 9.2a4 4 0 0 1 0 5.6M17.9 6.6a7.6 7.6 0 0 1 0 10.8" />
-      <path className="x" d="M16 9.6l4.8 4.8M20.8 9.6L16 14.4" />
-    </svg>
-  );
-}
-
 export function GateIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="#FFB3C1" strokeWidth="2" strokeLinecap="round" aria-hidden="true">

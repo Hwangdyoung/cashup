@@ -59,7 +59,6 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .kb-btn.black{background:#1E1E1E;color:#fff}
 .kb-btn.ghost{background:var(--soft);color:var(--ink)}
 .bottom-cta{flex:none;padding:10px 16px 18px;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 22%)}
-.bottom-cta.on-bg{background:linear-gradient(180deg,rgba(245,246,248,0),var(--bg) 22%)}
 .demo-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--ink-3);background:var(--soft);border-radius:999px;padding:3px 9px}
 
 /* 가벼운 안내(카뱅식 토스트) */
@@ -318,7 +317,6 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .btn{width:100%;padding:15px;border-radius:12px;background:var(--y);color:var(--y-ink);font-weight:700;font-size:15px;margin-top:14px}
 .btn.sub{background:var(--soft);color:var(--ink);font-size:14px;padding:12px}
 .btn:disabled{background:var(--disabled);color:#ABABAB;cursor:not-allowed}
-.link{white-space:nowrap;flex:none;color:var(--ink-2);font-size:13px;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
 
 /* 홈 ② 이번 주 납입 */
 .pay-sec{background:#fff;padding:16px 20px 18px;margin-bottom:8px}
@@ -548,7 +546,6 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .kv dd{color:#fff;text-align:right}
 .ifnote{font-size:10.5px;color:#9FC0DD;line-height:1.5;margin-top:10px;text-align:left;font-family:var(--sans)}
 .foot2{display:flex;gap:8px;margin-top:12px}.foot2 .btn{margin:0}
-.sw .reward-sw{display:inline-block;margin-top:8px;font-size:12px;color:#FFE680;border:1px solid rgba(255,230,128,.5);border-radius:999px;padding:3px 10px;font-family:var(--sans)}
 
 /* ═════ 승급 연출 ═════ */
 /* 승급 연출 4컷 */

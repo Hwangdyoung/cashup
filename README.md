@@ -109,7 +109,8 @@ src/
     sfx.js                   효과음 · 던전 BGM (Web Audio 합성)
     scene.js                 던전 무대 배경 · 무기 아이콘 SVG
     format.js                원 · 금리 표기
-  assets/                    character/ 헌터·그림자 병사 그림 · 나혼렙 폰트 (kakaobank-logo.png는 지금 쓰지 않음)
+  assets/                    character/ 헌터·그림자 병사 그림 · fonts/ 나혼렙 폰트
+public/og.png               링크 미리보기 이미지 (1200×630)
   test/rules.test.js         상품 규칙 테스트 (vitest)
 ```
 
@@ -150,4 +151,5 @@ vercel --prod
 
 - 페널티 퀘스트 통과 기준(지금은 점수제 임시: 던전 러닝 1,500점 · 독충 회피 240점)
 - 등급별 리워드 품목, 히든 각성 추가 리워드 (앱에는 '(예정)'으로만 표시)
-- 상품 전용 캐릭터 그림
+- 성진우 등급별 그림 (지금은 E급 · 성장 두 장, `characters.js`의 `HUNTER_ART`에서 교체)
+- 시즌 2 헌터(차해인 · 백윤호) 그림 — 지금은 선택 화면 실루엣만
