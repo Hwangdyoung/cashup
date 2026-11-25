@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { HUNTER, hunterArt } from './lib/characters.js';
 import { won } from './lib/format.js';
-import { fresh, gates, openSavings } from './lib/savings.js';
+import { awakened, fresh, gates, openSavings } from './lib/savings.js';
 import * as act from './lib/actions.js';
 import { bgmSet, installSfx, sfx, sfxOn, sfxSet } from './lib/sfx.js';
 import { TRIES_PER_TICKET } from './lib/rules.js';
@@ -12,6 +12,7 @@ import DemoPanel, { DemoSheet } from './components/DemoPanel.jsx';
 import RankUp from './components/RankUp.jsx';
 import StatusWindow from './components/StatusWindow.jsx';
 import ResultWindow from './components/ResultWindow.jsx';
+import AwakenScene from './components/AwakenScene.jsx';
 import SystemWindow, { SysLine } from './components/SystemWindow.jsx';
 import { GateConfirm, RepayWindow } from './components/PenaltyWindows.jsx';
 import { KbToast, StatusBar, TopBar } from './components/Shell.jsx';
@@ -44,6 +45,7 @@ export default function App() {
   const [kbToast, setKbToast] = useState(null); // 카카오뱅크식 가벼운 안내
   const [modal, setModal] = useState(null); // { kind: 'welcome'|'status'|'gate'|'repay'|'result', week? }
   const [rankUp, setRankUp] = useState(null);
+  const [awaken, setAwaken] = useState(false); // 히든 각성 연출 대기 (승급 연출이 닫힌 뒤 보여 줌)
   const [game, setGame] = useState(null); // { week, used }
   const [pop, setPop] = useState(0);
   const [soundOn, setSoundOn] = useState(sfxOn);
@@ -87,6 +89,11 @@ export default function App() {
     setModal(m);
   };
 
+  const showResult = () => {
+    openModal({ kind: 'result' });
+    sfx('result');
+  };
+
   const handle = (fx) => {
     for (const f of fx) {
       if (f.type === 'sys') showSys(f.text, f.kind, f.snd);
@@ -99,8 +106,8 @@ export default function App() {
         }, RANKUP_DELAY);
       else if (f.type === 'result')
         later(() => {
-          openModal({ kind: 'result' });
-          sfx('result');
+          if (awakened(sRef.current)) setAwaken(true);
+          else showResult();
         }, f.delay);
     }
   };
@@ -186,6 +193,7 @@ export default function App() {
     clearTimers();
     setGame(null);
     setRankUp(null);
+    setAwaken(false);
     setModal(null);
     setToast(null);
     setKbToast(null);
@@ -381,6 +389,15 @@ export default function App() {
             onClose={() => {
               setRankUp(null);
               sfx('close');
+            }}
+          />
+        )}
+        {awaken && !rankUp && (
+          <AwakenScene
+            s={s}
+            onDone={() => {
+              setAwaken(false);
+              showResult();
             }}
           />
         )}

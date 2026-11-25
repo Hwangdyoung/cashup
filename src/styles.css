@@ -555,6 +555,20 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .ru-sold span{display:inline-flex;align-items:center;gap:6px}
 .ru-sold img{height:36px;filter:drop-shadow(0 0 4px rgba(164,123,255,.8))}
 .ru-reward{font-family:var(--sans);font-size:12px;color:#FFE680;margin-top:12px}
+/* 히든 각성 연출 (승급 연출 .ru 위에 같은 암전·창 방식) */
+.aw-cond{font-family:var(--sans);font-size:12.5px;color:#D9C9FF;margin-top:4px}
+.aw-stage{position:relative;height:196px;margin:12px -4px 0;border-radius:8px;overflow:hidden}
+.aw-stage .bgsvg,.aw-stage .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
+.aw-army{position:absolute;left:0;right:0;top:22px;display:flex;justify-content:center;gap:2px}
+.aw-army img{height:58px;opacity:0;filter:drop-shadow(0 0 6px rgba(164,123,255,.9));animation:awRise .5s ease-out both}
+.aw-hero{position:absolute;left:24%;bottom:10px;height:118px;transform:translateX(-50%);filter:drop-shadow(0 0 10px #A47BFF)}
+.aw-bellion{position:absolute;left:68%;bottom:6px;height:120px;width:auto;aspect-ratio:1;transform:translateX(-50%);opacity:0;filter:drop-shadow(0 0 1.5px #C9B4FF) drop-shadow(0 0 14px rgba(164,123,255,.85));animation:awBellion .9s 1.9s ease-out both}
+@keyframes awRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes awBellion{from{opacity:0;transform:translate(-50%,30px) scale(.92)}to{opacity:1;transform:translateX(-50%)}}
+.aw-title{font-family:var(--font);font-size:26px;color:#FFD23F;margin-top:14px;text-shadow:0 0 14px rgba(164,123,255,.9);animation:awFade .5s 2.5s both}
+.aw-line{font-family:var(--sans);font-size:13.5px;color:#fff;margin-top:4px;word-break:keep-all;text-wrap:balance;animation:awFade .5s 2.6s both}
+.aw-scene .ru-reward,.aw-foot{animation:awFade .5s 2.8s both}
+@keyframes awFade{from{opacity:0;transform:translateY(6px)}}
 .swap{position:relative;height:132px;margin:4px 0 0}
 .swap img{position:absolute;left:50%;bottom:0;height:128px;transform:translateX(-50%);filter:drop-shadow(0 0 12px var(--gc))}
 .swap .tool{position:absolute;right:14%;bottom:28px;width:52px;height:52px}

@@ -90,7 +90,8 @@ src/
     StatusWindow.jsx         상태창
     PenaltyWindows.jsx       유예권 확인 · 재납입 창
     RankUp.jsx · ResultWindow.jsx   등급 상승 연출 · 프로젝트 수료(만기 결과)
-    Silhouettes.jsx          헌터 선택 화면의 시즌 2 실루엣(차해인 · 백윤호)
+    AwakenScene.jsx          히든 각성 연출(만기 · 걷기 보너스 EXP 10,000 이상 → 그림자 군단 · 벨리온 실루엣)
+    Silhouettes.jsx          실루엣 그림(헌터 선택의 시즌 2 차해인·백윤호 · 히든 각성의 벨리온)
     TabBar.jsx · DemoPanel.jsx(시연 컨트롤: 데스크톱 옆 패널 · 휴대폰 아래 시트) · Icons.jsx
   game/
     PenaltyGame.jsx          미니게임 화면 뼈대 + 엔진 연결(콜백으로 앱과 주고받음)
