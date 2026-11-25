@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { AWAKEN_EXP, DEMO_GUILD_CODE, GUILD_CODE_RE, MAX_RATE, TICKETS, TIERS, TOTAL } from '../lib/rules.js';
 import { awakened, gradeOf, makeGuildCode, maturityPrincipal, openSavings, principal, rates, tier } from '../lib/savings.js';
-import { addMates, demoMiss, demoTo25, demoWeek, gameFailed, nextDay, pay, repay, useTicket, walk } from '../lib/actions.js';
+import { addMates, demoFinish, demoMiss, demoTo25, demoWeek, gameFailed, nextDay, pay, repay, useTicket, walk } from '../lib/actions.js';
 
 /* CLAUDE.md '확정된 상품 규칙'이 코드에 그대로 들어갔는지 본다 */
 const start = (base = 1000) => openSavings({ base });
@@ -134,5 +134,18 @@ describe('길드 (포스터: 초대 코드로 만들기 · 참여)', () => {
     expect(s.guildOwner).toBe(false);
     expect(tier(s)).toBe(0);
     expect(rates(s).guild).toBe(0.5);
+  });
+});
+
+describe('시연: 만기 · 히든 각성 바로 보기', () => {
+  it('게이트를 정리하고 S급 · 히든 각성으로 만기, 걷기 EXP는 26주 최대치를 넘지 않음', () => {
+    const s = openSavings({ base: 1000 });
+    demoMiss(s);
+    const fx = demoFinish(s);
+    expect(s.matured).toBe(true);
+    expect(s.grade).toBe(5);
+    expect(awakened(s)).toBe(true);
+    expect(s.walkExp).toBeLessThanOrEqual(TOTAL * 7 * 100);
+    expect(fx.some((f) => f.type === 'result')).toBe(true);
   });
 });

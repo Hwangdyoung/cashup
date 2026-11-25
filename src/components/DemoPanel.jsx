@@ -1,4 +1,4 @@
-import { CloseIcon, ResetIcon } from './Icons.jsx';
+import { ChevronRight, DemoIcon, ResetIcon } from './Icons.jsx';
 import { fmt } from '../lib/format.js';
 import { WALK_GOAL } from '../lib/rules.js';
 
@@ -10,9 +10,10 @@ const BUTTONS = [
   ['mate', '길드원 +1명'],
   ['mate5', '길드원 +5명'],
   ['to25', '25주로 이동', null, true],
+  ['finish', '만기 · 히든 각성 바로 보기', '승급 → 히든 각성 → 수료 결과', true],
 ];
 
-/* 시연 버튼 묶음 (데스크톱 옆 패널과 휴대폰 아래 시트가 같이 씀) */
+/* 시연 버튼 묶음 (데스크톱 옆 패널과 폰 안 리모컨 서랍이 같이 씀) */
 function DemoControls({ onDemo, onReset, autoWalk, onAutoWalk }) {
   return (
     <>
@@ -50,7 +51,7 @@ export default function DemoPanel({ onDemo, onReset, autoWalk, onAutoWalk, locke
           </p>
           <hr />
           <h4>동선</h4>
-          <p>카카오뱅크 홈 → 혜택 → 콜라보 적금 페이지 → 가입(헌터 소개·약관·금액·자동이체·길드·요약) → 개설 완료 → 적금 상세(홈·우대금리·걷기·길드) · 페널티 퀘스트 · 승급 연출 · 만기 결과</p>
+          <p>카카오뱅크 홈 → 혜택 → 콜라보 적금 페이지 → 가입(헌터 선택·약관·금액·자동이체·길드·요약) → 개설 완료 → 적금 상세(홈·우대금리·걷기·길드) · 페널티 퀘스트 · 승급 연출 · 만기 결과</p>
           <small>이 세계관은 콜라보 한정 IF 설정이에요.</small>
         </div>
       </div>
@@ -58,25 +59,27 @@ export default function DemoPanel({ onDemo, onReset, autoWalk, onAutoWalk, locke
   );
 }
 
-/* 휴대폰 폭에서는 옆 패널 대신 적금 하단 탭 '시연'으로 여는 아래 시트.
-   버튼을 누르면 시트를 닫아 무대·알림·승급 연출이 바로 보이게 한다 (체크박스는 닫지 않음) */
-export function DemoSheet({ open, onClose, onDemo, onReset, autoWalk, onAutoWalk }) {
-  if (!open) return null;
-  const done = (fn) => (...a) => {
-    onClose();
-    fn(...a);
-  };
+/* 폰 안 리모컨 서랍: 오른쪽 가장자리 '시연' 손잡이를 누르면 밀려 나오고, 화살표로 다시 들어간다.
+   열어 둔 채 버튼을 연달아 누를 수 있고, 왼쪽 화면에서 결과(알림·승급 연출)를 바로 본다 */
+export function DemoRemote({ open, onToggle, onDemo, onReset, autoWalk, onAutoWalk }) {
   return (
-    <div className="dsheet" onClick={onClose}>
-      <div className="dsheet-in" role="dialog" aria-label="시연 컨트롤" onClick={(e) => e.stopPropagation()}>
-        <div className="dsheet-hd">
+    <div className={`remote${open ? ' open' : ''}`}>
+      <button type="button" className="remote-tab" aria-expanded={open} aria-controls="remote-in" aria-label={open ? '시연 컨트롤 닫기' : '시연 컨트롤 열기'} onClick={onToggle}>
+        {open ? (
+          <ChevronRight />
+        ) : (
+          <>
+            <DemoIcon />
+            <span>시연</span>
+          </>
+        )}
+      </button>
+      <div className="remote-in" id="remote-in" role="region" aria-label="시연 컨트롤" {...(open ? {} : { inert: '' })}>
+        <div className="remote-hd">
           <b>시연 컨트롤</b>
           <span className="demo-chip">발표용</span>
-          <button type="button" className="dsheet-x" aria-label="닫기" onClick={onClose}>
-            <CloseIcon />
-          </button>
         </div>
-        <DemoControls onDemo={done(onDemo)} onReset={done(onReset)} autoWalk={autoWalk} onAutoWalk={onAutoWalk} />
+        <DemoControls onDemo={onDemo} onReset={onReset} autoWalk={autoWalk} onAutoWalk={onAutoWalk} />
       </div>
     </div>
   );

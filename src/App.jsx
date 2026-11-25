@@ -8,7 +8,8 @@ import { TRIES_PER_TICKET } from './lib/rules.js';
 import Header, { SoundButton } from './components/Header.jsx';
 import TabBar from './components/TabBar.jsx';
 import SysToast from './components/SysToast.jsx';
-import DemoPanel, { DemoSheet } from './components/DemoPanel.jsx';
+import DemoPanel, { DemoRemote } from './components/DemoPanel.jsx';
+import Onboarding, { onboardSeen, markOnboardSeen } from './components/Onboarding.jsx';
 import RankUp from './components/RankUp.jsx';
 import StatusWindow from './components/StatusWindow.jsx';
 import ResultWindow from './components/ResultWindow.jsx';
@@ -50,7 +51,9 @@ export default function App() {
   const [pop, setPop] = useState(0);
   const [soundOn, setSoundOn] = useState(sfxOn);
   const [autoWalk, setAutoWalk] = useState(true);
-  const [sheet, setSheet] = useState(false); // 휴대폰 폭 시연 시트
+  const [remote, setRemote] = useState(false); // 폰 안 시연 리모컨 서랍
+  const [onboard, setOnboard] = useState(() => !onboardSeen()); // 첫 방문 안내
+  const [hint, setHint] = useState(false); // 안내를 닫으면 홈 배너를 잠깐 강조
   const [proj, setProj] = useState('keep');
   const [joinKey, setJoinKey] = useState(0); // 가입 화면을 처음부터 다시 그릴 때
 
@@ -249,6 +252,7 @@ export default function App() {
     else if (id === 'mate') run(act.addMates, 1);
     else if (id === 'mate5') run(act.addMates, 5);
     else if (id === 'to25') run(act.demoTo25, opts);
+    else if (id === 'finish') run(act.demoFinish);
   };
 
   const copyCode = () => {
@@ -354,15 +358,11 @@ export default function App() {
               tab={tab}
               onTab={goTab}
               dot={gates(s).length > 0}
-              onDemo={() => {
-                sfx('tap');
-                setSheet(true);
-              }}
             />
           </div>
         );
       default:
-        return <BankHome s={s} onPromo={() => go('collab')} onSavings={() => go('savings')} onTab={onBankTab} onSoon={soon} />;
+        return <BankHome s={s} hint={hint} onPromo={() => go('collab')} onSavings={() => go('savings')} onTab={onBankTab} onSoon={soon} />;
     }
   };
 
@@ -380,7 +380,6 @@ export default function App() {
           }}
         />
         <KbToast toast={kbToast} />
-        <DemoSheet open={sheet && route === 'savings' && !game} onClose={() => setSheet(false)} onDemo={onDemo} onReset={fullReset} autoWalk={autoWalk} onAutoWalk={setAutoWalk} />
         <div className={`modal${modal ? ' show' : ''}`}>{renderModal()}</div>
         {rankUp && (
           <RankUp
@@ -399,6 +398,35 @@ export default function App() {
               setAwaken(false);
               showResult();
             }}
+          />
+        )}
+        {onboard && route === 'bank' && (
+          <Onboarding
+            onStart={() => {
+              markOnboardSeen();
+              setOnboard(false);
+              go('collab');
+            }}
+            onClose={() => {
+              markOnboardSeen();
+              setOnboard(false);
+              sfx('close');
+              setHint(true);
+              later(() => setHint(false), 2600);
+            }}
+          />
+        )}
+        {!game && (
+          <DemoRemote
+            open={remote}
+            onToggle={() => {
+              sfx(remote ? 'close' : 'tap');
+              setRemote(!remote);
+            }}
+            onDemo={onDemo}
+            onReset={fullReset}
+            autoWalk={autoWalk}
+            onAutoWalk={setAutoWalk}
           />
         )}
         {game && (

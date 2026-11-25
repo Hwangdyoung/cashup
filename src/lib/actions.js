@@ -1,4 +1,4 @@
-import { EXP_PAY, EXP_WALK, TIERS, TOTAL, WALK_GOAL } from './rules.js';
+import { AWAKEN_EXP, EXP_PAY, EXP_WALK, TIERS, TOTAL, WALK_GOAL } from './rules.js';
 import { amt, gates, gradeOf, isDone, rates, tier } from './savings.js';
 import { fmt, pct, pp, won } from './format.js';
 
@@ -234,6 +234,29 @@ export function demoTo25(s, { autoWalk }) {
   }
   fx.push(sys('[{25주차}로 이동했습니다]\n이번 주와 다음 주 납입으로 만기에 도전하세요'));
   checkGrade(s, fx);
+  return fx;
+}
+
+/* 만기 · 히든 각성 바로 보기: 열린 페널티 게이트는 재납입 처리, 남은 주차는 모두 납입,
+   남은 날은 걸은 것으로 치고, 그래도 모자란 걷기 보너스 EXP는 히든 각성 기준까지 채운다 → 승급 연출 · 히든 각성 · 수료 결과 */
+export function demoFinish(s) {
+  const fx = [];
+  if (s.matured) return fx;
+  gates(s).forEach((w) => {
+    s.weeks[w] = 'rescued';
+    s.exp += EXP_PAY;
+  });
+  for (let i = 0; i <= TOTAL && !s.matured; i++) {
+    if (!s.weeks[s.wk]) payWeek(s);
+    const last = s.wk >= TOTAL;
+    advanceWeek(s, fx, true);
+    if (last) break;
+  }
+  /* 남은 날을 모두 걸어도 모자라면 기준까지만 채움 (결과 창은 잠시 뒤에 이 값으로 그려진다) */
+  if (s.walkExp < AWAKEN_EXP) {
+    s.exp += AWAKEN_EXP - s.walkExp;
+    s.walkExp = AWAKEN_EXP;
+  }
   return fx;
 }
 
