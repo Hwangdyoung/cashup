@@ -23,7 +23,7 @@ export default function AwakenScene({ s, onDone }) {
           <em>히든 각성</em> 조건을 달성했습니다.
         </SysLine>
         <p className="aw-cond">
-          걷기 보너스 EXP {fmt(s.walkExp)} / {fmt(AWAKEN_EXP)}
+          걷기 보너스 EXP {fmt(s.walkExp)} · 기준 {fmt(AWAKEN_EXP)} 달성
         </p>
         <DungeonArt className="aw-stage" grade={5} hunter={false}>
           <div className="aw-army" aria-hidden="true">

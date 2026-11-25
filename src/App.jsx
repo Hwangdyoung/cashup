@@ -416,7 +416,7 @@ export default function App() {
             }}
           />
         )}
-        {!game && (
+        {!game && !(onboard && route === 'bank') && (
           <DemoRemote
             open={remote}
             onToggle={() => {

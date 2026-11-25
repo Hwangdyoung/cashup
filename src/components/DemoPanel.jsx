@@ -2,37 +2,58 @@ import { ChevronRight, DemoIcon, ResetIcon } from './Icons.jsx';
 import { fmt } from '../lib/format.js';
 import { WALK_GOAL } from '../lib/rules.js';
 
-const BUTTONS = [
-  ['day', '다음 날', '걸음 초기화'],
-  ['week', '다음 주', '이번 주 납입'],
-  ['five', '5주 빠르게'],
-  ['miss', '이번 주 미납'],
-  ['mate', '길드원 +1명'],
-  ['mate5', '길드원 +5명'],
-  ['to25', '25주로 이동', null, true],
-  ['finish', '만기 · 히든 각성 바로 보기', '승급 → 히든 각성 → 수료 결과', true],
+/* 목적별 묶음: 시간을 넘기는 버튼 · 상황을 만드는 버튼 · 연출 바로 보기 */
+const GROUPS = [
+  [
+    '시간 넘기기',
+    [
+      ['day', '다음 날', '걸음 초기화'],
+      ['week', '다음 주', '이번 주 납입'],
+      ['five', '5주 빠르게'],
+      ['to25', '25주로 이동'],
+    ],
+  ],
+  [
+    '상황 만들기',
+    [
+      ['miss', '이번 주 미납'],
+      ['mate', '길드원 +1명'],
+      ['mate5', '길드원 +5명'],
+    ],
+  ],
 ];
 
 /* 시연 버튼 묶음 (데스크톱 옆 패널과 폰 안 리모컨 서랍이 같이 씀) */
 function DemoControls({ onDemo, onReset, autoWalk, onAutoWalk }) {
   return (
     <>
-      <div className="ctl">
-        {BUTTONS.map(([id, label, sub, wide]) => (
-          <button key={id} type="button" className={wide ? 'wide' : undefined} onClick={() => onDemo(id)}>
-            {label}
-            {sub && <small>{sub}</small>}
-          </button>
-        ))}
-        <button type="button" className="wide danger" onClick={onReset}>
-          <ResetIcon />
-          전체 초기화 (카카오뱅크 홈부터 다시)
-        </button>
-      </div>
-      <label className="chk">
-        <input type="checkbox" checked={autoWalk} onChange={(e) => onAutoWalk(e.target.checked)} />
-        건너뛴 날은 {fmt(WALK_GOAL)}보를 걸은 것으로
-      </label>
+      <button type="button" className="ctl-hero" onClick={() => onDemo('finish')}>
+        <b>만기 · 히든 각성 바로 보기</b>
+        <small>승급 → 히든 각성 → 수료 결과</small>
+      </button>
+      {GROUPS.map(([title, buttons]) => (
+        <div className="ctl-group" key={title}>
+          <p className="ctl-t">{title}</p>
+          <div className="ctl">
+            {buttons.map(([id, label, sub]) => (
+              <button key={id} type="button" onClick={() => onDemo(id)}>
+                {label}
+                {sub && <small>{sub}</small>}
+              </button>
+            ))}
+          </div>
+          {title === '시간 넘기기' && (
+            <label className="chk">
+              <input type="checkbox" checked={autoWalk} onChange={(e) => onAutoWalk(e.target.checked)} />
+              건너뛴 날은 {fmt(WALK_GOAL)}보 걸은 것으로
+            </label>
+          )}
+        </div>
+      ))}
+      <button type="button" className="ctl-reset" onClick={onReset}>
+        <ResetIcon />
+        전체 초기화 · 카카오뱅크 홈부터
+      </button>
     </>
   );
 }
