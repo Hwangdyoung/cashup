@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { HUNTER, hunterArt } from './lib/characters.js';
-import { won } from './lib/format.js';
+import { hunterArt } from './lib/characters.js';
 import { awakened, fresh, gates, openSavings } from './lib/savings.js';
 import * as act from './lib/actions.js';
 import { bgmSet, installSfx, sfx, sfxOn, sfxSet } from './lib/sfx.js';
@@ -9,12 +8,11 @@ import Header, { SoundButton } from './components/Header.jsx';
 import TabBar from './components/TabBar.jsx';
 import SysToast from './components/SysToast.jsx';
 import DemoPanel, { DemoRemote } from './components/DemoPanel.jsx';
-import Onboarding, { onboardSeen, markOnboardSeen } from './components/Onboarding.jsx';
+import WelcomeIntro from './components/WelcomeIntro.jsx';
 import RankUp from './components/RankUp.jsx';
 import StatusWindow from './components/StatusWindow.jsx';
 import ResultWindow from './components/ResultWindow.jsx';
 import AwakenScene from './components/AwakenScene.jsx';
-import SystemWindow, { SysLine } from './components/SystemWindow.jsx';
 import { GateConfirm, RepayWindow } from './components/PenaltyWindows.jsx';
 import { KbToast, StatusBar, TopBar } from './components/Shell.jsx';
 import BankHome from './screens/BankHome.jsx';
@@ -52,8 +50,6 @@ export default function App() {
   const [soundOn, setSoundOn] = useState(sfxOn);
   const [autoWalk, setAutoWalk] = useState(true);
   const [remote, setRemote] = useState(false); // 폰 안 시연 리모컨 서랍
-  const [onboard, setOnboard] = useState(() => !onboardSeen()); // 첫 방문 안내
-  const [hint, setHint] = useState(false); // 안내를 닫으면 홈 배너를 잠깐 강조
   const [proj, setProj] = useState('keep');
   const [joinKey, setJoinKey] = useState(0); // 가입 화면을 처음부터 다시 그릴 때
 
@@ -265,24 +261,7 @@ export default function App() {
     if (!modal) return null;
     switch (modal.kind) {
       case 'welcome':
-        return (
-          <SystemWindow title="헌터 협회" alert>
-            <SysLine>
-              <em>특별 성장 프로젝트</em>에 등록되었습니다.
-            </SysLine>
-            <p className="swsub">
-              E급 · 곡괭이를 든 신입 헌터 {HUNTER.n}
-              <br />
-              1주차 {won(s.base)} · 매주 납입하고 걸으며 S급까지
-            </p>
-            <p className="ifnote">이 상품의 스토리는 원작과 별개인 콜라보 한정 IF(만약에) 세계관입니다.</p>
-            <div className="foot2">
-              <button type="button" className="btn" onClick={closeModal}>
-                던전 입장
-              </button>
-            </div>
-          </SystemWindow>
-        );
+        return <WelcomeIntro base={s.base} onClose={closeModal} />;
       case 'status':
         return <StatusWindow s={s} onClose={closeModal} />;
       case 'gate':
@@ -362,7 +341,7 @@ export default function App() {
           </div>
         );
       default:
-        return <BankHome s={s} hint={hint} onPromo={() => go('collab')} onSavings={() => go('savings')} onTab={onBankTab} onSoon={soon} />;
+        return <BankHome s={s} onPromo={() => go('collab')} onSavings={() => go('savings')} onTab={onBankTab} onSoon={soon} />;
     }
   };
 
@@ -400,23 +379,7 @@ export default function App() {
             }}
           />
         )}
-        {onboard && route === 'bank' && (
-          <Onboarding
-            onStart={() => {
-              markOnboardSeen();
-              setOnboard(false);
-              go('collab');
-            }}
-            onClose={() => {
-              markOnboardSeen();
-              setOnboard(false);
-              sfx('close');
-              setHint(true);
-              later(() => setHint(false), 2600);
-            }}
-          />
-        )}
-        {!game && !(onboard && route === 'bank') && (
+        {!game && modal?.kind !== 'welcome' && (
           <DemoRemote
             open={remote}
             onToggle={() => {

@@ -10,12 +10,12 @@ export const DEMO_ACCOUNT = { name: '입출금통장', tail: '1234', balance: 12
 
 /* 카카오뱅크 홈 (실제 카카오뱅크 홈 구성)
    맨 위 알림 칩 → 대표 입출금통장 카드 → 내 계좌 목록(적금) → 카드 */
-export default function BankHome({ s, hint, onPromo, onSavings, onTab, onSoon }) {
+export default function BankHome({ s, onPromo, onSavings, onTab, onSoon }) {
   return (
     <div className="view bank">
       <div className="scroll">
         <div className="bank-top">
-          <button type="button" className={`notice${hint ? ' hint' : ''}`} onClick={onPromo}>
+          <button type="button" className="notice" onClick={onPromo}>
             <span className="notice-ic hol">S</span>
             <span>
               나 혼자만 캐시업 출시 <em>최고 {pct(MAX_RATE)}</em>
