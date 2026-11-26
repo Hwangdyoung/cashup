@@ -201,10 +201,10 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .hunter-card .info b{font-family:var(--font);font-size:20px;color:var(--ink)}
 .hunter-card .info small{font-size:12px;color:var(--sl-purple);margin-left:6px}
 .hunter-card .info p{font-size:13px;color:var(--ink-2);line-height:1.55;margin-top:4px}
-.shadow-line{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:13px;color:var(--ink)}
-.shadow-line span{display:inline-flex;align-items:center;gap:4px}
-.shadow-line img{height:28px}
-.shadow-line b{color:var(--sl-purple);margin-right:2px}
+.shadow-line{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:14px;font-size:12px;color:var(--ink-2);text-align:center}
+.shadow-line span{display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap}
+.shadow-line img{height:34px}
+.shadow-line b{color:var(--sl-purple);font-size:15px;line-height:1}
 .terms{margin-top:18px}
 .terms .all{width:100%;display:flex;align-items:center;gap:10px;background:var(--y);border-radius:12px;padding:14px;font-size:14px;font-weight:700;text-align:left}
 .terms .all svg{width:20px;height:20px;flex:none}
@@ -229,8 +229,8 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .amt-pick .on .radio{border:6px solid var(--ink)}
 .amt-flow{margin-top:6px;padding:12px 14px;background:#F7F7F7;border-radius:10px;font-size:12.5px;color:var(--ink-2);line-height:1.5}
 .amt-flow b{color:var(--ink);font-variant-numeric:tabular-nums}
-.amt-art{display:grid;place-items:center;margin-top:18px}
-.amt-art img{height:92px}
+.amt-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.amt-head img{height:76px;flex:none;margin-bottom:-2px}
 .day-pick{display:flex;gap:5px;margin-top:10px}
 .day-pick button{flex:1;min-width:0;height:44px;border-radius:10px;border:1px solid var(--line);font-size:15px;font-weight:700}
 .day-pick button.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);background:#FAFAFA}
@@ -434,8 +434,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .code b{font-size:22px;letter-spacing:.08em;font-variant-numeric:tabular-nums}
 .kb-btn.copy{height:50px;font-size:15px;margin-top:16px}
 /* 이번 주 길드 퀘스트 (전원 납입) */
-.gq-goal{font-size:14px;color:var(--ink-2)}
-.gq-count{display:flex;align-items:baseline;gap:4px;margin-top:2px;font-size:15px;color:var(--ink-2)}
+.gq-count{display:flex;align-items:baseline;gap:4px;font-size:15px;color:var(--ink-2)}
 .gq-count b{font-size:28px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
 .gq-count em{margin-left:auto;font-style:normal;font-size:13px;font-weight:700;color:var(--sl-purple)}
 .gq-bar{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;margin-top:10px}
@@ -486,11 +485,11 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .stage{position:relative;height:300px;overflow:hidden;color:var(--moon);font-family:var(--font)}
 .stage svg.bg{position:absolute;inset:0;width:100%;height:100%}
 .stage.miss-tint::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 100%,rgba(255,70,90,.32),transparent 60%);mix-blend-mode:screen}
-.tw{animation:tw 3.2s ease-in-out infinite}@keyframes tw{50%{opacity:.25}}
-.portal{animation:pulse 3.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.72}}
+.tw{animation:tw 3.2s ease-in-out 2}@keyframes tw{50%{opacity:.25}}
+.portal{animation:pulse 3.4s ease-in-out 2}@keyframes pulse{50%{opacity:.72}}
 .swirl{opacity:.35}
 
-.mote{animation:rise 4.2s ease-in infinite;opacity:0}@keyframes rise{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-90px);opacity:0}}
+.mote{animation:rise 4.2s ease-in 2;opacity:0}@keyframes rise{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-90px);opacity:0}}
 .hero{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);z-index:2;background:none;border:0;padding:0;height:150px;width:110px;border-radius:12px}
 .hero img{position:absolute;left:50%;bottom:0;height:150px;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 0 var(--glow,4px) var(--c))}
 .hero .aura{position:absolute;left:50%;bottom:-6px;width:150px;height:170px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,var(--c),transparent 68%);filter:blur(10px);opacity:var(--aura,.2);z-index:1}
@@ -676,9 +675,9 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .res-stats div+div{border-left:1px solid rgba(175,232,255,.2)}
 .res-stats b{display:block;font-size:17px;color:#fff}
 .res-stats span{font-size:12px;color:#9FB6D6}
-.res-awaken{margin-top:14px;padding:12px 14px;border-radius:6px;background:rgba(20,12,50,.55);border:1px solid rgba(164,123,255,.6);text-align:left;font-family:var(--sans)}
+.res-awaken{margin-top:14px;padding-top:12px;border-top:1px solid rgba(164,123,255,.55);text-align:left;font-family:var(--sans)}
 .res-awaken b{font-family:var(--font);font-size:15px;color:#D9C9FF}
-.res-awaken p{font-size:13px;color:#fff;margin:4px 0;line-height:1.5}
+.res-awaken p{font-size:13.5px;color:#fff;margin:4px 0;line-height:1.5;word-break:keep-all;text-wrap:balance}
 .res-awaken small{font-size:12px;color:#FFE680}
 
 /* ═════ 상태창 ═════ (원작 상태창 구조: 이름·칭호 → 막대 → 능력치 두 칸 격자 → 장비) */

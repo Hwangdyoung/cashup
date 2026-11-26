@@ -64,11 +64,10 @@ export default function Guild({ s, onCopy, onJoin, onNudge }) {
         <div className="card">
           <h3>
             이번 주 길드 퀘스트
-            <span>납입할 차례 {q.total}명</span>
+            <span>전원 납입</span>
           </h3>
-          <p className="gq-goal">길드원 전원 이번 주 납입</p>
           <p className="gq-count">
-            <b>{q.paid}</b> / {q.total}명
+            <b>{q.paid}</b> / {q.total}명 납입
             {q.done && <em>완료</em>}
           </p>
           <div className="gq-bar" role="progressbar" aria-valuemin={0} aria-valuemax={q.total} aria-valuenow={q.paid}>

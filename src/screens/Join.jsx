@@ -101,7 +101,8 @@ export default function Join({ onExit, onOpen, sound }) {
                     {SHADOWS.map((n, i) => (
                       <span key={n}>
                         <img src={SHADOW_ART[i]} alt="" />
-                        <b className="hol">{'DCBAS'[i]}</b> {n}
+                        <b className="hol">{'DCBAS'[i]}</b>
+                        {n}
                       </span>
                     ))}
                   </p>
@@ -143,15 +144,15 @@ export default function Join({ onExit, onOpen, sound }) {
 
           {id === 'amount' && (
             <>
-              <h2>
-                {TOTAL}주 도전 금액을
-                <br />
-                선택해주세요
-              </h2>
-              <p className="lead">1주차에 고른 금액을 넣고, 매주 그만큼씩 늘려서 넣어요.</p>
-              <div className="amt-art">
+              <div className="amt-head">
+                <h2>
+                  {TOTAL}주 도전 금액을
+                  <br />
+                  선택해주세요
+                </h2>
                 <img src={hunterArt(0)} alt="" />
               </div>
+              <p className="lead">1주차에 고른 금액을 넣고, 매주 그만큼씩 늘려서 넣어요.</p>
               <div className="amt-pick">
                 {AMTS.map((a) => (
                   <button
