@@ -16,6 +16,7 @@ function Badge({ g }) {
 }
 
 /* 길드: 이번 주 길드 퀘스트 · 함께하는 헌터 · 길드 소식 · 초대 코드
+   길드원마다 주차가 다르다. 26주를 채운 길드원은 '수료'로 남아 인원에 계속 들어가고, 이번 주 퀘스트에서만 빠진다
    공개 길드는 없고 초대 코드로만 함께한다 (포스터). 길드원은 모두 시연용 가짜 데이터 (lib/guild.js) */
 export default function Guild({ s, onCopy, onJoin, onNudge }) {
   const t = tier(s);
@@ -56,11 +57,11 @@ export default function Guild({ s, onCopy, onJoin, onNudge }) {
     <>
       {solo && invite}
 
-      {!solo && (
+      {!solo && !s.matured && (
         <div className="card">
           <h3>
             이번 주 길드 퀘스트
-            <span>{s.matured ? '만기' : s.wk + '주차'}</span>
+            <span>납입할 차례 {q.total}명</span>
           </h3>
           <p className="gq-goal">길드원 전원 이번 주 납입</p>
           <p className="gq-count">
@@ -71,7 +72,7 @@ export default function Guild({ s, onCopy, onJoin, onNudge }) {
             <i style={{ width: (q.paid / q.total) * 100 + '%' }} />
           </div>
           <p className="small gq-note">
-            {q.done ? '이번 주는 모두 해냈어요. 다음 주도 같이 가요.' : !myPaid ? '내 납입부터 채워 주세요.' : '아직 납입 전인 길드원이 있어요.'}
+            {q.total === 1 ? '이번 주 납입할 길드원은 나뿐이에요. 다른 길드원은 모두 수료했어요.' : q.done ? '이번 주는 모두 해냈어요. 다음 주도 같이 가요.' : !myPaid ? '내 납입부터 채워 주세요.' : '아직 납입 전인 길드원이 있어요.'}
           </p>
         </div>
       )}
@@ -87,23 +88,23 @@ export default function Guild({ s, onCopy, onJoin, onNudge }) {
               <Badge g={s.grade} />
               <span className="gm-who">
                 <strong>나</strong>
-                <small>그림자 병사 {s.grade}명</small>
+                <small>{s.matured ? '수료' : s.wk + '주차'} · 그림자 병사 {s.grade}명</small>
               </span>
-              <span className={'gm-st' + (myPaid ? ' ok' : '')}>{myPaid ? '납입 완료' : '납입 전'}</span>
+              <span className={'gm-st' + (myPaid || s.matured ? ' ok' : '')}>{s.matured ? '수료' : myPaid ? '납입 완료' : '납입 전'}</span>
             </li>
             {mates.slice(0, SHOWN).map((m) => (
               <li key={m.i} className={m.risk ? 'gm-risk' : ''}>
                 <Badge g={m.grade} />
                 <span className="gm-who">
                   <strong>{m.name}</strong>
-                  <small>{m.risk ? `${GUILD_DROP_MISS}주 연속 미납 · 정산 인원 제외 위험` : `그림자 병사 ${m.grade}명`}</small>
+                  <small>{m.risk ? `${GUILD_DROP_MISS}주 연속 미납 · 정산 인원 제외 위험` : `${m.graduated ? '수료' : m.week + '주차'} · 그림자 병사 ${m.grade}명`}</small>
                 </span>
                 {m.risk ? (
                   <button type="button" className="gm-nudge" disabled={m.nudged} onClick={() => onNudge(m.i)}>
                     {m.nudged ? '독려함' : '독려하기'}
                   </button>
                 ) : (
-                  <span className={'gm-st' + (m.paid ? ' ok' : '')}>{m.paid ? '납입 완료' : payDayName(m) + ' 납입'}</span>
+                  <span className={'gm-st' + (m.paid ? ' ok' : '') + (m.graduated ? ' grad' : '')}>{m.graduated ? '수료' : m.paid ? '납입 완료' : payDayName(m) + ' 납입'}</span>
                 )}
               </li>
             ))}

@@ -182,3 +182,18 @@ describe('길드 협동 (시연용 길드원)', () => {
     expect(guildFeed(s).some((e) => e.text.includes('밀린 납입'))).toBe(true);
   });
 });
+
+describe('길드원마다 주차가 다를 때', () => {
+  it('26주를 채운 길드원은 수료로 남아 인원에 계속 들어가고, 주간 퀘스트에서만 빠진다', () => {
+    const s = start();
+    addMates(s, 1); // 1번 길드원은 나보다 17주 앞
+    const t0 = tier(s);
+    for (let k = 0; k < 10; k++) demoWeek(s, { autoWalk: false }); // 나 11주차 → 길드원 28주차
+    const m = guildMates(s)[0];
+    expect(m.graduated).toBe(true);
+    expect(s.members).toBe(2);
+    expect(tier(s)).toBe(t0); // 수료해도 인원·구간 그대로
+    expect(guildQuest(s).total).toBe(1); // 이번 주 납입할 사람은 나뿐
+    expect(guildFeed(s, 10).some((e) => e.text.includes('수료'))).toBe(true);
+  });
+});
