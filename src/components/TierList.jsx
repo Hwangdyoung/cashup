@@ -12,7 +12,7 @@ export default function TierList({ current, style }) {
             <b>{x.n}</b>
             <small>{x.d}</small>
           </span>
-          <span>{x.min + (x.max === Infinity ? '명 이상' : '~' + x.max + '명')}</span>
+          <span>{x.min === x.max ? x.max + '명 (정원)' : x.min + '~' + x.max + '명'}</span>
           <span className="r">{pp(x.r)}</span>
         </div>
       ))}

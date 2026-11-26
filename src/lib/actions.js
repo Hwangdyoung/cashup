@@ -1,4 +1,4 @@
-import { AWAKEN_EXP, EXP_PAY, EXP_WALK, TIERS, TOTAL, WALK_GOAL } from './rules.js';
+import { AWAKEN_EXP, EXP_PAY, EXP_WALK, GUILD_CAP, TIERS, TOTAL, WALK_GOAL } from './rules.js';
 import { amt, gates, gradeOf, isDone, rates, tier } from './savings.js';
 import { fmt, pct, pp, won } from './format.js';
 import { clock, guildQuest, mateName } from './guild.js';
@@ -122,6 +122,8 @@ export function walk(s, n) {
 
 export function addMates(s, n) {
   const fx = [];
+  n = Math.min(n, GUILD_CAP - s.members);
+  if (n <= 0) return [sys('[{길드 정원}이 찼습니다]\n한 길드는 최대 ' + GUILD_CAP + '명까지 함께해요', 'warn')];
   const t0 = tier(s);
   s.guildLog = [...(s.guildLog || []), ...Array.from({ length: n }, (_, k) => ({ t: clock(s), i: s.members - 1 + k }))].slice(-10);
   s.members += n;

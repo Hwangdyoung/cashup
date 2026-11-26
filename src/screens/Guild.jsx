@@ -1,5 +1,5 @@
 import TierList from '../components/TierList.jsx';
-import { GUILD_DROP_MISS, RANK, TIERS } from '../lib/rules.js';
+import { GUILD_CAP, GUILD_DROP_MISS, RANK, TIERS } from '../lib/rules.js';
 import { RC, RT } from '../lib/characters.js';
 import { pp } from '../lib/format.js';
 import { isDone, tier } from '../lib/savings.js';
@@ -26,6 +26,7 @@ export default function Guild({ s, onCopy, onJoin, onNudge }) {
   const feed = guildFeed(s);
   const solo = mates.length === 0;
   const myPaid = isDone(s.weeks[s.wk]);
+  const full = s.members >= GUILD_CAP;
 
   const invite = (
     <div className="card">
@@ -37,16 +38,17 @@ export default function Guild({ s, onCopy, onJoin, onNudge }) {
         <b>{s.guildCode}</b>
       </div>
       <p className="small">
-        {solo ? '아직 혼자예요. 친구가 이 코드로 가입하면 같은 길드가 되고, ' : ''}
-        인원이 늘면 길드원 모두의 우대금리가 함께 올라요.
+        {full
+          ? `정원 ${GUILD_CAP}명이 모두 찼어요. 더 초대하려면 친구가 새 길드를 만들어야 해요.`
+          : `${solo ? '아직 혼자예요. 친구가 이 코드로 가입하면 같은 길드가 되고, ' : ''}인원이 늘면 길드원 모두의 우대금리가 함께 올라요. 한 길드는 최대 ${GUILD_CAP}명이에요.`}
       </p>
-      <button type="button" className="kb-btn copy" onClick={onCopy}>
-        초대 코드 복사하기
+      <button type="button" className="kb-btn copy" onClick={onCopy} disabled={full}>
+        {full ? '정원이 찼어요' : '초대 코드 복사하기'}
       </button>
       <div className="demo-row">
         <span className="demo-chip">시연</span>
         <span className="t">친구가 코드로 가입</span>
-        <button type="button" onClick={onJoin}>
+        <button type="button" onClick={onJoin} disabled={full}>
           +1명
         </button>
       </div>
@@ -81,7 +83,7 @@ export default function Guild({ s, onCopy, onJoin, onNudge }) {
         <div className="card">
           <h3>
             함께하는 헌터
-            <span>{s.members + '명' + (t < 0 ? ' · 우대 없음' : ' · ' + TIERS[t].n + ' ' + pp(TIERS[t].r))}</span>
+            <span>{s.members + ' / ' + GUILD_CAP + '명' + (t < 0 ? ' · 우대 없음' : ' · ' + TIERS[t].n + ' ' + pp(TIERS[t].r))}</span>
           </h3>
           <ul className="gm-list">
             <li className="gm-me">

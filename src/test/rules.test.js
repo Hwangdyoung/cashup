@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { AWAKEN_EXP, DEMO_GUILD_CODE, GUILD_CODE_RE, GUILD_DROP_MISS, MAX_RATE, TICKETS, TIERS, TOTAL } from '../lib/rules.js';
+import { AWAKEN_EXP, DEMO_GUILD_CODE, GUILD_CAP, GUILD_CODE_RE, GUILD_DROP_MISS, MAX_RATE, TICKETS, TIERS, TOTAL } from '../lib/rules.js';
 import { awakened, gradeOf, makeGuildCode, maturityPrincipal, openSavings, principal, rates, tier } from '../lib/savings.js';
 import { addMates, demoFinish, demoMiss, demoTo25, demoWeek, gameFailed, nextDay, nudgeMate, pay, repay, useTicket, walk } from '../lib/actions.js';
 import { guildFeed, guildMates, guildQuest } from '../lib/guild.js';
@@ -195,5 +195,17 @@ describe('길드원마다 주차가 다를 때', () => {
     expect(tier(s)).toBe(t0); // 수료해도 인원·구간 그대로
     expect(guildQuest(s).total).toBe(1); // 이번 주 납입할 사람은 나뿐
     expect(guildFeed(s, 10).some((e) => e.text.includes('수료'))).toBe(true);
+  });
+});
+
+describe('길드 정원', () => {
+  it(`한 길드는 최대 ${GUILD_CAP}명, 넘치면 더 들어오지 않는다`, () => {
+    const s = start();
+    addMates(s, 50);
+    expect(s.members).toBe(GUILD_CAP);
+    expect(tier(s)).toBe(TIERS.length - 1);
+    const fx = addMates(s, 1);
+    expect(s.members).toBe(GUILD_CAP);
+    expect(fx[0].text).toContain('정원');
   });
 });
