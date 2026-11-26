@@ -728,3 +728,10 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .wi-ic-grade .wi-g{width:22px;height:22px;font-size:14px;border-radius:5px}
 .wi-ic-gate{color:#FF6E8A}
 .wi-ic-gate svg{width:28px;height:28px}
+.wi-try{margin:14px 0 0;padding-top:12px;border-top:1px solid rgba(155,228,255,.22);font-family:var(--sans);font-size:13px;line-height:1.5;color:#C4DAF0;text-align:left;word-break:keep-all}
+
+/* 만기 결과 카드 공유 (ShareCard) */
+.shc-frame{margin:4px auto 0;width:min(100%,280px);aspect-ratio:4/5;display:grid;place-items:center;background:#120E2E;border:1px solid rgba(255,230,128,.35);border-radius:6px;overflow:hidden}
+.shc-frame img{display:block;width:100%;height:100%;object-fit:cover}
+.shc-frame span{font-family:var(--sans);font-size:13px;color:#C4DAF0}
+.shc-note{margin-top:10px;font-family:var(--sans);font-size:12.5px;color:#C4DAF0}

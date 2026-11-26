@@ -8,7 +8,8 @@ import { sfx } from '../lib/sfx.js';
 
 /* 개설 직후 적금 홈에 처음 들어올 때 (가입할 때마다)
    나혼렙을 모르는 사람용. 긴 문단 없이 그림 + 짧은 줄로만.
-   1장: 원작이 어떤 이야기인지 / 2장: 이 적금에서 무엇을 하면 무엇이 되는지 */
+   1장: 원작이 어떤 이야기인지 / 2장: 이 적금에서 무엇을 하면 무엇이 되는지
+   2장 끝에서 페널티 미니게임 체험(선택) 또는 넘기기 */
 
 function Grade({ g }) {
   return (
@@ -24,7 +25,7 @@ const WORDS = [
   ['시스템', `${HUNTER.n}에게만 보이는 퀘스트 창`],
 ];
 
-export default function WelcomeIntro({ onClose }) {
+export default function WelcomeIntro({ onClose, onPractice }) {
   const [page, setPage] = useState(0);
   const next = () => {
     sfx('tap');
@@ -105,9 +106,13 @@ export default function WelcomeIntro({ onClose }) {
             </li>
           </ul>
           <p className="ifnote">원작과 별개인 콜라보 한정 IF(만약에) 세계관입니다.</p>
+          <p className="wi-try">페널티 게이트의 30초 미니게임을 미리 해 볼 수 있어요. 유예권은 쓰지 않아요.</p>
           <div className="foot2">
-            <button type="button" className="btn" onClick={onClose}>
-              던전 입장
+            <button type="button" className="btn sub" onClick={onClose}>
+              넘기기
+            </button>
+            <button type="button" className="btn" onClick={onPractice}>
+              미니게임 체험
             </button>
           </div>
         </>

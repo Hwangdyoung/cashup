@@ -7,8 +7,8 @@ import './game.css';
 
 /* 페널티 퀘스트 미니게임 (30초 · 던전 러닝 / 독충 회피)
    - 화면 뼈대는 아래 JSX, 움직임은 engine/ 의 캔버스 코드가 맡는다 (React는 뼈대만 한 번 그림)
-   - 앱과는 콜백으로 주고받음: onLaunch 게임 시작(유예권 사용) · onRescued 통과 · onQuit 나가기 · onMute 음소거 변경 */
-export default function PenaltyGame({ week, tries, art, muted, onLaunch, onRescued, onQuit, onMute }) {
+   - 앱과는 콜백으로 주고받음: practice 온보딩 체험(유예권·납입과 무관) · onLaunch 게임 시작(유예권 사용) · onRescued 통과 · onQuit 나가기 · onMute 음소거 변경 */
+export default function PenaltyGame({ week, tries, art, muted, practice = false, onLaunch, onRescued, onQuit, onMute }) {
   const root = useRef(null);
   const engine = useRef(null);
   const cb = useRef(null);
@@ -29,6 +29,7 @@ export default function PenaltyGame({ week, tries, art, muted, onLaunch, onRescu
       alive: () => alive,
       muted,
       tries,
+      practice,
       weekLabel: week + '주차',
       HUB: () => hub,
       onLaunch: () => cb.current.onLaunch(),

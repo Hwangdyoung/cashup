@@ -45,7 +45,7 @@ export default function App() {
   const [modal, setModal] = useState(null); // { kind: 'welcome'|'status'|'gate'|'repay'|'result', week? }
   const [rankUp, setRankUp] = useState(null);
   const [awaken, setAwaken] = useState(false); // 히든 각성 연출 대기 (승급 연출이 닫힌 뒤 보여 줌)
-  const [game, setGame] = useState(null); // { week, used }
+  const [game, setGame] = useState(null); // { week, used, practice }
   const [pop, setPop] = useState(0);
   const [soundOn, setSoundOn] = useState(sfxOn);
   const [autoWalk, setAutoWalk] = useState(true);
@@ -215,22 +215,29 @@ export default function App() {
   };
   const gameRef = useRef(game);
   gameRef.current = game;
+  /* 개설 직후 안내에서 고르는 미니게임 체험: 유예권을 쓰지 않고, 끝나면 적금 홈으로 */
+  const enterPractice = () => {
+    setModal(null);
+    setGame({ week: sRef.current.wk, used: false, practice: true });
+    sfx('pzEnter');
+  };
   const onLaunch = () => {
     const g = gameRef.current;
-    if (!g || g.used) return;
+    if (!g || g.used || g.practice) return;
     setGame({ ...g, used: true });
     run(act.useTicket);
   };
   const onRescued = () => {
     const g = gameRef.current;
     setGame(null);
+    if (g?.practice) return;
     openModal({ kind: 'repay', week: g.week });
     sfx('clear');
   };
   const onQuit = () => {
     const g = gameRef.current;
     setGame(null);
-    if (g) run(act.gameFailed, g.week, g.used);
+    if (g && !g.practice) run(act.gameFailed, g.week, g.used);
   };
 
   /* ───── 시연 컨트롤 (가입 후에만) ───── */
@@ -264,7 +271,7 @@ export default function App() {
     if (!modal) return null;
     switch (modal.kind) {
       case 'welcome':
-        return <WelcomeIntro onClose={closeModal} />;
+        return <WelcomeIntro onClose={closeModal} onPractice={enterPractice} />;
       case 'status':
         return <StatusWindow s={s} onClose={closeModal} />;
       case 'gate':
@@ -281,7 +288,7 @@ export default function App() {
           />
         );
       case 'result':
-        return <ResultWindow s={s} onClose={closeModal} onReset={fullReset} />;
+        return <ResultWindow s={s} onClose={closeModal} onReset={fullReset} onNotice={showKb} />;
       default:
         return null;
     }
@@ -397,7 +404,7 @@ export default function App() {
         )}
         {game && (
           <div className="pq">
-            <PenaltyGame week={game.week} tries={TRIES_PER_TICKET} art={hunterArt(s.grade)} muted={!soundOn} onMute={(m) => setSound(!m)} onLaunch={onLaunch} onRescued={onRescued} onQuit={onQuit} />
+            <PenaltyGame key={game.practice ? 'p' : 'g'} practice={!!game.practice} week={game.week} tries={TRIES_PER_TICKET} art={hunterArt(s.grade)} muted={!soundOn} onMute={(m) => setSound(!m)} onLaunch={onLaunch} onRescued={onRescued} onQuit={onQuit} />
           </div>
         )}
       </div>

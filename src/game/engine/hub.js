@@ -9,6 +9,7 @@ var ICON_DODGE='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 40h40" s
 export function createHub(env){
 var $=env.$;var G1=env.G1,G2=env.G2,SNDX=env.SND;
 var CHANCES=env.tries; /* 유예권 1장당 도전 횟수 (lib/rules.js TRIES_PER_TICKET) */
+var PRACTICE=!!env.practice; /* 온보딩 체험: 유예권을 쓰지 않고 몇 번이든, 통과해도 납입과 상관없음 */
 var chances=CHANCES;
 var GM={
  1:{name:'던전 러닝',ctl:'탭하면 점프 · 길게 누르면 높이 점프',formula:'달린 거리 × 마나 결정',pass:function(){return G1.pass},icon:ICON_RUN},
@@ -21,24 +22,32 @@ function hide(){$('hub').classList.remove('show')}
 function view(n){$('pz1').style.display=n===1?'':'none';$('pz2').style.display=n===2?'':'none';G1.on(n===1);G2.on(n===2)}
 function card(i){var m=GM[i];return '<button class="gcard" data-a="g:'+i+'"><span class="gi">'+m.icon+'</span><span class="gt"><b>'+m.name+'</b><span>'+m.ctl+'</span><small>기준 '+fmt(m.pass())+'점 · '+m.formula+'</small></span></button>'}
 /* 게임 고르기 (입장 안내 · 규칙 포함) */
-function choose(){if(chances<=0)return out();view(1);G1.idle();G2.idle();SNDX.mode('intro');
+function choose(){if(PRACTICE)return practice();if(chances<=0)return out();view(1);G1.idle();G2.idle();SNDX.mode('intro');
  var left=chances<CHANCES;
  show(sw('red','페널티 퀘스트',
  '<p class="swmsg">'+env.weekLabel+' <em>납입일</em>을 놓쳤어요</p><p class="swsub">30초 안에 기준 점수를 넘기면 재납입할 수 있어요</p>'+
  '<div class="gcards">'+card(1)+card(2)+'</div>'+
  '<p class="pz-meta">'+(left?'남은 도전 '+chances+'번':'유예권 1장으로 '+CHANCES+'번 도전')+' · 체력 4칸, 쓰러져도 점수가 넘으면 통과</p>'+
  '<button class="btn sub" data-a="later">나중에 하기</button>'))}
+/* 체험 입장 화면 */
+function practice(){view(1);G1.idle();G2.idle();SNDX.mode('intro');
+ show(sw('red','미니게임 체험',
+ '<p class="swmsg">납입일을 놓치면 <em>페널티 게이트</em>가 열려요</p><p class="swsub">그때 하게 될 30초 게임을 미리 해 봐요</p>'+
+ '<div class="gcards">'+card(1)+card(2)+'</div>'+
+ '<p class="pz-meta">체험이라 유예권을 쓰지 않아요 · 몇 번이든 다시 할 수 있어요</p>'+
+ '<button class="btn sub" data-a="back">체험 마치기</button>'))}
 function out(){view(1);G1.idle();G2.idle();SNDX.mode('intro');show(sw('red','도전 기회 소진','<p class="swmsg">이번 도전 기회를 모두 썼어요</p><p class="swsub">남은 유예권이 있으면 페널티 게이트에서 다시 도전할 수 있어요</p><button class="btn" data-a="back">적금 화면으로</button>'))}
-function launch(){if(chances<=0)return out();chances--;env.onLaunch();var m=GM[cur];hide();view(cur);SNDX.mode(cur===1?'count':'quiet');
- (cur===1?G1:G2).begin(m.name)}
+function launch(){if(!PRACTICE){if(chances<=0)return out();chances--;env.onLaunch()}var m=GM[cur];hide();view(cur);SNDX.mode(cur===1?'count':'quiet');
+ (cur===1?G1:G2).begin(PRACTICE?'체험 · '+m.name:m.name)}
 /* 결과: 내 점수 / 기준 점수 */
 function finish(id,r){var ok=r.score>=r.pass;SNDX.mode(ok?'win':'fail');
  var msg=ok?'<em>기준 점수</em>를 넘었어요':(r.win?'끝까지 버텼어요. 조금만 더!':'체력이 모두 떨어졌어요');
  var pct=Math.max(2,Math.min(100,r.score/r.pass*100));
  var detail=r.rows[0][0]+' '+r.rows[0][1]+' · '+r.rows[1][0]+' '+r.rows[1][1];
  var sub=ok?'재납입하면 완납으로 인정돼요':(chances>0?'남은 도전 '+chances+'번 · 게임을 바꿔도 돼요':(r.weak?'마나 결정을 많이 모을수록 점수가 커져요':'도전 기회를 모두 썼어요'));
- var b=ok?'<button class="btn" data-a="pay">재납입하러 가기</button>':(chances>0?'<button class="btn" data-a="enter">다시 도전</button>':'<button class="btn" data-a="out">확인</button>');
- show(sw(ok?'gold':'red',ok?'재납입 기회 획득':'도전 실패',
+ if(PRACTICE){sub=ok?'실제 미납 때 통과하면 그 주를 다시 납입할 수 있어요':'게임을 바꿔서 다시 해 봐도 돼요';}
+ var b=PRACTICE?'<div class="foot2"><button class="btn sub" data-a="back">체험 마치기</button><button class="btn" data-a="enter">다시 하기</button></div>':ok?'<button class="btn" data-a="pay">재납입하러 가기</button>':(chances>0?'<button class="btn" data-a="enter">다시 도전</button>':'<button class="btn" data-a="out">확인</button>');
+ show(sw(ok?'gold':'red',PRACTICE?(ok?'체험 통과':'체험 실패'):ok?'재납입 기회 획득':'도전 실패',
   '<p class="swmsg">'+msg+'</p>'+
   '<div class="score'+(ok?' ok':'')+'"><b>'+fmt(r.score)+'</b><span>/ 기준 '+fmt(r.pass)+'점</span></div>'+
   '<div class="sbar"><i style="width:'+pct+'%"></i></div>'+
