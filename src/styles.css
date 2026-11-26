@@ -679,13 +679,25 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .st-gear{margin-top:14px;padding-top:12px;border-top:1px solid rgba(175,232,255,.2);display:grid;gap:6px;text-align:left;font-family:var(--sans);font-size:13px;color:#fff;line-height:1.5}
 .st-gear span{display:block;font-size:12px;color:#9FB6D6}
 
-/* 개설 직후 안내 2장 (헌터 협회 창: 나혼렙 소개 → 이 적금에서의 뜻) */
+/* 개설 직후 안내 2장 (헌터 협회 창). 긴 문단 없이 그림 + 짧은 줄 */
 .wi-page{position:absolute;top:12px;right:14px;font-size:11px;color:#9FC0DD;font-family:var(--sans);letter-spacing:.04em}
-.wi-t{font-family:var(--sans);font-size:17px;font-weight:700;color:#fff;margin:14px 0 8px;text-align:left;letter-spacing:-.01em;word-break:keep-all}
-.wi-story,.wi-lead{font-family:var(--sans);font-size:13.5px;line-height:1.6;color:#D6E8F8;text-align:left;word-break:keep-all}
-.wi-story+.wi-story{margin-top:8px}
-.wi-story b{color:#fff}
-.wi-terms{margin:12px 0 0;text-align:left;font-family:var(--sans)}
-.wi-terms dt{font-size:13px;font-weight:700;color:var(--lime);padding-top:9px;border-top:1px solid rgba(155,228,255,.22)}
-.wi-terms dt:first-child{border-top:0;padding-top:0}
-.wi-terms dd{margin:2px 0 9px;font-size:13px;line-height:1.5;color:#D6E8F8;word-break:keep-all}
+.wi-t{font-family:var(--sans);font-size:21px;line-height:1.35;font-weight:800;color:#fff;margin:12px 0 0;letter-spacing:-.02em;word-break:keep-all}
+.wi-g{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:7px;font-size:18px;line-height:1}
+.wi-grow{display:flex;align-items:flex-end;justify-content:center;gap:14px;margin:14px 0 4px}
+.wi-grow figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.wi-grow img{height:104px;filter:drop-shadow(0 0 8px rgba(120,200,255,.35))}
+.wi-grow figure:last-child img{height:118px;filter:drop-shadow(0 0 10px rgba(164,123,255,.8))}
+.wi-arrow{font-size:22px;color:#FFE680;margin-bottom:48px}
+.wi-words{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;margin:14px 0 0;padding-top:14px;border-top:1px solid rgba(155,228,255,.22);text-align:left;font-family:var(--sans);font-size:15px;line-height:1.4}
+.wi-words dt{font-weight:700;color:var(--lime)}
+.wi-words dd{margin:0;color:#fff}
+.wi-rows{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:14px;text-align:left;font-family:var(--sans)}
+.wi-rows li{display:flex;gap:12px;align-items:center}
+.wi-rows strong{display:block;font-size:16px;line-height:1.35;color:#fff;margin-bottom:2px}
+.wi-rows li>span:last-child{font-size:13.5px;line-height:1.4;color:#C4DAF0}
+.wi-ic{flex:none;width:52px;height:52px;display:grid;place-items:center;border-radius:10px;background:rgba(4,14,40,.45);border:1px solid rgba(155,228,255,.25)}
+.wi-ic img{height:44px;filter:drop-shadow(0 0 4px rgba(164,123,255,.9))}
+.wi-ic-grade{display:flex;gap:2px;align-items:center;justify-content:center}
+.wi-ic-grade .wi-g{width:22px;height:22px;font-size:14px;border-radius:5px}
+.wi-ic-gate{color:#FF6E8A}
+.wi-ic-gate svg{width:28px;height:28px}

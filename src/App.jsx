@@ -264,7 +264,7 @@ export default function App() {
     if (!modal) return null;
     switch (modal.kind) {
       case 'welcome':
-        return <WelcomeIntro base={s.base} onClose={closeModal} />;
+        return <WelcomeIntro onClose={closeModal} />;
       case 'status':
         return <StatusWindow s={s} onClose={closeModal} />;
       case 'gate':
