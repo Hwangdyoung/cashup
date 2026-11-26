@@ -37,8 +37,8 @@ export default function AwakenScene({ s, onDone }) {
               <img key={SHADOWS[i]} src={src} alt="" style={{ animationDelay: 1.3 + i * 0.12 + 's' }} />
             ))}
           </div>
-          <img className="aw-hero" src={hunterArt(s.grade)} alt="" />
           <i className="aw-ring" />
+          <img className="aw-hero" src={hunterArt(s.grade)} alt="" />
           <img className="aw-bellion" src={BELLION_ART} alt="" />
         </div>
 
