@@ -1,5 +1,6 @@
 import hunterE from '../assets/character/hunter-e.png';
 import hunterUp from '../assets/character/hunter-up.png';
+import hunterS from '../assets/character/hunter-s.png';
 import igris from '../assets/character/igris.png';
 import tank from '../assets/character/tank.png';
 import iron from '../assets/character/iron.png';
@@ -25,8 +26,8 @@ export const BELLION_ART = bellion;
 export const GRADE_STORY = ['곡괭이를 든 신입 헌터', '곡괭이가 첫 무기로 바뀜', '전투 스타일이 자리 잡음', '이펙트가 눈에 띄게 커짐', '완성형에 가까운 모습', '최종 형태, 수료 연출'];
 
 /* 상품 전용 캐릭터 그림 (등급 E~S 순서, src/assets/character/)
-   지금은 E급 그림과 성장 그림 두 장. 등급별 그림이 더 생기면 여기만 바꾼다 */
-export const HUNTER_ART = [hunterE, hunterUp, hunterUp, hunterUp, hunterUp, hunterUp];
+   지금은 E급 · 성장(D~A) · S급 세 장. 등급별 그림이 더 생기면 여기만 바꾼다 */
+export const HUNTER_ART = [hunterE, hunterUp, hunterUp, hunterUp, hunterUp, hunterS];
 export const hunterArt = (grade = 0) => HUNTER_ART[Math.max(0, Math.min(HUNTER_ART.length - 1, grade))];
 
 /* 보상 (품목·금액 미정 → '(예정)'으로만 표시) */
