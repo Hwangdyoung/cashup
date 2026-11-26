@@ -248,7 +248,10 @@ export default function App() {
     else if (id === 'mate') run(act.addMates, 1);
     else if (id === 'mate5') run(act.addMates, 5);
     else if (id === 'to25') run(act.demoTo25, opts);
-    else if (id === 'finish') run(act.demoFinish);
+    else if (id === 'finish') {
+      setRemote(false); // 승급·각성 연출을 서랍이 가리지 않게
+      run(act.demoFinish);
+    }
   };
 
   const copyCode = () => {
@@ -379,7 +382,7 @@ export default function App() {
             }}
           />
         )}
-        {!game && modal?.kind !== 'welcome' && (
+        {!game && !awaken && modal?.kind !== 'welcome' && (
           <DemoRemote
             open={remote}
             onToggle={() => {

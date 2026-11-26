@@ -63,34 +63,3 @@ export function YunhoSilhouette({ className }) {
     </svg>
   );
 }
-
-/* 벨리온: 무릎 꿇은 그림자 기사 (투구 장식 · 망토 · 땅에 꽂은 장검) — 히든 각성 연출용 */
-export function BellionSilhouette({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 420 420" aria-hidden="true">
-      <g fill={INK} stroke={INK} strokeLinecap="round" strokeLinejoin="round">
-        {/* 망토 */}
-        <path d="M150 150 Q92 262 62 404 L292 404 Q262 262 246 150 Z" strokeWidth="2" />
-        {/* 장검 (땅에 꽂음) */}
-        <rect x="339" y="150" width="14" height="254" rx="4" strokeWidth="0" />
-        <rect x="316" y="166" width="60" height="12" rx="6" strokeWidth="0" />
-        <circle cx="346" cy="146" r="10" strokeWidth="0" />
-        {/* 투구 장식 */}
-        <path d="M186 74 Q214 8 286 26 Q240 38 224 76 Z" strokeWidth="2" />
-        {/* 투구 · 어깨 갑옷 · 몸통 */}
-        <circle cx="206" cy="114" r="48" strokeWidth="0" />
-        <ellipse cx="150" cy="170" rx="44" ry="30" strokeWidth="0" />
-        <ellipse cx="262" cy="170" rx="44" ry="30" strokeWidth="0" />
-        <path d="M160 160 L252 160 L264 276 L148 276 Z" strokeWidth="2" />
-        {/* 검을 쥔 팔 */}
-        <path d="M262 176 L340 176" fill="none" strokeWidth="34" />
-        {/* 세운 무릎 (앞다리) */}
-        <path d="M236 272 L312 284 L320 394" fill="none" strokeWidth="46" />
-        {/* 땅에 댄 무릎 (뒷다리) */}
-        <path d="M176 272 L186 362 L112 394" fill="none" strokeWidth="46" />
-      </g>
-      {/* 투구 틈의 눈빛 */}
-      <rect x="182" y="108" width="50" height="8" rx="4" fill="#B79BFF" />
-    </svg>
-  );
-}

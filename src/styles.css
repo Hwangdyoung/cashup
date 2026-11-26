@@ -551,20 +551,35 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .ru-sold span{display:inline-flex;align-items:center;gap:6px}
 .ru-sold img{height:36px;filter:drop-shadow(0 0 4px rgba(164,123,255,.8))}
 .ru-reward{font-family:var(--sans);font-size:12px;color:#FFE680;margin-top:12px}
-/* 히든 각성 연출 (승급 연출 .ru 위에 같은 암전·창 방식) */
+/* 히든 각성 연출: 폰 화면 전체가 던전 무대. 움직임은 모두 한 번만 */
+.aw-scene{padding:0;align-items:stretch}
+.aw-bg,.aw-bg .bgsvg,.aw-bg .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
+.aw-bg{opacity:0;animation:awFade .6s .3s both}
+.aw-flash{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at 50% 62%,#fff 0%,#C9B4FF 30%,rgba(107,79,214,0) 70%);opacity:0;animation:awFlash .7s 2.1s ease-out both}
+.aw-col{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;padding:56px 16px calc(20px + env(safe-area-inset-bottom,0px));animation:awShake .4s 2.15s both}
+.aw-col>.sw .swbd{padding-top:10px;padding-bottom:12px}
 .aw-cond{font-family:var(--sans);font-size:12.5px;color:#D9C9FF;margin-top:4px}
-.aw-stage{position:relative;height:196px;margin:12px -4px 0;border-radius:8px;overflow:hidden}
-.aw-stage .bgsvg,.aw-stage .bgsvg svg{position:absolute;inset:0;width:100%;height:100%}
-.aw-army{position:absolute;left:0;right:0;top:22px;display:flex;justify-content:center;gap:2px}
-.aw-army img{height:58px;opacity:0;filter:drop-shadow(0 0 6px rgba(164,123,255,.9));animation:awRise .5s ease-out both}
-.aw-hero{position:absolute;left:24%;bottom:10px;height:118px;transform:translateX(-50%);filter:drop-shadow(0 0 10px #A47BFF)}
-.aw-bellion{position:absolute;left:68%;bottom:6px;height:120px;width:auto;aspect-ratio:1;transform:translateX(-50%);opacity:0;filter:drop-shadow(0 0 1.5px #C9B4FF) drop-shadow(0 0 14px rgba(164,123,255,.85));animation:awBellion .9s 1.9s ease-out both}
-@keyframes awRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-@keyframes awBellion{from{opacity:0;transform:translate(-50%,30px) scale(.92)}to{opacity:1;transform:translateX(-50%)}}
-.aw-title{font-family:var(--font);font-size:26px;color:#FFD23F;margin-top:14px;text-shadow:0 0 14px rgba(164,123,255,.9);animation:awFade .5s 2.5s both}
-.aw-line{font-family:var(--sans);font-size:13.5px;color:#fff;margin-top:4px;word-break:keep-all;text-wrap:balance;animation:awFade .5s 2.6s both}
-.aw-scene .ru-reward,.aw-foot{animation:awFade .5s 2.8s both}
-@keyframes awFade{from{opacity:0;transform:translateY(6px)}}
+.aw-stage{position:relative;flex:1;min-height:250px}
+.aw-glow{position:absolute;left:50%;bottom:4%;width:120%;height:70%;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(164,123,255,.55),rgba(164,123,255,0));opacity:0;animation:awFade .8s .9s both}
+.aw-army{position:absolute;left:0;right:0;top:9%;display:flex;justify-content:center;align-items:flex-end;gap:0}
+.aw-army img{height:clamp(52px,9vh,70px);margin:0 -2px;opacity:0;filter:brightness(.8) drop-shadow(0 0 6px rgba(164,123,255,.9));animation:awRise .5s ease-out both}
+.aw-army img:nth-child(1),.aw-army img:nth-child(5){transform:translateY(-10px)}
+.aw-hero{position:absolute;left:29%;bottom:12%;height:50%;transform:translateX(-50%);filter:drop-shadow(0 0 10px #A47BFF);opacity:0;animation:awHero .5s 1s both}
+.aw-ring{position:absolute;left:70%;bottom:3%;width:58%;aspect-ratio:3/1;transform:translateX(-50%);border-radius:50%;border:2px solid rgba(201,180,255,.9);box-shadow:0 0 18px #A47BFF,inset 0 0 18px #A47BFF;opacity:0;animation:awRing .9s 2.1s ease-out both}
+.aw-bellion{position:absolute;left:70%;bottom:4%;height:50%;transform:translateX(-50%);filter:drop-shadow(0 0 14px rgba(164,123,255,.85));opacity:0;animation:awBellion .7s 2.15s cubic-bezier(.2,.9,.3,1.1) both}
+.aw-text{text-align:center}
+.aw-title{font-family:var(--font);font-size:34px;line-height:1.15;color:#FFD23F;text-shadow:0 0 16px rgba(164,123,255,.95),0 2px 0 #3A1F8A;animation:awTitle .6s 2.9s both}
+.aw-line{font-family:var(--sans);font-size:14px;line-height:1.5;color:#fff;margin:6px 12px 0;word-break:keep-all;text-wrap:balance;animation:awFade .5s 3.1s both}
+.aw-scene .aw-text .ru-reward{margin-top:8px;opacity:1;animation:awFade .5s 3.2s both}
+.aw-btn{margin-top:14px;animation:awFade .5s 3.3s both}
+@keyframes awFade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+@keyframes awRise{from{opacity:0;translate:0 26px}to{opacity:1;translate:0 0}}
+@keyframes awHero{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translateX(-50%)}}
+@keyframes awBellion{0%{opacity:0;transform:translate(-50%,40px) scale(.85);filter:brightness(3) drop-shadow(0 0 30px #fff)}60%{opacity:1}100%{opacity:1;transform:translateX(-50%);filter:drop-shadow(0 0 14px rgba(164,123,255,.85))}}
+@keyframes awRing{0%{opacity:0;transform:translateX(-50%) scale(.3)}30%{opacity:1}100%{opacity:.55;transform:translateX(-50%) scale(1)}}
+@keyframes awFlash{0%{opacity:0}25%{opacity:.85}100%{opacity:0}}
+@keyframes awShake{0%,100%{transform:none}20%{transform:translate(-5px,2px)}40%{transform:translate(5px,-2px)}60%{transform:translate(-3px,1px)}80%{transform:translate(2px,0)}}
+@keyframes awTitle{from{opacity:0;transform:scale(1.25);letter-spacing:.2em}to{opacity:1;transform:none;letter-spacing:0}}
 .swap{position:relative;height:132px;margin:4px 0 0}
 .swap img{position:absolute;left:50%;bottom:0;height:128px;transform:translateX(-50%);filter:drop-shadow(0 0 12px var(--gc))}
 .swap .tool{position:absolute;right:14%;bottom:28px;width:52px;height:52px}

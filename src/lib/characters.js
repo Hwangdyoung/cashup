@@ -5,6 +5,7 @@ import tank from '../assets/character/tank.png';
 import iron from '../assets/character/iron.png';
 import fang from '../assets/character/fang.png';
 import beru from '../assets/character/beru.png';
+import bellion from '../assets/character/bellion.png';
 
 /* 캐릭터 · 등급 색 · 그림자 병사 · 등급별 성장 문구 (포스터 기준)
    가입자는 성진우 한 명을 26주 동안 키운다. 모든 스토리는 원작과 별개인 콜라보 한정 IF 설정 */
@@ -17,6 +18,8 @@ export const RT = ['#15122A', '#062312', '#03182E', '#FFFFFF', '#2B1100', '#2B1F
 export const SHADOWS = ['이그리트', '탱크', '아이언', '어금니', '베르'];
 /* 그림자 병사 그림 (SHADOWS 와 같은 순서) */
 export const SHADOW_ART = [igris, tank, iron, fang, beru];
+/* 히든 각성 연출의 벨리온 (조원이 그린 무릎 꿇은 그림) */
+export const BELLION_ART = bellion;
 
 /* 등급별 성장 문구 (포스터 '헌터 승급' 표) */
 export const GRADE_STORY = ['곡괭이를 든 신입 헌터', '곡괭이가 첫 무기로 바뀜', '전투 스타일이 자리 잡음', '이펙트가 눈에 띄게 커짐', '완성형에 가까운 모습', '최종 형태, 수료 연출'];
