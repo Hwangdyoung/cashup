@@ -1,63 +1,138 @@
 import TierList from '../components/TierList.jsx';
-import { TIERS } from '../lib/rules.js';
+import { GUILD_DROP_MISS, RANK, TIERS } from '../lib/rules.js';
+import { RC, RT } from '../lib/characters.js';
 import { pp } from '../lib/format.js';
-import { tier } from '../lib/savings.js';
+import { isDone, tier } from '../lib/savings.js';
+import { guildFeed, guildMates, guildQuest, payDayName } from '../lib/guild.js';
 
-const NAMES = '가나다라마바사아자차';
-const SHOWN = 10;
+const SHOWN = 5;
 
-/* 길드: 초대 코드 · 함께하는 헌터 · 구간표. 공개 길드는 없고 초대 코드로만 함께한다
-   (포스터: 초대 코드로 길드를 만들고, 인원이 늘수록 길드원 모두의 우대금리가 오른다) */
-export default function Guild({ s, onCopy, onJoin }) {
-  const t = tier(s);
-  const others = s.members - 1;
-  const shown = Math.min(others, SHOWN);
-  const next = TIERS[t + 1];
+function Badge({ g }) {
   return (
-    <>
-      <div className="card">
-        <h3>
-          {s.guildOwner ? '내 길드 초대 코드' : '참여한 길드 코드'}
-          <span>초대 코드로만 함께해요</span>
-        </h3>
-        <div className="code">
-          <b>{s.guildCode}</b>
-        </div>
-        <p className="small">
-          {s.guildOwner ? '내가 만든 길드예요.' : '친구 길드에 참여했어요. 이 코드로 다른 친구도 같은 길드에 들어와요.'} 인원이 늘면 길드원 모두의 우대금리가 함께 올라요.
-        </p>
-        <button type="button" className="kb-btn copy" onClick={onCopy}>
-          초대 코드 복사하기
+    <b className="gm-badge hol" style={{ background: RC[g], color: RT[g] }}>
+      {RANK[g]}
+    </b>
+  );
+}
+
+/* 길드: 이번 주 길드 퀘스트 · 함께하는 헌터 · 길드 소식 · 초대 코드
+   공개 길드는 없고 초대 코드로만 함께한다 (포스터). 길드원은 모두 시연용 가짜 데이터 (lib/guild.js) */
+export default function Guild({ s, onCopy, onJoin, onNudge }) {
+  const t = tier(s);
+  const next = TIERS[t + 1];
+  const mates = guildMates(s);
+  const q = guildQuest(s);
+  const feed = guildFeed(s);
+  const solo = mates.length === 0;
+  const myPaid = isDone(s.weeks[s.wk]);
+
+  const invite = (
+    <div className="card">
+      <h3>
+        {s.guildOwner ? '내 길드 초대 코드' : '참여한 길드 코드'}
+        <span>초대 코드로만 함께해요</span>
+      </h3>
+      <div className="code">
+        <b>{s.guildCode}</b>
+      </div>
+      <p className="small">
+        {solo ? '아직 혼자예요. 친구가 이 코드로 가입하면 같은 길드가 되고, ' : ''}
+        인원이 늘면 길드원 모두의 우대금리가 함께 올라요.
+      </p>
+      <button type="button" className="kb-btn copy" onClick={onCopy}>
+        초대 코드 복사하기
+      </button>
+      <div className="demo-row">
+        <span className="demo-chip">시연</span>
+        <span className="t">친구가 코드로 가입</span>
+        <button type="button" onClick={onJoin}>
+          +1명
         </button>
       </div>
-      <div className="card">
-        <h3>
-          함께하는 헌터
-          <span>{s.members + '명' + (t < 0 ? ' · 우대 없음' : ' · ' + TIERS[t].n + ' ' + pp(TIERS[t].r))}</span>
-        </h3>
-        <div className="mems">
-          <div className="mem me">나</div>
-          {Array.from({ length: shown }, (_, i) => (
-            <div key={i} className="mem">
-              {NAMES[i]}
-            </div>
-          ))}
-          {others > shown && <div className="mem more">+{others - shown}</div>}
-        </div>
-        {next && (
-          <p className="small" style={{ marginTop: 8 }}>
-            {next.n}까지 {next.min - s.members}명 더 모이면 {pp(next.r)}
+    </div>
+  );
+
+  return (
+    <>
+      {solo && invite}
+
+      {!solo && (
+        <div className="card">
+          <h3>
+            이번 주 길드 퀘스트
+            <span>{s.matured ? '만기' : s.wk + '주차'}</span>
+          </h3>
+          <p className="gq-goal">길드원 전원 이번 주 납입</p>
+          <p className="gq-count">
+            <b>{q.paid}</b> / {q.total}명
+            {q.done && <em>완료</em>}
           </p>
-        )}
-        <TierList current={t} style={{ marginTop: 10 }} />
-        <div className="demo-row">
-          <span className="demo-chip">시연</span>
-          <span className="t">친구가 코드로 가입</span>
-          <button type="button" onClick={onJoin}>
-            +1명
-          </button>
+          <div className="gq-bar" role="progressbar" aria-valuemin={0} aria-valuemax={q.total} aria-valuenow={q.paid}>
+            <i style={{ width: (q.paid / q.total) * 100 + '%' }} />
+          </div>
+          <p className="small gq-note">
+            {q.done ? '이번 주는 모두 해냈어요. 다음 주도 같이 가요.' : !myPaid ? '내 납입부터 채워 주세요.' : '아직 납입 전인 길드원이 있어요.'}
+          </p>
         </div>
-      </div>
+      )}
+
+      {!solo && (
+        <div className="card">
+          <h3>
+            함께하는 헌터
+            <span>{s.members + '명' + (t < 0 ? ' · 우대 없음' : ' · ' + TIERS[t].n + ' ' + pp(TIERS[t].r))}</span>
+          </h3>
+          <ul className="gm-list">
+            <li className="gm-me">
+              <Badge g={s.grade} />
+              <span className="gm-who">
+                <strong>나</strong>
+                <small>그림자 병사 {s.grade}명</small>
+              </span>
+              <span className={'gm-st' + (myPaid ? ' ok' : '')}>{myPaid ? '납입 완료' : '납입 전'}</span>
+            </li>
+            {mates.slice(0, SHOWN).map((m) => (
+              <li key={m.i} className={m.risk ? 'gm-risk' : ''}>
+                <Badge g={m.grade} />
+                <span className="gm-who">
+                  <strong>{m.name}</strong>
+                  <small>{m.risk ? `${GUILD_DROP_MISS}주 연속 미납 · 정산 인원 제외 위험` : `그림자 병사 ${m.grade}명`}</small>
+                </span>
+                {m.risk ? (
+                  <button type="button" className="gm-nudge" disabled={m.nudged} onClick={() => onNudge(m.i)}>
+                    {m.nudged ? '독려함' : '독려하기'}
+                  </button>
+                ) : (
+                  <span className={'gm-st' + (m.paid ? ' ok' : '')}>{m.paid ? '납입 완료' : payDayName(m) + ' 납입'}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+          {mates.length > SHOWN && <p className="small gm-more">외 {mates.length - SHOWN}명</p>}
+          {next && (
+            <p className="small" style={{ marginTop: 12 }}>
+              {next.n}까지 {next.min - s.members}명 더 모이면 {pp(next.r)}
+            </p>
+          )}
+          <TierList current={t} style={{ marginTop: 10 }} />
+        </div>
+      )}
+
+      {!solo && feed.length > 0 && (
+        <div className="card">
+          <h3>길드 소식</h3>
+          <ul className="gf-list">
+            {feed.map((e, k) => (
+              <li key={k}>
+                <span>{e.text}</span>
+                <time>{e.when}</time>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {!solo && invite}
     </>
   );
 }

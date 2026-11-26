@@ -19,6 +19,8 @@ export const TIERS = [
 export const DEMO_GUILD_CODE = 'HUNTER-7K2Q';
 export const DEMO_GUILD_MEMBERS = 3;
 export const GUILD_CODE_RE = /^HUNTER-[A-Z0-9]{4}$/;
+/* 길드 무임승차 방지 (기획안 '길드 무임승차 방지'): 이 주 수 이상 연속 미납이면 만기 정산 때 길드 인원에서 빠진다 */
+export const GUILD_DROP_MISS = 2;
 
 /* 자동이체 요일 (월=0 … 일=6) */
 export const PAY_DAYS = ['월', '화', '수', '목', '금', '토', '일'];

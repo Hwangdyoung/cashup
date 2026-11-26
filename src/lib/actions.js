@@ -1,6 +1,7 @@
 import { AWAKEN_EXP, EXP_PAY, EXP_WALK, TIERS, TOTAL, WALK_GOAL } from './rules.js';
 import { amt, gates, gradeOf, isDone, rates, tier } from './savings.js';
 import { fmt, pct, pp, won } from './format.js';
+import { clock, guildQuest, mateName } from './guild.js';
 
 /* 상태 바꾸기
    모든 함수는 (s, ...) 를 받아 s 를 직접 고치고, 화면이 할 일(효과) 목록을 돌려준다.
@@ -10,6 +11,12 @@ import { fmt, pct, pp, won } from './format.js';
    알림 글: 첫 줄 '[...]' 은 제목, '{...}' 은 강조, 다음 줄부터 설명 */
 
 const sys = (text, kind = '', snd) => ({ type: 'sys', text, kind, snd });
+
+/* 이번 행동으로 길드 주간 퀘스트(전원 납입)가 막 끝났으면 알림 */
+function guildQuestFx(s, before, fx) {
+  const q = guildQuest(s);
+  if (!before && q.done) fx.push(sys('[{길드 주간 퀘스트}를 완료했습니다]\n' + s.wk + '주차 길드원 ' + q.total + '명 모두 납입', 'gold', 'gold'));
+}
 
 function checkGrade(s, fx) {
   const g = gradeOf(s);
@@ -92,8 +99,10 @@ function advanceWeek(s, fx, autoWalk) {
 export function pay(s) {
   const fx = [];
   const w = s.wk;
+  const before = guildQuest(s).done;
   if (!payWeek(s)) return fx;
   fx.push({ type: 'pop' }, sys('[{주간 퀘스트}를 완료했습니다]\n' + w + '주차 ' + won(amt(s, w)) + ' 납입 · EXP +' + fmt(EXP_PAY), '', 'level'));
+  guildQuestFx(s, before, fx);
   checkGrade(s, fx);
   checkMature(s, fx);
   return fx;
@@ -114,11 +123,19 @@ export function walk(s, n) {
 export function addMates(s, n) {
   const fx = [];
   const t0 = tier(s);
+  s.guildLog = [...(s.guildLog || []), ...Array.from({ length: n }, (_, k) => ({ t: clock(s), i: s.members - 1 + k }))].slice(-10);
   s.members += n;
   const t1 = tier(s);
   if (t1 !== t0) fx.push(sys('[{' + TIERS[t1].n + '} 구간에 들어섰습니다]\n길드원 ' + s.members + '명 · 우대금리 ' + pp(TIERS[t1].r), 'gold'));
   else fx.push(sys('[{길드원}이 합류했습니다]\n함께하는 헌터 ' + s.members + '명' + (t1 < TIERS.length - 1 ? ' · 다음 구간까지 ' + (TIERS[t1 + 1].min - s.members) + '명' : ''), '', 'coin'));
   return fx;
+}
+
+/* 납입을 미루는 길드원에게 독려 (시연용 길드원). 다음 날 밀린 납입을 정리한다 */
+export function nudgeMate(s, i) {
+  if ((s.nudged || {})[i] !== undefined) return [];
+  s.nudged = { ...(s.nudged || {}), [i]: clock(s) };
+  return [sys('[{독려}를 보냈습니다]\n' + mateName(i) + '님에게 "이번 주도 같이 가요" 알림이 갔어요', '', 'coin')];
 }
 
 /* ───── 페널티 게이트 ───── */
@@ -163,9 +180,11 @@ export function nextDay(s, { autoWalk }) {
   if (s.matured) return fx;
   autoWalkDay(s, autoWalk);
   if (s.day < 6) {
+    const before = guildQuest(s).done;
     s.day++;
     resetDay(s);
     fx.push(sys('[{일일 퀘스트}가 도착했습니다]\n오늘 목표 ' + fmt(WALK_GOAL) + '보'));
+    guildQuestFx(s, before, fx);
     checkGrade(s, fx);
     return fx;
   }

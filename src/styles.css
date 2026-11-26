@@ -432,10 +432,34 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .code{display:flex;align-items:center;justify-content:center;padding:18px 16px;border-radius:12px;background:var(--bg);margin-bottom:12px}
 .code b{font-size:22px;letter-spacing:.08em;font-variant-numeric:tabular-nums}
 .kb-btn.copy{height:50px;font-size:15px;margin-top:16px}
-.mems{display:flex;flex-wrap:wrap;gap:6px}
-.mem{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:600;background:var(--soft);color:var(--ink-2)}
-.mem.me{background:var(--ink);color:#fff;font-weight:700}
-.mem.more{font-size:12px;color:var(--ink-3)}
+/* 이번 주 길드 퀘스트 (전원 납입) */
+.gq-goal{font-size:14px;color:var(--ink-2)}
+.gq-count{display:flex;align-items:baseline;gap:4px;margin-top:2px;font-size:15px;color:var(--ink-2)}
+.gq-count b{font-size:28px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.gq-count em{margin-left:auto;font-style:normal;font-size:13px;font-weight:700;color:var(--sl-purple)}
+.gq-bar{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;margin-top:10px}
+.gq-bar i{display:block;height:100%;background:var(--sl-purple);border-radius:4px;transition:width .4s}
+.gq-note{margin-top:10px}
+/* 함께하는 헌터 목록 */
+.gm-list{list-style:none;margin:0;padding:0}
+.gm-list li{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.gm-list li:first-child{border-top:0;padding-top:0}
+.gm-badge{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:17px;line-height:1}
+.gm-who{flex:1;min-width:0}
+.gm-who strong{display:block;font-size:15px;font-weight:600}
+.gm-who small{display:block;font-size:12.5px;color:var(--ink-3);margin-top:1px;word-break:keep-all}
+.gm-st{flex:none;font-size:13px;color:var(--ink-3)}
+.gm-st.ok{color:var(--ink);font-weight:600}
+.gm-risk .gm-who small{color:var(--red-ink)}
+.gm-risk .gm-badge{opacity:.45}
+.gm-nudge{flex:none;padding:7px 11px;border-radius:8px;background:var(--y);color:var(--y-ink);font-size:13px;font-weight:700}
+.gm-nudge:disabled{background:var(--soft);color:var(--ink-3)}
+.gm-more{margin-top:4px}
+/* 길드 소식 */
+.gf-list{list-style:none;margin:0;padding:0}
+.gf-list li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:14px;border-top:1px solid var(--line)}
+.gf-list li:first-child{border-top:0;padding-top:0}
+.gf-list time{flex:none;font-size:12.5px;color:var(--ink-3)}
 
 /* 적금 하단 탭 */
 .nav{flex:none;height:64px;background:#fff;display:flex;border-top:1px solid var(--line);padding:4px 4px 6px}

@@ -333,7 +333,7 @@ export default function App() {
                   />
                 )}
                 {tab === 'walk' && <Walk s={s} onWalk={(n) => run(act.walk, n)} />}
-                {tab === 'guild' && <Guild s={s} onCopy={copyCode} onJoin={() => run(act.addMates, 1)} />}
+                {tab === 'guild' && <Guild s={s} onCopy={copyCode} onJoin={() => run(act.addMates, 1)} onNudge={(i) => run(act.nudgeMate, i)} />}
               </div>
             </div>
             <TabBar

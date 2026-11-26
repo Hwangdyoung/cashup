@@ -25,6 +25,8 @@ export const fresh = () => ({
   grade: 0,
   matured: false,
   resultShown: false,
+  nudged: {}, // 독려한 길드원 { 번호: 독려한 시점 } (시연용 길드원, lib/guild.js)
+  guildLog: [], // 길드원 합류 기록 [{ t, i }]
 });
 
 /* 가입: 시작 금액 · 자동이체 요일 · 길드(만들기 / 받은 코드로 참여) */

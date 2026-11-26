@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { AWAKEN_EXP, DEMO_GUILD_CODE, GUILD_CODE_RE, MAX_RATE, TICKETS, TIERS, TOTAL } from '../lib/rules.js';
+import { AWAKEN_EXP, DEMO_GUILD_CODE, GUILD_CODE_RE, GUILD_DROP_MISS, MAX_RATE, TICKETS, TIERS, TOTAL } from '../lib/rules.js';
 import { awakened, gradeOf, makeGuildCode, maturityPrincipal, openSavings, principal, rates, tier } from '../lib/savings.js';
-import { addMates, demoFinish, demoMiss, demoTo25, demoWeek, gameFailed, nextDay, pay, repay, useTicket, walk } from '../lib/actions.js';
+import { addMates, demoFinish, demoMiss, demoTo25, demoWeek, gameFailed, nextDay, nudgeMate, pay, repay, useTicket, walk } from '../lib/actions.js';
+import { guildFeed, guildMates, guildQuest } from '../lib/guild.js';
 
 /* CLAUDE.md '확정된 상품 규칙'이 코드에 그대로 들어갔는지 본다 */
 const start = (base = 1000) => openSavings({ base });
@@ -147,5 +148,37 @@ describe('시연: 만기 · 히든 각성 바로 보기', () => {
     expect(awakened(s)).toBe(true);
     expect(s.walkExp).toBeLessThanOrEqual(TOTAL * 7 * 100);
     expect(fx.some((f) => f.type === 'result')).toBe(true);
+  });
+});
+
+describe('길드 협동 (시연용 길드원)', () => {
+  it('혼자면 길드 퀘스트가 없고, 길드원이 있으면 전원 납입 때 완료 알림', () => {
+    const solo = start();
+    expect(guildQuest(solo).done).toBe(false);
+    const s = start();
+    addMates(s, 1); // 1번 길드원은 화요일(1) 납입
+    nextDay(s, { autoWalk: false });
+    expect(guildMates(s)[0].paid).toBe(true);
+    const fx = pay(s);
+    expect(guildQuest(s).done).toBe(true);
+    expect(fx.some((f) => f.type === 'sys' && f.text.includes('길드 주간 퀘스트'))).toBe(true);
+  });
+
+  it(`${GUILD_DROP_MISS}주 연속 미납한 길드원은 경고, 독려하면 다음 날 정리`, () => {
+    const s = start();
+    addMates(s, 3);
+    demoWeek(s, { autoWalk: false });
+    demoWeek(s, { autoWalk: false });
+    const lazy = guildMates(s)[2];
+    expect(lazy.missStreak).toBe(GUILD_DROP_MISS);
+    expect(lazy.risk).toBe(true);
+    expect(guildQuest(s).done).toBe(false);
+    expect(nudgeMate(s, 2).length).toBe(1);
+    expect(nudgeMate(s, 2).length).toBe(0); // 같은 사람에게 두 번은 안 보냄
+    nextDay(s, { autoWalk: false });
+    const after = guildMates(s)[2];
+    expect(after.risk).toBe(false);
+    expect(after.paid).toBe(true);
+    expect(guildFeed(s).some((e) => e.text.includes('밀린 납입'))).toBe(true);
   });
 });
