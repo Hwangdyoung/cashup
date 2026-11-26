@@ -72,7 +72,7 @@ export default function WelcomeIntro({ onClose }) {
           <h3 className="wi-t">
             저축하고 걸으면
             <br />
-            {HUNTER.n}이 강해져요
+            {HUNTER.n}가 강해져요
           </h3>
           <ul className="wi-rows">
             <li>
