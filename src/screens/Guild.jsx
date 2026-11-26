@@ -42,6 +42,7 @@ export default function Guild({ s, onCopy, onJoin, onNudge }) {
           ? `정원 ${GUILD_CAP}명이 모두 찼어요. 더 초대하려면 친구가 새 길드를 만들어야 해요.`
           : `${solo ? '아직 혼자예요. 친구가 이 코드로 가입하면 같은 길드가 되고, ' : ''}인원이 늘면 길드원 모두의 우대금리가 함께 올라요. 한 길드는 최대 ${GUILD_CAP}명이에요.`}
       </p>
+      <p className="small gm-fix">길드는 가입할 때 정해서 만기까지 바꿀 수 없어요.</p>
       <button type="button" className="kb-btn copy" onClick={onCopy} disabled={full}>
         {full ? '정원이 찼어요' : '초대 코드 복사하기'}
       </button>

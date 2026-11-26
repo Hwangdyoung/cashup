@@ -226,6 +226,7 @@ export default function Join({ onExit, onOpen, sound }) {
                 정해주세요
               </h2>
               <p className="lead">인원이 늘수록 길드원 모두의 우대금리가 올라가요 (최대 {pp(GUILD_MAX)}). 공개 길드는 없고 초대 코드로만 함께해요.</p>
+              <p className="guild-fix">여기서 정한 길드는 만기까지 바꿀 수 없어요.</p>
               <div className="guild-pick">
                 <button
                   type="button"

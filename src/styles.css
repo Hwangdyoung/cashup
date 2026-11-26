@@ -457,6 +457,8 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .gm-nudge{flex:none;padding:7px 11px;border-radius:8px;background:var(--y);color:var(--y-ink);font-size:13px;font-weight:700}
 .gm-nudge:disabled{background:var(--soft);color:var(--ink-3)}
 .gm-more{margin-top:4px}
+.gm-fix{margin-top:6px;color:var(--ink-3)}
+.guild-fix{margin-top:6px;font-size:13px;font-weight:600;color:var(--ink)}
 /* 길드 소식 */
 .gf-list{list-style:none;margin:0;padding:0}
 .gf-list li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:14px;border-top:1px solid var(--line)}
